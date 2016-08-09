@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:context="http://www.springframework.org/schema/context"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+  xmlns:aop="http://www.springframework.org/schema/aop" xmlns:mvc="http://www.springframework.org/schema/mvc"
+  xmlns:jaxws="http://cxf.apache.org/jaxws"
+  xsi:schemaLocation="
+        http://www.springframework.org/schema/beans     
+        http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-4.0.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+        http://www.springframework.org/schema/mvc 
+        http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd 
+        http://cxf.apache.org/jaxws   
+        http://cxf.apache.org/schemas/jaxws.xsd ">
+
+  <bean id="configBean"
+    class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+    <property name="location">
+      <value>classpath:application.properties</value>
+    </property>
+  </bean>
+
+  <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+    destroy-method="close">
+    <property name="driverClass" value="${jdbc.driver}" />
+    <property name="jdbcUrl" value="${jdbc.url}" />
+    <property name="user" value="${jdbc.username}" />
+    <property name="password" value="${jdbc.password}" />
+    <!-- 连接关闭时默认将所有未提交的操作回滚。默认为false -->
+    <property name="autoCommitOnClose" value="true" />
+    <!-- 连接池中保留的最小连接数 -->
+    <property name="minPoolSize" value="1" />
+    <!-- 连接池中保留的最大连接数。默认为15 -->
+    <property name="maxPoolSize" value="15" />
+    <!-- 初始化时获取的连接数，取值应在minPoolSize与maxPoolSize之间。默认为3 -->
+    <property name="initialPoolSize" value="3" />
+    <!-- 最大空闲时间，超过空闲时间的连接将被丢弃。为0或负数则永不丢弃。默认为0秒 -->
+    <property name="maxIdleTime" value="60" />
+    <!-- 当连接池中的连接用完时，C3P0一次性创建新连接的数目。默认为3 -->
+    <property name="acquireIncrement" value="2" />
+    <!-- 定义在从数据库获取新连接失败后重复尝试获取的次数，默认为30 -->
+    <property name="acquireRetryAttempts" value="3" />
+    <!-- 当连接池用完时客户端调用getConnection()后等待获取新连接的时间，超时后将抛出SQLException，如设为0则无限期等待。单位毫秒，默认为0 -->
+    <property name="checkoutTimeout" value="10000" />
+  </bean>
+
+  <bean id="sessionFactory"
+    class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+    <property name="dataSource" ref="dataSource" />
+
+    <property name="packagesToScan">
+      <list>
+        <value>com.dep.sspanel.entity.</value>
+      </list>
+    </property>
+
+    <property name="hibernateProperties">
+      <props>
+        <prop key="hibernate.dialect">${jdbc.dialect}</prop>
+        <prop key="hibernate.show_sql">true</prop>
+        <!--<prop key="hibernate.format_sql">true</prop> -->
+        <!--<prop key="hibernate.generate_statistics">true</prop> -->
+        <prop key="hibernate.hbm2ddl.auto">update</prop>
+      </props>
+    </property>
+  </bean>
+
+  <!-- 配置声明式事务管理（采用注解的方式） -->
+  <bean id="txManager"
+    class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+    <property name="sessionFactory" ref="sessionFactory"></property>
+  </bean>
+  <tx:annotation-driven transaction-manager="txManager" /><!-- 
+    proxy-target-class="true" -->
+
+  <!-- 配置事务，使用代理的方式 -->
+  <bean id="transactionProxy"
+    class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean"
+    abstract="true">
+    <property name="txManager" ref="txManager"></property>
+    <property name="transactionAttributes">
+      <props>
+        <prop key="add*">PROPAGATION_REQUIRED</prop>
+        <prop key="save*">PROPAGATION_REQUIRED</prop>
+        <prop key="update*">PROPAGATION_REQUIRED</prop>
+        <prop key="del*">PROPAGATION_REQUIRED</prop>
+        <prop key="find*">PROPAGATION_SUPPORTS</prop>
+        <prop key="load*">PROPAGATION_SUPPORTS</prop>
+        <prop key="get*">PROPAGATION_SUPPORTS</prop>
+        <prop key="*">PROPAGATION_REQUIRED</prop>
+      </props>
+    </property>
+  </bean>
+
+  <!-- 使用 annotation -->
+  <!-- <context:annotation-config /> -->
+  <mvc:annotation-driven />
+  <!-- 自动扫描与装配bean -->
+  <context:component-scan base-package="com.dep.sspanel.*">
+    <context:exclude-filter type="annotation"
+      expression="org.springframework.stereotype.Controller" />
+  </context:component-scan>
+
+  <!-- 国际化支持 -->
+  <bean id="messageSource"
+    class="org.springframework.context.support.ResourceBundleMessageSource">
+    <property name="basename">
+      <value>messages</value>
+    </property>
+  </bean>
+  <mvc:interceptors>
+    <!-- 国际化操作拦截器 如果采用基于（请求/Session/Cookie）则必需配置 -->
+    <bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor" />
+  </mvc:interceptors>
+  <!-- <bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver" 
+    /> -->
+  <bean id="localeResolver"
+    class="org.springframework.web.servlet.i18n.CookieLocaleResolver" />
+
+
+  <!-- 拦截器 -->
+  <mvc:interceptors>
+    <mvc:interceptor>
+      <mvc:mapping path="/**" />
+      <mvc:exclude-mapping path="/resource/**" />
+      <mvc:exclude-mapping path="/images/**" />
+      <bean class="com.dep.sspanel.interceptor.GlobalInterceptor" />
+    </mvc:interceptor>
+  </mvc:interceptors>
+
+  <!-- 开启Spring自动JSON转换 -->
+  <bean
+    class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+    <property name="messageConverters">
+      <list>
+        <bean
+          class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter" />
+      </list>
+    </property>
+  </bean>
+
+
+</beans>
