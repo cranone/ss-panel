@@ -3,13 +3,21 @@ package com.dep.sspanel.entity;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.GenericGenerator;
 
 import com.dep.sspanel.util.type.UserType;
 
@@ -18,12 +26,12 @@ import com.dep.sspanel.util.type.UserType;
  * @author Maclaine
  *
  */
-@Entity
+@Entity(name="user")
 @DynamicUpdate
 public class User implements Serializable{
 	private static final long serialVersionUID = 1228256212143751728L;
 	
-	private int id;
+	private String id;
 	private String email;//用户邮箱
 	private String pass;//用户密码
 	private String passwd;//ss密码
@@ -41,10 +49,13 @@ public class User implements Serializable{
 	private int cycleType=2;//周期类型:6=日,2=月,1=年
 	private int expires=0;//有效时间
 	private int status=UserType.unactive.getId();//用户状态
+	private List<Role> roleList;
 	
 	@Id
-	@Column(nullable=false)
-	public int getId() {
+	@GenericGenerator(name = "system-uuid", strategy = "uuid2")
+	@GeneratedValue(generator = "system-uuid")
+	@Column(length = 36,nullable=false)
+	public String getId() {
 		return id;
 	}
 	/**
@@ -140,6 +151,13 @@ public class User implements Serializable{
 		return status;
 	}
 	
+	@ManyToMany
+	@Cascade(value=CascadeType.SAVE_UPDATE)
+	@JoinTable(name="auth_user_role",joinColumns={@JoinColumn(name="uid")},inverseJoinColumns={@JoinColumn(name="rid")})
+	public List<Role> getRoleList() {
+		return roleList;
+	}
+	
 	/**
 	 * 是否过期
 	 * @return
@@ -157,7 +175,7 @@ public class User implements Serializable{
 	
 	
 	
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	public void setEmail(String email) {
@@ -210,6 +228,9 @@ public class User implements Serializable{
 	}
 	public void setStatus(int status) {
 		this.status = status;
+	}
+	public void setRoleList(List<Role> roleList) {
+		this.roleList = roleList;
 	}
 	
 	

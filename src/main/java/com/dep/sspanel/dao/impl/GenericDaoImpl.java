@@ -30,7 +30,7 @@ public abstract class GenericDaoImpl<T> extends HibernateDaoSupport implements G
     }  
     
 	@Override
-	public T find(Serializable id) {
+	public T get(Serializable id) {
 		if(id==null){
 			throw new SystemException(ErrorCodeType.id_null);
 		}
@@ -66,7 +66,7 @@ public abstract class GenericDaoImpl<T> extends HibernateDaoSupport implements G
 			if(id==null){
 				throw new SystemException(ErrorCodeType.id_null);
 			}
-			T t=find(id);
+			T t=get(id);
 			getHibernateTemplate().delete(t);
 		}
 	}

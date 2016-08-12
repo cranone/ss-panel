@@ -8,7 +8,7 @@ public interface GenericDao<T> {
 	 * @param id 序列化ID
 	 * @return T 实体对象
 	 */
-	public T find(Serializable id);
+	public T get(Serializable id);
 	
 	/**
 	 * 按照ID查询Lazy

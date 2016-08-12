@@ -8,8 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.dep.sspanel.dao.GenericDao;
 import com.dep.sspanel.service.GenericService;
 
-
-
 @Transactional
 @Service
 public abstract class GenericServiceImpl<T> implements GenericService<T> {
@@ -17,8 +15,8 @@ public abstract class GenericServiceImpl<T> implements GenericService<T> {
 	protected GenericDao<T> genericDao;
 	
 	@Override
-	public T find(Serializable id) {
-		return genericDao.find(id);
+	public T get(Serializable id) {
+		return genericDao.get(id);
 	}
 	
 	@Override

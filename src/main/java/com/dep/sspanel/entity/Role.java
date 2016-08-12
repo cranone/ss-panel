@@ -1,45 +1,56 @@
 package com.dep.sspanel.entity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.Transient;
+
+import org.apache.commons.collections.CollectionUtils;
+import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.GenericGenerator;
 
 /**
  * 角色
  * @author Maclaine
  *
  */
-public class Role {
-	private Integer id;
+@Entity(name="role")
+@DynamicUpdate
+public class Role implements Serializable {
+	private String id;
 	private String name;
 	private List<Permission> permissionList;
 	private List<User> userList;
 	
 	@Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-	public Integer getId() {
+	@GenericGenerator(name = "system-uuid", strategy = "uuid2")
+	@GeneratedValue(generator = "system-uuid")
+	@Column(length = 36,nullable=false)
+	public String getId() {
 		return id;
 	}
-	@Column(name="permissionName")
+	@Column
 	public String getName() {
 		return name;
 	}
-    @OneToMany(mappedBy="role")  
+	@ManyToMany
+	@JoinTable(name="auth_permission_role",joinColumns={@JoinColumn(name="rid")},inverseJoinColumns={@JoinColumn(name="pid")})
 	public List<Permission> getPermissionList() {
 		return permissionList;
 	}
-	@ManyToMany  
+	@ManyToMany(mappedBy="roleList") 
 	public List<User> getUserList() {
 		return userList;
 	}
-	public void setId(Integer id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	public void setName(String name) {
@@ -63,6 +74,20 @@ public class Role {
 			list.add(permission.getName());
 		}
 		return list;
+	}
+	
+	@Transient
+	public String getPermissionNameStr(){
+		List<Permission> perlist=getPermissionList();
+		if(CollectionUtils.isEmpty(perlist)){
+			return "";
+		}
+		StringBuffer sb=new StringBuffer();
+		for (Permission permission : perlist) {
+			sb.append(permission.getName());
+			sb.append(",");
+		}
+		return sb.toString();
 	}
 	
 }

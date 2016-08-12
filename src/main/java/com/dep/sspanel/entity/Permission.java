@@ -1,20 +1,28 @@
 package com.dep.sspanel.entity;
 
+import java.io.Serializable;
+import java.util.List;
+
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.ManyToMany;
+
+import org.hibernate.annotations.DynamicUpdate;
 
 /**
  * 权限
  * @author Maclaine
  *
  */
-public class Permission {
+@Entity(name="permission")
+@DynamicUpdate
+public class Permission implements Serializable {
 	private Integer id;
 	private String name;
-	private Role role;
+	private List<Role> roleList;
 	
 	@Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -27,18 +35,20 @@ public class Permission {
 		return name;
 	}
 	
-	@ManyToOne
-	public Role getRole() {
-		return role;
+	@ManyToMany(mappedBy="permissionList")
+	public List<Role> getRoleList() {
+		return roleList;
 	}
+	
 	public void setId(Integer id) {
 		this.id = id;
 	}
 	public void setName(String name) {
 		this.name = name;
 	}
-	public void setRole(Role role) {
-		this.role = role;
+
+	public void setRoleList(List<Role> roleList) {
+		this.roleList = roleList;
 	}
 	
 	
