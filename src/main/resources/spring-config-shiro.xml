@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:util="http://www.springframework.org/schema/util" xmlns:aop="http://www.springframework.org/schema/aop"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+  <!-- 缓存管理器 -->
+  <bean id="cacheManager"
+    class="com.github.zhangkaitao.shiro.spring.SpringCacheManagerWrapper">
+    <property name="cacheManager" ref="springCacheManager" />
+  </bean>
+
+  <!-- 凭证匹配器 -->
+<!--   <bean id="credentialsMatcher"
+    class="com.github.zhangkaitao.shiro.chapter16.credentials.RetryLimitHashedCredentialsMatcher">
+    <constructor-arg ref="cacheManager" />
+    <property name="hashAlgorithmName" value="md5" />
+    <property name="hashIterations" value="2" />
+    <property name="storedCredentialsHexEncoded" value="true" />
+  </bean> -->
+  
+      <!-- Realm实现 -->
+    <bean id="userRealm" class="com.github.zhangkaitao.shiro.chapter16.realm.UserRealm">
+        <property name="credentialsMatcher" ref="credentialsMatcher"/>
+        <property name="cachingEnabled" value="false"/>
+        <property name="authenticationCachingEnabled" value="true"/>
+        <property name="authenticationCacheName" value="authenticationCache"/>
+        <property name="authorizationCachingEnabled" value="true"/>
+        <property name="authorizationCacheName" value="authorizationCache"/>
+    </bean>
+
+
+  <!-- Shiro安全管理器 -->  
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">  
+        <property name="realm" ref="userRealm"/>
+        <!-- <property name="sessionManager" ref="sessionManager"/> -->
+        <property name="cacheManager" ref="cacheManager"/>
+        <!-- <property name="rememberMeManager" ref="rememberMeManager"/> -->
+    </bean> 
+    
+    <!-- Shiro的Web过滤器 -->
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <property name="securityManager" ref="securityManager"/>
+        <property name="loginUrl" value="/login"/>
+        <property name="filters">
+            <util:map>
+                <entry key="authc" value-ref="formAuthenticationFilter"/>
+                <entry key="sysUser" value-ref="sysUserFilter"/>
+            </util:map>
+        </property>
+        <!-- 过滤:authc表示要求权限,anon表示不需要认证 -->
+        <property name="filterChainDefinitions">
+            <value>
+                /index/*=anon
+                /login = authc
+                /logout = logout
+                /authenticated = authc
+                /** = user,sysUser
+            </value>
+        </property>
+    </bean>
+</beans>

@@ -109,8 +109,11 @@
   <!-- 国际化支持 -->
   <bean id="messageSource"
     class="org.springframework.context.support.ResourceBundleMessageSource">
+    <property name="defaultEncoding" value="UTF-8" />
+    <!-- 如果在国际化资源文件中找不到对应代码的信息，就用这个代码作为名称 -->
+    <property name="useCodeAsDefaultMessage" value="true" />
     <property name="basename">
-      <value>messages</value>
+      <value>i18n.messages</value><!-- i18n/message? -->
     </property>
   </bean>
   <mvc:interceptors>
@@ -144,5 +147,8 @@
     </property>
   </bean>
 
+
+  <import resource="classpath:spring-config-cache.xml" />
+  <import resource="classpath:spring-config-shiro.xml" />
 
 </beans>
