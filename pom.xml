@@ -12,6 +12,7 @@
     <hibernate.version>4.2.16.Final</hibernate.version>
     <slf4j-version>1.7.5</slf4j-version>
     <cxf.version>2.6.1</cxf.version>
+    <shiro>1.2.6</shiro>
   </properties>
 
   <dependencies>
@@ -246,13 +247,33 @@
       <artifactId>quartz</artifactId>
       <version>2.2.1</version>
     </dependency>
-    
+
     <!-- shiro -->
-    <dependency>  
-        <groupId>org.apache.shiro</groupId>  
-        <artifactId>shiro-core</artifactId>  
-        <version>1.2.6</version>  
-    </dependency>  
+    <dependency>
+      <groupId>org.apache.shiro</groupId>
+      <artifactId>shiro-core</artifactId>
+      <version>${shiro}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.shiro</groupId>
+      <artifactId>shiro-ehcache</artifactId>
+      <version>${shiro}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.shiro</groupId>
+      <artifactId>shiro-web</artifactId>
+      <version>${shiro}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.shiro</groupId>
+      <artifactId>shiro-quartz</artifactId>
+      <version>${shiro}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.shiro</groupId>
+      <artifactId>shiro-spring</artifactId>
+      <version>${shiro}</version>
+    </dependency>
   </dependencies>
 
   <build>
