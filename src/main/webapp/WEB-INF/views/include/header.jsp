@@ -6,7 +6,6 @@
   <div class="loginbar">
     <ul class="list-inline">
       <li><a class="login" href="javascript:void(0)"><spring:message code="login" /></a>|<a href="##"><spring:message code="register" /></a></li>
-      <li><a href="##">search</a></li>
       <li>
         <div class="dropdown">
           <span class="dropdown-toggle dropdown white" id="dropdownMenu" data-toggle="dropdown" aria-expanded="true"><spring:message code="language" /> <span class="caret"></span></span>
