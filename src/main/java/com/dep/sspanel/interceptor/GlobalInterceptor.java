@@ -1,8 +1,5 @@
 package com.dep.sspanel.interceptor;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -16,14 +13,6 @@ import com.dep.sspanel.util.ServerUtil;
 public class GlobalInterceptor implements HandlerInterceptor {
 	private static final Logger logger = LoggerFactory.getLogger(GlobalInterceptor.class);
 	private static String encoding = null;
-	/**
-	 * 排除过滤资源文件,以顶级路径区分
-	 */
-	private static List<String> excludeResource;
-	/**
-	 * 排除过滤无需登录URL,以顶级路径区分
-	 */
-	private static List<String> excludeURL;
 
 	static {
 		if (ServerUtil.loadProperty("encoding") == null) {
@@ -32,17 +21,6 @@ public class GlobalInterceptor implements HandlerInterceptor {
 		}
 		encoding = ServerUtil.loadProperty("encoding");
 		logger.info("encoding:{}", encoding);
-		// 初始化排除过滤资源文件
-		excludeResource = new ArrayList<String>();
-		excludeResource.add("^/resource(.*)");// 如果有Context-root,则为^/Context-root/resource(.*),下同
-		logger.info("excludeResource初始化完毕");
-
-		// 初始化排除过滤无需登录URL
-		excludeURL = new ArrayList<String>();
-		excludeURL.add("^/index(.*)");
-		excludeURL.add("^/$");
-		excludeURL.add("^/error(.*)");
-		logger.info("excludeURL初始化完毕");
 	}
 
 	/**
@@ -57,20 +35,7 @@ public class GlobalInterceptor implements HandlerInterceptor {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 		request.setCharacterEncoding(encoding);
 		response.setCharacterEncoding(encoding);
-		// logger.debug(ServerUtil.getServerPath(request));
 		request.setAttribute("globalURL", ServerUtil.getServerPath(request));
-		
-		String URI=request.getServletPath();
-		String globalURL = ServerUtil.getServerPath(request);
-		request.setAttribute("globalURL", globalURL);
-		logger.debug("path:{}{}",globalURL,URI);
-		// 是否排除过滤登录
-		if (ServerUtil.isInclude(URI,excludeURL)||ServerUtil.isInclude(URI,excludeResource)) {
-			logger.debug("{}:无需登录",URI);
-			return true;
-		}
-		//TODO:登录验证
-		logger.debug("登录验证");
 		return true;
 	}
 
