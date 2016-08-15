@@ -13,9 +13,16 @@ public interface UserService extends GenericService<User>{
 	public User findUserByEmail(String email);
 	
 	/**
-	 * 根据邮箱获取权限列表
+	 * 根据邮箱获取角色列表
 	 * @param email
-	 * @return Set<String>
+	 * @return Set<String>;不存在则返回Collections.emptySet()
 	 */
 	public Set<String> findRolesByEmail(String email);
+	
+	/**
+	 * 根据邮箱获取权限列表
+	 * @param email
+	 * @return Set<String>;不存在则返回Collections.emptySet()
+	 */
+	public Set<String> findPermissionsByEmail(String email);
 }

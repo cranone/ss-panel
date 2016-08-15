@@ -2,8 +2,11 @@ package com.dep.sspanel.entity;
 
 import java.io.Serializable;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,6 +17,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Transient;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.DynamicUpdate;
@@ -171,6 +175,47 @@ public class User implements Serializable{
 			return true;
 		}
 		return false;
+	}
+	
+	/**
+	 * 获取角色名集合
+	 * @return Set<String>;不存在则返回Collections.emptySet()
+	 */
+	@Transient
+	public Set<String> getRoleNameSet(){
+		if(CollectionUtils.isEmpty(roleList)){
+			return Collections.emptySet();
+		}
+		Set<String> set=new HashSet<String>();
+		for (Role role : roleList) {
+			set.add(role.getName());
+		}
+		return set;
+	}
+	
+	/**
+	 * 获取权限名集合
+	 * @return Set<String>;不存在则返回Collections.emptySet()
+	 */
+	@Transient
+	public Set<String> getRolePermissionSet(){
+		if(CollectionUtils.isEmpty(roleList)){
+			return Collections.emptySet();
+		}
+		Set<String> set=Collections.emptySet();
+		for (Role role : roleList) {
+			List<Permission> list=role.getPermissionList();
+			if(CollectionUtils.isEmpty(list)){
+				continue;
+			}
+			for (Permission permission : list) {
+				if(CollectionUtils.isEmpty(set)){
+					set=new HashSet<String>();
+				}
+				set.add(permission.getName());
+			}
+		}
+		return set;
 	}
 	
 	

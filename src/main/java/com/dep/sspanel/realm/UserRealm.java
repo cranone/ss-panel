@@ -23,8 +23,8 @@ public class UserRealm extends AuthorizingRealm {
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
 		String username = (String) principals.getPrimaryPrincipal();
 		SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
-		// authorizationInfo.setRoles(userService.findRoles(username));
-		// authorizationInfo.setStringPermissions(userService.findPermissions(username));
+		 authorizationInfo.setRoles(userService.findRolesByEmail(username));
+		 authorizationInfo.setStringPermissions(userService.findPermissionsByEmail(username));
 		return authorizationInfo;
 	}
 

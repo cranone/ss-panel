@@ -127,14 +127,14 @@
 
 
   <!-- 拦截器 -->
-  <mvc:interceptors>
+<!--   <mvc:interceptors>
     <mvc:interceptor>
       <mvc:mapping path="/**" />
       <mvc:exclude-mapping path="/resource/**" />
       <mvc:exclude-mapping path="/images/**" />
       <bean class="com.dep.sspanel.interceptor.GlobalInterceptor" />
     </mvc:interceptor>
-  </mvc:interceptors>
+  </mvc:interceptors> -->
 
   <!-- 开启Spring自动JSON转换 -->
   <bean

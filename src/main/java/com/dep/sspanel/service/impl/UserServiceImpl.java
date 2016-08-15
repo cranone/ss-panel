@@ -33,7 +33,15 @@ public class UserServiceImpl extends GenericServiceImpl<User> implements UserSer
 		if(user == null) {
             return Collections.emptySet();
         }
-		//TODO:获取权限
-		return null;
+		return user.getRoleNameSet();
+	}
+
+	@Override
+	public Set<String> findPermissionsByEmail(String email) {
+		User user=findUserByEmail(email);
+		if(user == null) {
+            return Collections.emptySet();
+        }
+		return user.getRolePermissionSet();
 	}
 }
