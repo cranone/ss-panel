@@ -1,0 +1,14 @@
+
+body{
+  background-color:gray;
+}
+
+.subcontainer{
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  height: 600px;
+  background-color: white;
+  border: 5px solid gray;
+  
+}

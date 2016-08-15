@@ -4,6 +4,8 @@
 <html lang="zh-CN">
 <head>
 <%@include file="/WEB-INF/views/include/headlib.jsp"%>
+<link rel="stylesheet"
+  href="${globalURL }/resource/project/css/index.css">
 </head>
 <body>
   <%@include file="/WEB-INF/views/include/header.jsp"%>

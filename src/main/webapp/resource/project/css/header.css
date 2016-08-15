@@ -1,0 +1,31 @@
+.mdy-toolbar {
+  background-color:gray;
+}
+.mdy-toolbar a{
+  color:white;
+}
+.mdy-toolbar ul {
+  margin-right: 0;
+  padding-right: 10%;
+  text-align: right;
+}
+.mdy-toolbar .dropdown ul {
+  min-width: 0;
+  padding: 2px 0;
+  text-align: left;
+}
+.mdy-toolbar .dropdown a {
+  padding: 2px 8px;
+}
+.form-login {
+  display: none;
+}
+.form-login .input-group {
+  margin: 5px 0;
+}
+.form-login .input-group-addon {
+  width: 80px;
+}
+.form-login .verifycode {
+  width: 60%;
+}
