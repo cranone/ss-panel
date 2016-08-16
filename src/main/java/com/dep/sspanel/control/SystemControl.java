@@ -31,7 +31,7 @@ public class SystemControl {
 	private static final Logger logger = LoggerFactory.getLogger(SystemControl.class);
 	
 	@ResponseBody
-	@RequestMapping(value=URIConstants.POST_LANGUAGE+"/{langType}",method=RequestMethod.POST)
+	@RequestMapping(value=URIConstants.LANGUAGE+"/{langType}",method=RequestMethod.POST)
 	public Map<String,Object> language(HttpServletRequest request,HttpServletResponse response,@PathVariable String langType){
 		Map<String, Object> map = new HashMap<String, Object>();
 		String[] languages=new String[]{"zh","en","ja"};
@@ -54,14 +54,15 @@ public class SystemControl {
 		return map;
 	}
 	
-	@RequestMapping(value=URIConstants.POST_LANGUAGE+"/{langType}",method=RequestMethod.GET)
+	@RequestMapping(value=URIConstants.LANGUAGE+"/{langType}",method=RequestMethod.GET)
 	public String language(HttpServletRequest request,HttpServletResponse response,@PathVariable String langType,@RequestParam(required = false,defaultValue="/index")String url){
 		language(request,response,langType);
 		return "redirect:"+url;
 	}
 	
-	@RequestMapping(value={URIConstants.GET_DEFAULT,URIConstants.GET_INDEX})
+	@RequestMapping(value={URIConstants.DEFAULT,URIConstants.INDEX})
 	public String index(){
 		return "index";
 	}
+	
 }
