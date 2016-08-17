@@ -92,8 +92,8 @@
         <property name="securityManager" ref="securityManager"/>
         <!-- 要求登录时的链接(登录页面地址)，非必须的属性，默认会自动寻找Web工程根目录下的"/login.jsp"页面 -->  
         <property name="loginUrl" value="/index/login"/>
-        <!-- 登录成功后要跳转的连接(本例中此属性用不到，因为登录成功后的处理逻辑在LoginController里硬编码) -->  
-        <!-- <property name="successUrl" value="/" ></property> -->  
+        <!-- 登录成功后要跳转的连接 -->  
+        <property name="successUrl" value="/user/" ></property>  
         <!-- 用户访问未对其授权的资源时，所显示的连接 -->  
         <property name="unauthorizedUrl" value="/index/"></property>
         <property name="filters">
@@ -102,10 +102,12 @@
                 <!-- <entry key="sysUser" value-ref="sysUserFilter"/> -->
             </util:map>
         </property>
-        <!-- 过滤:authc表示要求权限,anon表示不需要认证 -->
+        <!-- 过滤:authc表示要求权限,anon表示不需要认证,user表示允许remember me -->
         <property name="filterChainDefinitions">
             <value>
                 /index/login=authc
+                /index/logout = logout
+                /=anon
                 /index/**=anon
                 /resource/**=anon
                 /images/**=anon
