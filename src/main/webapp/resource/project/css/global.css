@@ -1,9 +1,5 @@
-/* 全局样式 */
-ul {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
+/* 顶部栏 */
+body { padding-top: 70px; }
 
 /* 重写row样式 */
 .row{
@@ -18,4 +14,8 @@ ul {
 
 .white{
   color:white;
+}
+
+.error{
+  color:red;
 }
