@@ -18,7 +18,12 @@
     </div>
 
     <div class="col-sm-4 col-sm-offset-1">
-      <table>
+      <table class="table">
+        <tr>
+          <td>用户名:</td>
+          <td></td>
+        </tr>
+        
         <tr>
           <td>到期时间:</td>
           <td></td>
@@ -33,7 +38,7 @@
     <h5>最近公告</h5>
       <ul class="list-unstyled">
         <li></li>
-        <li><a href="#">公告</a>2016-08-17</li>
+        <li><a href="#">公告</a>&nbsp;&nbsp;&nbsp;&nbsp;2016-08-17</li>
       </ul>
     </div>
   </div>

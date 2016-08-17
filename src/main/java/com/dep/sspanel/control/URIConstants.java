@@ -11,6 +11,8 @@ public class URIConstants {
 	public static final String GET_REGISTER=INDEX+"/register";
 	/** 执行登录 */
 	public static final String POST_LOGIN=INDEX+"/dologin";
+	/** 执行登出 */
+	public static final String LOGOUT=INDEX+"/logout";
 	/** 执行注册 */
 	public static final String POST_REGISTER=INDEX+"/doregister";
 	/** 转换语言 */
