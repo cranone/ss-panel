@@ -4,18 +4,35 @@
 <html lang="zh-CN">
 <head>
 <%@include file="/WEB-INF/views/include/headlib.jsp"%>
+<style>
+.form-inline label {
+  width: 100px;
+}
+</style>
 </head>
 <body>
   <%@include file="/WEB-INF/views/include/header.jsp"%>
-  <div class="row container">
-    <h2>this is LOGIN!!!</h2>
-    <div class="error">${error}</div>
-    <form action="" method="post">
-      <span>用户名:</span><input type="text" name="username">
-      <br>
-      <span>密码:</span><input type="password" name="password">
-      <br>
-      <input type="submit" value="登录">
+  <div class="container">
+    <form class="form-horizontal" action="" method="post">
+      <div class="form-group">
+        <label class="col-sm-2 control-label" for="username">用户名:</label>
+        <div class="col-sm-3">
+          <input class="form-control" type="text" id="username" name="username">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label" for="password">密码:</label>
+        <div class="col-sm-3">
+          <input class="form-control" type="password" id="password" name="password">
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+          <input class="btn btn-default" type="submit" value="<spring:message code="login" />">
+          <span class="error">${error}</span>
+        </div>
+      </div>
+
     </form>
   </div>
 </body>

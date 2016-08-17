@@ -9,8 +9,8 @@
 </head>
 <body>
   <%@include file="/WEB-INF/views/include/header.jsp"%>
-  <div class="row container">
-    <h1><spring:message code="main.title" /></h1>
+  <div class="container">
+    <h1>我也不知道该放点什么</h1>
   </div>
 </body>
 <script>
