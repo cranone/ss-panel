@@ -13,23 +13,23 @@
     </div>
 
     <div class="col-sm-8 col-sm-offset-1">
-      <h3>节点信息</h3>
+      <h3><spring:message code="node.info" /></h3>
       <div>
-        <span class="col-sm-3"><label>端口:</label>50000</span>
-        <span class="col-sm-3"><label>密码:</label>123456</span>
-        <span class="col-sm-3"><label>流量(MB):</label>100/1000</span>
+        <span class="col-sm-3"><label><spring:message code="node.port" />:</label>${user.port }</span>
+        <span class="col-sm-3"><label><spring:message code="node.pwd" />:</label>${user.passwd }</span>
+        <span class="col-sm-3"><label><spring:message code="node.transfer" />(GB):</label><fmt:formatNumber minIntegerDigits="1" value="${(user.upload+user.download)/1024/1024/1024 }" pattern="#.00"/>&nbsp;/&nbsp;<fmt:formatNumber minIntegerDigits="1" value="${user.transferEnable/1024/1024/1024 }" pattern="#.00"/></span>
       </div>
       <br>
-      <h3>节点列表</h3>
+      <h3><spring:message code="node.list" /></h3>
       <table class="table">
         <tr>
-          <td>节点位置</td>
-          <td>节点IP</td>
-          <td>节点状态</td>
+          <td><spring:message code="node.position" /></td>
+          <td><spring:message code="node.ip" /></td>
+          <td><spring:message code="node.status" /></td>
         </tr>
         <tr>
           <td>香港</td>
-          <td>45.xx</td>
+          <td>47.89.43.227</td>
           <td>正常</td>
         </tr>
       </table>
@@ -38,7 +38,8 @@
 </body>
 <script>
 	$(function($) {
-		var nav=$("#left_nav");
+		$("#left_nav #left_overview").removeClass("active");
+		$("#left_nav #left_node").addClass("active");
 		
   });
 </script>

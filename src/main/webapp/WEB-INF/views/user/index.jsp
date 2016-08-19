@@ -29,10 +29,10 @@
       </table>
     </div>
     <div class="col-sm-4 col-sm-offset-1">
-    <h5><spring:message code="announcement" /></h5>
+    <h5><spring:message code="message" /></h5>
       <ul class="list-unstyled">
         <li></li>
-        <li><a href="#"><spring:message code="announcement" /></a>&nbsp;&nbsp;&nbsp;&nbsp;2016-08-17</li>
+        <li><a href="#"><spring:message code="message" /></a>&nbsp;&nbsp;&nbsp;&nbsp;2016-08-17</li>
       </ul>
     </div>
   </div>
