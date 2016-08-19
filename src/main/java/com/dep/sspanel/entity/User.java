@@ -50,9 +50,9 @@ public class User implements Serializable{
 	private int lastGetGiftTime;//保留字段
 	private int lastRestPassTime;//保留字段
 	private Date updateDate=Calendar.getInstance().getTime();//修改日期
-	private int cycleType=2;//周期类型:6=日,2=月,1=年
-	private int expires=0;//有效时间
-	private int status=UserType.unactive.getId();//用户状态
+	private Integer cycleType=2;//周期类型:6=日,2=月,1=年
+	private Integer expires=0;//有效时间
+	private Integer status=UserType.unactive.getId();//用户状态
 	private List<Role> roleList;
 	
 	@Id
@@ -135,7 +135,7 @@ public class User implements Serializable{
 	 * @return
 	 */
 	@Column
-	public int getCycleType() {
+	public Integer getCycleType() {
 		return cycleType;
 	}
 	/**
@@ -143,7 +143,7 @@ public class User implements Serializable{
 	 * @return
 	 */
 	@Column
-	public int getExpires() {
+	public Integer getExpires() {
 		return expires;
 	}
 	/**
@@ -151,7 +151,7 @@ public class User implements Serializable{
 	 * @return
 	 */
 	@Column
-	public int getStatus() {
+	public Integer getStatus() {
 		return status;
 	}
 	
@@ -265,13 +265,13 @@ public class User implements Serializable{
 	public void setUpdateDate(Date updateDate) {
 		this.updateDate = updateDate;
 	}
-	public void setCycleType(int cycleType) {
+	public void setCycleType(Integer cycleType) {
 		this.cycleType = cycleType;
 	}
-	public void setExpires(int expires) {
+	public void setExpires(Integer expires) {
 		this.expires = expires;
 	}
-	public void setStatus(int status) {
+	public void setStatus(Integer status) {
 		this.status = status;
 	}
 	public void setRoleList(List<Role> roleList) {
