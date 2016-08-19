@@ -26,10 +26,19 @@
           <input class="form-control" type="password" id="password" name="password">
         </div>
       </div>
+      <c:if test="${captchaEbabled}">
+        <div class="form-group">
+          <label class="col-sm-2 control-label" for="captchaCode">验证码:</label>
+          <div class="col-sm-2">
+            <input class="form-control" type="text" id="captchaCode" name="captchaCode">
+          </div>
+          <img class="col-sm-1 captchaimg" src="${globalURL }/images/captcha.jpg" style="height: 30px;" title="点击更换验证码">
+          
+        </div>
+      </c:if>
       <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
-          <input class="btn btn-default" type="submit" value="<spring:message code="login" />">
-          <span class="error">${error}</span>
+          <input class="btn btn-default" type="submit" value="<spring:message code="login" />"> <span class="error">${error}</span>
         </div>
       </div>
 
@@ -38,7 +47,9 @@
 </body>
 <script>
 	$(function($) {
-
+	  $(".captchaimg").click(function(){
+	  	$(this).attr("src","${globalURL }/images/captcha.jpg?"+new Date().getTime());
+	  });
   });
 </script>
 </html>
