@@ -15,24 +15,24 @@
     <div class="col-sm-4 col-sm-offset-1">
       <table class="table">
         <tr>
-          <td>用户名:</td>
-          <td></td>
+          <td><spring:message code="username" />:</td>
+          <td>${user.email }</td>
         </tr>
         <tr>
-          <td>到期时间:</td>
-          <td></td>
+          <td><spring:message code="user.expires" />:</td>
+          <td>/</td>
         </tr>
         <tr>
-          <td>流量使用(MB):</td>
-          <td>??/??</td>
+          <td><spring:message code="user.transfer" />(GB):</td>
+          <td><fmt:formatNumber minIntegerDigits="1" value="${(user.upload+user.download)/1024/1024/1024 }" pattern="#.00"/>&nbsp;/&nbsp;<fmt:formatNumber minIntegerDigits="1" value="${user.transferEnable/1024/1024/1024 }" pattern="#.00"/></td>
         </tr>
       </table>
     </div>
     <div class="col-sm-4 col-sm-offset-1">
-    <h5>最近公告</h5>
+    <h5><spring:message code="announcement" /></h5>
       <ul class="list-unstyled">
         <li></li>
-        <li><a href="#">公告</a>&nbsp;&nbsp;&nbsp;&nbsp;2016-08-17</li>
+        <li><a href="#"><spring:message code="announcement" /></a>&nbsp;&nbsp;&nbsp;&nbsp;2016-08-17</li>
       </ul>
     </div>
   </div>

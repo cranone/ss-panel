@@ -15,24 +15,24 @@
   <div class="container">
     <form class="form-horizontal" action="" method="post">
       <div class="form-group">
-        <label class="col-sm-2 control-label" for="username">用户名:</label>
+        <label class="col-sm-2 control-label" for="username"><spring:message code="username" />:</label>
         <div class="col-sm-3">
           <input class="form-control" type="text" id="username" name="username">
         </div>
       </div>
       <div class="form-group">
-        <label class="col-sm-2 control-label" for="password">密码:</label>
+        <label class="col-sm-2 control-label" for="password"><spring:message code="password" />:</label>
         <div class="col-sm-3">
           <input class="form-control" type="password" id="password" name="password">
         </div>
       </div>
       <c:if test="${captchaEbabled}">
         <div class="form-group">
-          <label class="col-sm-2 control-label" for="captchaCode">验证码:</label>
+          <label class="col-sm-2 control-label" for="captchaCode"><spring:message code="captcha" />:</label>
           <div class="col-sm-2">
             <input class="form-control" type="text" id="captchaCode" name="captchaCode">
           </div>
-          <img class="col-sm-1 captchaimg" src="${globalURL }/images/captcha.jpg" style="height: 30px;" title="点击更换验证码">
+          <img class="col-sm-1 captchaimg" src="${globalURL }/images/captcha.jpg" style="height: 30px;" title="<spring:message code="captcha.change" />">
           
         </div>
       </c:if>
