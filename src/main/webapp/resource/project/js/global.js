@@ -1,5 +1,5 @@
 /*
- * Dairy:global.js v1.0
+ * sspanel:global.js v1.0
  */
 var fullURL=window.location.href;
 var globalURL = fullURL.indexOf("?")>0?fullURL.substring(fullURL.indexOf("?"),0):fullURL;
