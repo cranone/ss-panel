@@ -18,6 +18,9 @@ public class URIConstants {
 	/** 转换语言 */
 	public static final String LANGUAGE=INDEX+"/language";
 	
+	/** 验证码 */
+	public static final String CAPTCHA="images/captcha.jpg";
+	
 	
 	/** 管理员首页 */
 	public static final String ADMIN_INDEX="/admin";
@@ -28,6 +31,12 @@ public class URIConstants {
 	public static final String USER_INDEX="/user";
 	/** 用户首页 */
 	public static final String USER_DEFAULT=USER_INDEX+"/index";
+	/** 用户节点 */
+	public static final String USER_NODE=USER_INDEX+"/node";
+	/** 用户消息 */
+	public static final String USER_MESSAGE=USER_INDEX+"/message";
+	/** 用户消息 */
+	public static final String USER_SECURITY=USER_INDEX+"/security";
 	
 	
 }

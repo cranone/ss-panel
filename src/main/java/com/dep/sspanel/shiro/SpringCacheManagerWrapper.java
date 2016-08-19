@@ -1,4 +1,4 @@
-package com.dep.sspanel.util;
+package com.dep.sspanel.shiro;
 
 import java.util.ArrayList;
 import java.util.Collection;

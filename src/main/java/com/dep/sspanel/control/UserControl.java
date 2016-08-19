@@ -25,6 +25,8 @@ public class UserControl {
 			error = ServerUtil.i18n(req, "user.login.error");
 		} else if (IncorrectCredentialsException.class.getName().equals(exceptionClassName)) {
 			error = ServerUtil.i18n(req, "user.login.error");
+		} else if ("captcha.error".equals(exceptionClassName)) {
+			error = ServerUtil.i18n(req, "captcha.error");
 		} else if (exceptionClassName != null) {
 			error = ServerUtil.i18n(req, "errorcode.unknown.error");
 			logger.error(exceptionClassName);
@@ -32,9 +34,24 @@ public class UserControl {
 		model.addAttribute("error", error);
 		return "login";
 	}
-	
+
 	@RequestMapping(value = { URIConstants.USER_INDEX, URIConstants.USER_DEFAULT })
 	public String index() {
 		return "user/index";
+	}
+
+	@RequestMapping(value = URIConstants.USER_NODE)
+	public String node() {
+		return "user/node";
+	}
+
+	@RequestMapping(value = URIConstants.USER_MESSAGE)
+	public String message() {
+		return "user/message";
+	}
+
+	@RequestMapping(value = URIConstants.USER_SECURITY)
+	public String security() {
+		return "user/security";
 	}
 }

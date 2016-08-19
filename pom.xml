@@ -274,6 +274,13 @@
       <artifactId>shiro-spring</artifactId>
       <version>${shiro}</version>
     </dependency>
+
+    <!-- 验证码 -->
+    <dependency>
+      <groupId>com.github.axet</groupId>
+      <artifactId>kaptcha</artifactId>
+      <version>0.0.9</version>
+    </dependency>
   </dependencies>
 
   <build>

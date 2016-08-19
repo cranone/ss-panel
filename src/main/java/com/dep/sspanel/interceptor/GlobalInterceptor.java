@@ -13,6 +13,7 @@ import com.dep.sspanel.util.ServerUtil;
 public class GlobalInterceptor implements HandlerInterceptor {
 	private static final Logger logger = LoggerFactory.getLogger(GlobalInterceptor.class);
 	private static String encoding = null;
+	private static String resourceURL=null;
 
 	static {
 		if (ServerUtil.loadProperty("encoding") == null) {
@@ -21,6 +22,7 @@ public class GlobalInterceptor implements HandlerInterceptor {
 		}
 		encoding = ServerUtil.loadProperty("encoding");
 		logger.info("encoding:{}", encoding);
+		resourceURL=ServerUtil.loadProperty("resourceURL");
 	}
 
 	/**
@@ -36,6 +38,11 @@ public class GlobalInterceptor implements HandlerInterceptor {
 		request.setCharacterEncoding(encoding);
 		response.setCharacterEncoding(encoding);
 		request.setAttribute("globalURL", ServerUtil.getServerPath(request));
+		if(resourceURL==null){
+			request.setAttribute("resourceURL", ServerUtil.getServerPath(request)+"/resource");
+		}else{
+			request.setAttribute("resourceURL", resourceURL);
+		}
 		return true;
 	}
 
