@@ -32,7 +32,7 @@
           <div class="col-sm-2">
             <input class="form-control" type="text" id="captchaCode" name="captchaCode">
           </div>
-          <img class="col-sm-1 captchaimg" src="${globalURL }/images/captcha.jpg" style="height: 30px;" title="<spring:message code="captcha.change" />">
+          <img class="col-sm-1 captchaimg" src="${globalURL }/images/captcha.jpg" style="height: 30px;min-width: 100px;" title="<spring:message code="captcha.change" />">
           
         </div>
       </c:if>
