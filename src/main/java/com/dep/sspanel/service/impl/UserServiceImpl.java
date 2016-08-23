@@ -44,4 +44,27 @@ public class UserServiceImpl extends GenericServiceImpl<User> implements UserSer
         }
 		return user.getRolePermissionSet();
 	}
+
+	@Override
+	public User findUserByNameOrEmail(String condition) {
+		return userDao.findUserByNameOrEmail(condition);
+	}
+
+	@Override
+	public Set<String> findRolesByNameOrEmail(String condition) {
+		User user=findUserByNameOrEmail(condition);
+		if(user == null) {
+            return Collections.emptySet();
+        }
+		return user.getRoleNameSet();
+	}
+
+	@Override
+	public Set<String> findPermissionsByNameOrEmail(String condition) {
+		User user=findUserByNameOrEmail(condition);
+		if(user == null) {
+            return Collections.emptySet();
+        }
+		return user.getRolePermissionSet();
+	}
 }

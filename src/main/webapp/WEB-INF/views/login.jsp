@@ -17,7 +17,7 @@
       <div class="form-group">
         <label class="col-sm-2 control-label" for="username"><spring:message code="username" />:</label>
         <div class="col-sm-3">
-          <input class="form-control" type="text" id="username" name="username">
+          <input class="form-control" type="text" id="username" name="username" value="${username }" placeholder="<spring:message code="username.placeholder" />">
         </div>
       </div>
       <div class="form-group">

@@ -4,6 +4,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.ExcessiveAttemptsException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.subject.Subject;
@@ -32,6 +33,8 @@ public class UserControl {
 			error = ServerUtil.i18n(req, "user.login.error");
 		} else if (IncorrectCredentialsException.class.getName().equals(exceptionClassName)) {
 			error = ServerUtil.i18n(req, "user.login.error");
+		}else if(ExcessiveAttemptsException.class.getName().equals(exceptionClassName)){
+			error = ServerUtil.i18n(req, "user.login.frequently");
 		} else if ("captcha.error".equals(exceptionClassName)) {
 			error = ServerUtil.i18n(req, "captcha.error");
 		} else if (exceptionClassName != null) {
@@ -39,6 +42,7 @@ public class UserControl {
 			logger.error(exceptionClassName);
 		}
 		model.addAttribute("error", error);
+		model.addAttribute("username", req.getParameter("username"));
 		return "login";
 	}
 

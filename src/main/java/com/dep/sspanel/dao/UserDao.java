@@ -9,4 +9,11 @@ public interface UserDao extends GenericDao<User>{
 	 * @return User/null
 	 */
 	public User findUserByEmail(String email);
+	
+	/**
+	 * 根据用户名或邮箱获取用户
+	 * @param condition
+	 * @return
+	 */
+	public User findUserByNameOrEmail(String condition);
 }
