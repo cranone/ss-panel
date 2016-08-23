@@ -20,6 +20,7 @@ public abstract class ServerUtil {
 	private static final Logger logger = LoggerFactory.getLogger(ServerUtil.class);
 	private static Properties property;
 	public static String encoding = loadProperty("encoding");
+	public static String salt=loadProperty("salt");
 
 	/**
 	 * 读取global.property文件

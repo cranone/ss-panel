@@ -36,19 +36,20 @@ public class User implements Serializable{
 	private static final long serialVersionUID = 1228256212143751728L;
 	
 	private String id;
+	private String username;//用户名
 	private String email;//用户邮箱
 	private String pass;//用户密码
 	private String passwd;//ss密码
-	private int time;//最后使用的时间
-	private long upload;//已上传流量
-	private long download;//已下载流量
-	private long transferEnable;//可用流量（总量）
-	private int port=50000;//ss端口
-	private byte switchs;//保留字段
-	private byte enable=0;//启用或禁用ss帐号（1启用，0禁用）
-	private byte type;//保留字段
-	private int lastGetGiftTime;//保留字段
-	private int lastRestPassTime;//保留字段
+	private Integer time;//最后使用的时间
+	private Long upload;//已上传流量
+	private Long download;//已下载流量
+	private Long transferEnable;//可用流量（总量）
+	private Integer port=50000;//ss端口
+	//private byte switchs=0;//保留字段
+	private Boolean enable=true;//启用或禁用ss帐号（1启用，0禁用）
+	//private byte type=0;//保留字段
+	//private int lastGetGiftTime=0;//保留字段
+	//private int lastRestPassTime=0;//保留字段
 	private Date updateDate=Calendar.getInstance().getTime();//修改日期
 	private Integer cycleType=2;//周期类型:6=日,2=月,1=年
 	private Integer expires=0;//有效时间
@@ -63,10 +64,18 @@ public class User implements Serializable{
 		return id;
 	}
 	/**
+	 * 用户名
+	 * @return
+	 */
+	@Column(name="user_name",length=32,nullable=false,unique=true)
+	public String getUsername() {
+		return username;
+	}
+	/**
 	 * 用户邮箱
 	 * @return
 	 */
-	@Column(name="email",length=32,nullable=false)
+	@Column(name="email",length=32,nullable=false,unique=true)
 	public String getEmail() {
 		return email;
 	}
@@ -74,7 +83,7 @@ public class User implements Serializable{
 	 * 用户密码
 	 * @return
 	 */
-	@Column(name="pass",length=16,nullable=false)
+	@Column(name="pass",length=32,nullable=false)
 	public String getPass() {
 		return pass;
 	}
@@ -87,34 +96,34 @@ public class User implements Serializable{
 		return passwd;
 	}
 	@Column(name="t",nullable=false)
-	public int getTime() {
+	public Integer getTime() {
 		return time;
 	}
 	@Column(name="u",nullable=false)
-	public long getUpload() {
+	public Long getUpload() {
 		return upload;
 	}
 	@Column(name="d",nullable=false)
-	public long getDownload() {
+	public Long getDownload() {
 		return download;
 	}
 	@Column(name="transfer_enable",nullable=false)
-	public long getTransferEnable() {
+	public Long getTransferEnable() {
 		return transferEnable;
 	}
 	@Column(name="port",nullable=false,unique=true)
-	public int getPort() {
+	public Integer getPort() {
 		return port;
 	}
-	@Column(name="switch",nullable=false)
+	/*@Column(name="switch",nullable=false)
 	public byte getSwitchs() {
 		return switchs;
-	}
+	}*/
 	@Column(name="enable",nullable=false)
-	public byte getEnable() {
+	public Boolean getEnable() {
 		return enable;
 	}
-	@Column(name="type",nullable=false)
+/*	@Column(name="type",nullable=false)
 	public byte getType() {
 		return type;
 	}
@@ -125,7 +134,7 @@ public class User implements Serializable{
 	@Column(name="last_rest_pass_time",nullable=false)
 	public int getLastRestPassTime() {
 		return lastRestPassTime;
-	}
+	}*/
 	@Column
 	public Date getUpdateDate() {
 		return updateDate;
@@ -134,7 +143,7 @@ public class User implements Serializable{
 	 * 周期类型:6=日,2=月,1=年
 	 * @return
 	 */
-	@Column
+	@Column(nullable=false)
 	public Integer getCycleType() {
 		return cycleType;
 	}
@@ -150,7 +159,7 @@ public class User implements Serializable{
 	 * 用户状态
 	 * @return
 	 */
-	@Column
+	@Column(nullable=false)
 	public Integer getStatus() {
 		return status;
 	}
@@ -232,28 +241,28 @@ public class User implements Serializable{
 	public void setPasswd(String passwd) {
 		this.passwd = passwd;
 	}
-	public void setTime(int time) {
+	public void setTime(Integer time) {
 		this.time = time;
 	}
-	public void setUpload(long upload) {
+	public void setUpload(Long upload) {
 		this.upload = upload;
 	}
-	public void setDownload(long download) {
+	public void setDownload(Long download) {
 		this.download = download;
 	}
-	public void setTransferEnable(long transferEnable) {
+	public void setTransferEnable(Long transferEnable) {
 		this.transferEnable = transferEnable;
 	}
-	public void setPort(int port) {
+	public void setPort(Integer port) {
 		this.port = port;
 	}
-	public void setSwitchs(byte switchs) {
+/*	public void setSwitchs(byte switchs) {
 		this.switchs = switchs;
-	}
-	public void setEnable(byte enable) {
+	}*/
+	public void setEnable(Boolean enable) {
 		this.enable = enable;
 	}
-	public void setType(byte type) {
+/*	public void setType(byte type) {
 		this.type = type;
 	}
 	public void setLastGetGiftTime(int lastGetGiftTime) {
@@ -261,7 +270,7 @@ public class User implements Serializable{
 	}
 	public void setLastRestPassTime(int lastRestPassTime) {
 		this.lastRestPassTime = lastRestPassTime;
-	}
+	}*/
 	public void setUpdateDate(Date updateDate) {
 		this.updateDate = updateDate;
 	}
@@ -276,6 +285,9 @@ public class User implements Serializable{
 	}
 	public void setRoleList(List<Role> roleList) {
 		this.roleList = roleList;
+	}
+	public void setUsername(String username) {
+		this.username = username;
 	}
 	
 	
