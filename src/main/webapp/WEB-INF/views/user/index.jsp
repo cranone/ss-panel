@@ -9,7 +9,7 @@
   <%@include file="/WEB-INF/views/include/header.jsp"%>
   <div class="row container">
     <div class="col-sm-2">
-      <%@include file="/WEB-INF/views/user/header.jsp"%>
+      <%@include file="/WEB-INF/views/user/nav.jsp"%>
     </div>
 
     <div class="col-sm-4 col-sm-offset-1">

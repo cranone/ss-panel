@@ -18,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.dep.sspanel.exception.SystemException;
 import com.dep.sspanel.util.ErrorCode;
+import com.dep.sspanel.util.ServerUtil;
 import com.dep.sspanel.util.type.ErrorCodeType;
 
 
@@ -53,13 +54,12 @@ public class SystemExceptionHandler implements HandlerExceptionResolver {
 			status=ErrorCodeType.unknown_error.getCode();
 		}
 		//判断是否为Ajax请求
-		//msg=ServerUtil.i18n(request,msg);
+		msg=ServerUtil.i18n(request,msg);
 		if(request.getHeader("accept").indexOf("application/json")>=0){
 			logger.debug("ajax");
 			return new ModelAndView("forward:/errorajax?status="+status+"&info="+msg);
 		}
 		return new ModelAndView("forward:/error?code="+status+"&msg="+msg);
-		//return new ModelAndView("forward:/errorajax?status="+status+"&info="+msg);//本系统目前无页面,一律返回json数据
 	}
 	
 	@RequestMapping("error")

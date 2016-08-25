@@ -15,14 +15,14 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao{
 	
 	
 	@Override
-	public User findUserByEmail(String email) {
-		String hql="from user where email=?";
-		List<User> list=(List<User>) getHibernateTemplate().find(hql, email);
+	public User findUserByName(String name) {
+		String hql="from user where username=?";
+		List<User> list=(List<User>) getHibernateTemplate().find(hql, name);
 		if(list.size()==0){
 			return null;
 		}else{
 			if(list.size()>1){
-				logger.warn("expect get one,but ?,email:?",list.size(),email);
+				logger.warn("expect get one,but ?,email:?",list.size(),name);
 			}
 			return list.get(0);
 		}

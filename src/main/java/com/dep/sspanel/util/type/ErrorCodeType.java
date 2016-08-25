@@ -6,15 +6,15 @@ package com.dep.sspanel.util.type;
  *
  */
 public enum ErrorCodeType {
-	success("0","SUCCESS","成功"),
-	/** GenericDao ID为NULL */
-	id_null("4001","GDI_ID_NULL","ID为null"),
+	success("0","SUCCESS","success"),
+	/** 4001:GenericDao ID为NULL */
+	id_null("4001","GDI_ID_NULL","errorcode.id.empty"),
 	/** 参数为NULL */
-	param_null("4002","PARAM_NULL","参数为null"),
-	/** 数据异常 */
-	data_error("5001","DATA_ERROR","数据异常"),
-	/** 未知异常 */
-	unknown_error("9999","UNKNOWN_ERROR","发生错误");
+	param_null("4002","PARAM_NULL","errorcode.param.empty"),
+	/** 5001:数据异常 */
+	data_error("5001","DATA_ERROR","errorcode.data.error"),
+	/** 9999:未知异常 */
+	unknown_error("9999","UNKNOWN_ERROR","errorcode.unknown.error");
 	
 	private String code;
 	private String error;

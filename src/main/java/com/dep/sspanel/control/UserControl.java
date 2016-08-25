@@ -1,5 +1,8 @@
 package com.dep.sspanel.control;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
@@ -12,11 +15,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dep.sspanel.entity.User;
 import com.dep.sspanel.service.UserService;
+import com.dep.sspanel.shiro.SecurityUtil;
+import com.dep.sspanel.util.ErrorCode;
+import com.dep.sspanel.util.KaptchaUtil;
 import com.dep.sspanel.util.ServerUtil;
+import com.dep.sspanel.util.type.ErrorCodeType;
 
 @Controller
 public class UserControl {
@@ -48,18 +58,16 @@ public class UserControl {
 
 	@RequestMapping(value = { URIConstants.USER_INDEX, URIConstants.USER_DEFAULT })
 	public String index(Model model) {
-		Subject currentUser = SecurityUtils.getSubject();
-		String userName = currentUser.getPrincipal().toString();
-		User user=userService.findUserByEmail(userName);
+		String userName =SecurityUtils.getSubject().getPrincipal().toString();
+		User user=userService.findUserByName(userName);
 		model.addAttribute("user", user);
 		return "user/index";
 	}
 
 	@RequestMapping(value = URIConstants.USER_NODE)
 	public String node(Model model) {
-		Subject currentUser = SecurityUtils.getSubject();
-		String userName = currentUser.getPrincipal().toString();
-		User user=userService.findUserByEmail(userName);
+		String userName =SecurityUtils.getSubject().getPrincipal().toString();
+		User user=userService.findUserByName(userName);
 		model.addAttribute("user", user);
 		return "user/node";
 	}
@@ -72,5 +80,24 @@ public class UserControl {
 	@RequestMapping(value = URIConstants.USER_SECURITY)
 	public String security() {
 		return "user/security";
+	}
+	
+	@RequestMapping(value = URIConstants.USER_CHANGEPASSWORD,method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String,Object> changePassword(HttpServletRequest request,String oldpassword,String password,String captchaCode){
+		Map<String,Object> map=new HashMap<String, Object>();
+		map.put("status", "1");
+		if(!KaptchaUtil.validate(request, captchaCode)){
+			map.put("info", "验证码错误");
+			return map;
+		}
+		String username =SecurityUtils.getSubject().getPrincipal().toString();
+		if(!userService.changePassword(username, oldpassword, password)){
+			map.put("info", "原密码错误");
+			return map;
+		}
+		map.put("status", ErrorCodeType.success.getCode());
+		map.put("info", "修改成功");
+		return map;
 	}
 }

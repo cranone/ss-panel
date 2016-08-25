@@ -4,6 +4,7 @@
 <html lang="zh-CN">
 <head>
 <%@include file="/WEB-INF/views/include/headlib.jsp"%>
+<script src="${globalURL }/resource/project/js/captcha.js"></script>
 <style>
 .form-inline label {
   width: 100px;
@@ -32,7 +33,7 @@
           <div class="col-sm-2">
             <input class="form-control" type="text" id="captchaCode" name="captchaCode">
           </div>
-          <img class="col-sm-1 captchaimg" src="${globalURL }/images/captcha.jpg" style="height: 30px;min-width: 100px;" title="<spring:message code="captcha.change" />">
+          <img class="col-sm-1" id="captchaimg" src="${globalURL }/images/captcha.jpg" style="height: 30px;min-width: 100px;" title="<spring:message code="captcha.change" />">
           
         </div>
       </c:if>
@@ -47,9 +48,7 @@
 </body>
 <script>
 	$(function($) {
-	  $(".captchaimg").click(function(){
-	  	$(this).attr("src","${globalURL }/images/captcha.jpg?"+new Date().getTime());
-	  });
+		
   });
 </script>
 </html>

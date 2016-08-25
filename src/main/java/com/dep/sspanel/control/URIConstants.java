@@ -37,6 +37,8 @@ public class URIConstants {
 	public static final String USER_MESSAGE=USER_INDEX+"/message";
 	/** 用户消息 */
 	public static final String USER_SECURITY=USER_INDEX+"/security";
+	/** 修改密码 */
+	public static final String USER_CHANGEPASSWORD=USER_INDEX+"/changepassword";
 	
 	
 }

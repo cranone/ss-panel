@@ -4,12 +4,13 @@
 <html lang="zh-CN">
 <head>
 <%@include file="/WEB-INF/views/include/headlib.jsp"%>
+<script src="${globalURL }/resource/project/js/usernav.js"></script>
 </head>
 <body>
   <%@include file="/WEB-INF/views/include/header.jsp"%>
-  <div class="row container">
+  <div class="row container" id="user_container" data-nav="node">
     <div class="col-sm-2">
-      <%@include file="/WEB-INF/views/user/header.jsp"%>
+      <%@include file="/WEB-INF/views/user/nav.jsp"%>
     </div>
 
     <div class="col-sm-8 col-sm-offset-1">
@@ -36,11 +37,4 @@
     </div>
   </div>
 </body>
-<script>
-	$(function($) {
-		$("#left_nav #left_overview").removeClass("active");
-		$("#left_nav #left_node").addClass("active");
-		
-  });
-</script>
 </html>

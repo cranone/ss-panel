@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.dep.sspanel.dao.UserDao;
 import com.dep.sspanel.entity.User;
 import com.dep.sspanel.service.UserService;
+import com.dep.sspanel.shiro.SecurityUtil;
 
 @Service
 @Transactional
@@ -21,30 +22,12 @@ public class UserServiceImpl extends GenericServiceImpl<User> implements UserSer
 		this.userDao = userDao;
 		this.genericDao=userDao;
 	}
+
+	@Override
+	public User findUserByName(String name) {
+		return userDao.findUserByName(name);
+	}
 	
-	@Override
-	public User findUserByEmail(String email) {
-		return userDao.findUserByEmail(email);
-	}
-
-	@Override
-	public Set<String> findRolesByEmail(String email) {
-		User user=findUserByEmail(email);
-		if(user == null) {
-            return Collections.emptySet();
-        }
-		return user.getRoleNameSet();
-	}
-
-	@Override
-	public Set<String> findPermissionsByEmail(String email) {
-		User user=findUserByEmail(email);
-		if(user == null) {
-            return Collections.emptySet();
-        }
-		return user.getRolePermissionSet();
-	}
-
 	@Override
 	public User findUserByNameOrEmail(String condition) {
 		return userDao.findUserByNameOrEmail(condition);
@@ -67,4 +50,15 @@ public class UserServiceImpl extends GenericServiceImpl<User> implements UserSer
         }
 		return user.getRolePermissionSet();
 	}
+
+	@Override
+	public boolean changePassword(String username, String oldpassword, String password) {
+		User user=findUserByName(username);
+		if(!user.getPass().equals(SecurityUtil.encrypt(user.getUsername(), oldpassword))){
+			return false;
+		}
+		user.setPass(SecurityUtil.encrypt(user.getUsername(), password));
+		return true;
+	}
+
 }

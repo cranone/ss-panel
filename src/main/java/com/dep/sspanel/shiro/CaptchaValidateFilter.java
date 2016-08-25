@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.shiro.web.filter.AccessControlFilter;
 import org.apache.shiro.web.util.WebUtils;
 
-import com.dep.sspanel.util.KaptchaVaild;
+import com.dep.sspanel.util.KaptchaUtil;
 
 public class CaptchaValidateFilter extends AccessControlFilter {
 	private boolean captchaEbabled = true;// 是否开启验证码支持
@@ -31,7 +31,7 @@ public class CaptchaValidateFilter extends AccessControlFilter {
 		if (captchaEbabled == false || !"post".equalsIgnoreCase(httpServletRequest.getMethod())) {  
             return true;  
         }  
-		return KaptchaVaild.validateResponse(httpServletRequest, httpServletRequest.getParameter(captchaParam));
+		return KaptchaUtil.validate(httpServletRequest, httpServletRequest.getParameter(captchaParam));
 	}
 
 	@Override

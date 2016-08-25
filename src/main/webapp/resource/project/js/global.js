@@ -1,8 +1,12 @@
 /*
  * sspanel:global.js v1.0
  */
-var fullURL=window.location.href;
-var globalURL = fullURL.indexOf("?")>0?fullURL.substring(fullURL.indexOf("?"),0):fullURL;
+var curWwwPath=window.document.location.href;
+var pathName=window.document.location.pathname;
+var pos=curWwwPath.indexOf(pathName);
+var localhostPaht=curWwwPath.substring(0,pos);
+var projectName=pathName.substring(0,pathName.substr(1).indexOf('/')+1);
+var globalURL=localhostPaht+projectName;
 var resourceURL="http://cdn.bootcss.com";
 
 $(function($) {

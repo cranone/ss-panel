@@ -5,6 +5,9 @@ function messageShowModal(options) {
 	if (options.title != null) {
 		options.modal.find(".modal-title").html(options.title);
 	}
+	if(options.size!=null){
+		options.modal.find(".modal-dialog").addClass("modal-"+options.size);
+	}
 	options.modal.modal("show").css(
 	    {
 		    "top" : function() {
