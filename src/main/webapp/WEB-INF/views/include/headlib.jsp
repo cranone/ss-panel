@@ -11,5 +11,8 @@
 <script src="${resourceURL }/jquery/1.11.3/jquery.min.js"></script>
 <script src="${resourceURL }/jqueryui/1.11.4/jquery-ui.min.js"></script>
 <script src="${resourceURL }/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script src="${resourceURL }/jQuery-Validation-Engine/2.6.4/jquery.validationEngine.js"></script>
+<script src="${resourceURL }/jQuery-Validation-Engine/2.6.4/languages/jquery.validationEngine-${cookie.locale.value==null?'zh_CN':cookie.locale.value}.min.js"></script>
+<script src="${resourceURL }/jquery-cookie/1.4.1/jquery.cookie.js"></script>
 <script src="${globalURL }/resource/project/js/message.js"></script>
 <script src="${globalURL }/resource/project/js/global.js"></script>

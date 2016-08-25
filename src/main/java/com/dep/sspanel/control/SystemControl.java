@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -20,49 +21,58 @@ import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 
 import com.dep.sspanel.util.ServerUtil;
 
-
 /**
  * 国际化类
+ * 
  * @author Maclaine
  *
  */
 @Controller
 public class SystemControl {
 	private static final Logger logger = LoggerFactory.getLogger(SystemControl.class);
-	
+
 	@ResponseBody
-	@RequestMapping(value=URIConstants.LANGUAGE+"/{langType}",method=RequestMethod.POST)
-	public Map<String,Object> language(HttpServletRequest request,HttpServletResponse response,@PathVariable String langType){
+	@RequestMapping(value = URIConstants.LANGUAGE + "/{langType}", method = RequestMethod.POST)
+	public Map<String, Object> language(HttpServletRequest request, HttpServletResponse response, @PathVariable String langType) {
 		Map<String, Object> map = new HashMap<String, Object>();
-		String[] languages=new String[]{"zh","en","ja"};
-		if(langType==null){
-			//session方式
-			//request.getSession().setAttribute(SessionLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME,LocaleContextHolder.getLocale());
-			//cookie方式
-			(new CookieLocaleResolver()).setLocale (request, response, LocaleContextHolder.getLocale());
-		}else{
+		String[] languages = new String[] { "zh_CN", "en", "ja" };
+		if (langType == null) {
+			// session方式
+			// request.getSession().setAttribute(SessionLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME,LocaleContextHolder.getLocale());
+			// cookie方式
+			(new CookieLocaleResolver()).setLocale(request, response, LocaleContextHolder.getLocale());
+		} else {
 			for (String string : languages) {
-				if(string.equalsIgnoreCase(langType)){
-					//request.getSession().setAttribute(SessionLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME,new Locale(string));
-					(new CookieLocaleResolver()).setLocale (request, response, new Locale(string));
+				if (string.equalsIgnoreCase(langType)) {
+					// request.getSession().setAttribute(SessionLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME,new
+					// Locale(string));
+					CookieLocaleResolver cookieLocaleResolver = new CookieLocaleResolver();
+					cookieLocaleResolver.setCookieMaxAge(365*24*60*60*1000);
+					cookieLocaleResolver.setLocale(request, response, new Locale(string));
+					//自定义cookie储存,以便el表达式能够读取到;并且不会被转换为小写以便自动读取验证框架的国际化文件
+					Cookie cookie = new Cookie("locale", string);
+					cookie.setPath("/");
+					cookie.setMaxAge(365*24*60*60*1000);
+					response.addCookie(cookie);
 					break;
 				}
 			}
 		}
-        logger.debug("lan:{}", ServerUtil.i18n(request, "title"));
-        map.put("status", "y");
+		logger.debug("lan:{}", ServerUtil.i18n(request, "title"));
+		map.put("status", "y");
 		return map;
 	}
-	
-	@RequestMapping(value=URIConstants.LANGUAGE+"/{langType}",method=RequestMethod.GET)
-	public String language(HttpServletRequest request,HttpServletResponse response,@PathVariable String langType,@RequestParam(required = false,defaultValue="/index")String url){
-		language(request,response,langType);
-		return "redirect:"+url;
+
+	@RequestMapping(value = URIConstants.LANGUAGE + "/{langType}", method = RequestMethod.GET)
+	public String language(HttpServletRequest request, HttpServletResponse response, @PathVariable String langType,
+			@RequestParam(required = false, defaultValue = "/index") String url) {
+		language(request, response, langType);
+		return "redirect:" + url;
 	}
-	
-	@RequestMapping(value={URIConstants.DEFAULT,URIConstants.INDEX})
-	public String index(){
+
+	@RequestMapping(value = { URIConstants.DEFAULT, URIConstants.INDEX })
+	public String index() {
 		return "index";
 	}
-	
+
 }
