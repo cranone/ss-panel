@@ -8,12 +8,14 @@
        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
 
   <!-- 缓存管理器 -->
-  <!-- <bean id="cacheManager" class="com.github.zhangkaitao.shiro.spring.SpringCacheManagerWrapper"> 
-    <property name="cacheManager" ref="springCacheManager" /> </bean> -->
-
-  <bean id="cacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
-    <property name="cacheManager" ref="ehcacheManager" />
+  <bean id="cacheManager"
+    class="com.dep.sspanel.shiro.SpringCacheManagerWrapper">
+    <property name="cacheManager" ref="springCacheManager" />
   </bean>
+
+<!--   <bean id="cacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+    <property name="cacheManager" ref="ehcacheManager" />
+  </bean> -->
   <!-- 凭证匹配器 -->
   <bean id="credentialsMatcher"
     class="com.dep.sspanel.shiro.RetryLimitHashedCredentialsMatcher">
@@ -25,7 +27,7 @@
 
   <!-- Realm实现 -->
   <bean id="userRealm" class="com.dep.sspanel.realm.UserRealm">
-    <property name="credentialsMatcher" ref="credentialsMatcher"/>
+    <property name="credentialsMatcher" ref="credentialsMatcher" />
     <property name="cachingEnabled" value="false" />
     <property name="authenticationCachingEnabled" value="true" />
     <property name="authenticationCacheName" value="authenticationCache" />
@@ -43,7 +45,7 @@
     <property name="httpOnly" value="true" />
     <property name="maxAge" value="-1" />
   </bean>
-  
+
   <!-- 会话DAO -->
   <bean id="sessionDAO"
     class="org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO">
@@ -80,6 +82,15 @@
     <!-- <property name="rememberMeManager" ref="rememberMeManager"/> -->
   </bean>
 
+  <!-- 控制并发人数 -->
+  <bean id="kickoutSessionControlFilter" class="com.dep.sspanel.shiro.KickoutSessionControlFilter">
+    <property name="cacheManager" ref="cacheManager" />
+    <property name="sessionManager" ref="sessionManager" />
+    <property name="kickoutAfter" value="false" />
+    <property name="maxSession" value="1" />
+    <property name="kickoutUrl" value="/index/login?kickout=1" />
+  </bean>
+
   <!-- 基于Form表单的身份验证过滤器 -->
   <bean id="formAuthenticationFilter" class="com.dep.sspanel.shiro.CaptchaFormAuthenticationFilter">
     <property name="usernameParam" value="username" />
@@ -109,6 +120,7 @@
       <util:map>
         <entry key="authc" value-ref="formAuthenticationFilter" />
         <entry key="CaptchaValidate" value-ref="captchaValidateFilter" />
+        <entry key="kickout" value-ref="kickoutSessionControlFilter" />
         <!-- <entry key="sysUser" value-ref="sysUserFilter"/> -->
       </util:map>
     </property>
@@ -121,12 +133,11 @@
         /index/**=anon
         /resource/**=anon
         /images/**=anon
-        /admin/**=roles[admin]
-        /user/security=CaptchaValidate,authc
-        /** =authc
+        /admin/**=kickout,roles[admin]
+        /user/security=kickout,CaptchaValidate,authc
+        /**=kickout,authc
       </value>
     </property>
-    <!-- /login = authc /logout = logout /authenticated = authc /** = user,sysUser -->
   </bean>
 
   <!-- Shiro生命周期处理器 -->

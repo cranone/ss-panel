@@ -1,22 +1,17 @@
 package com.dep.sspanel.shiro;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import net.sf.ehcache.Ehcache;
-
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheException;
 import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.util.CollectionUtils;
 import org.springframework.cache.support.SimpleValueWrapper;
 
+import java.util.*;
+
 /**
  * 自定义缓存管理
+ * 
  * @author Maclaine
  *
  */
@@ -47,26 +42,12 @@ public class SpringCacheManagerWrapper implements CacheManager {
 		}
 
 		@Override
-		public void clear() throws CacheException {
-			springCache.clear();
-		}
-
-		@Override
 		public Object get(Object key) throws CacheException {
 			Object value = springCache.get(key);
 			if (value instanceof SimpleValueWrapper) {
 				return ((SimpleValueWrapper) value).get();
 			}
 			return value;
-		}
-
-		@Override
-		public Set keys() {
-			if (springCache.getNativeCache() instanceof Ehcache) {
-				Ehcache ehcache = (Ehcache) springCache.getNativeCache();
-				return new HashSet(ehcache.getKeys());
-			}
-			throw new UnsupportedOperationException("invoke spring cache abstract keys method not supported");
 		}
 
 		@Override
@@ -82,12 +63,26 @@ public class SpringCacheManagerWrapper implements CacheManager {
 		}
 
 		@Override
+		public void clear() throws CacheException {
+			springCache.clear();
+		}
+
+		@Override
 		public int size() {
 			if (springCache.getNativeCache() instanceof Ehcache) {
 				Ehcache ehcache = (Ehcache) springCache.getNativeCache();
 				return ehcache.getSize();
 			}
 			throw new UnsupportedOperationException("invoke spring cache abstract size method not supported");
+		}
+
+		@Override
+		public Set keys() {
+			if (springCache.getNativeCache() instanceof Ehcache) {
+				Ehcache ehcache = (Ehcache) springCache.getNativeCache();
+				return new HashSet(ehcache.getKeys());
+			}
+			throw new UnsupportedOperationException("invoke spring cache abstract keys method not supported");
 		}
 
 		@Override
@@ -111,4 +106,5 @@ public class SpringCacheManagerWrapper implements CacheManager {
 			throw new UnsupportedOperationException("invoke spring cache abstract values method not supported");
 		}
 	}
+
 }
