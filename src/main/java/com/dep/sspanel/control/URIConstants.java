@@ -18,6 +18,13 @@ public class URIConstants {
 	/** 转换语言 */
 	public static final String LANGUAGE=INDEX+"/language";
 	
+	/** 错误页面 */
+	public static final String ERROR_INDEX="/error";
+	/** 错误页面 */
+	public static final String ERROR_DEFAULT=ERROR_INDEX+"/error";
+	/** 错误页面(ajax */
+	public static final String ERROR_AJAX=ERROR_INDEX+"/errorajax";
+	
 	/** 验证码 */
 	public static final String CAPTCHA="images/captcha.jpg";
 	

@@ -133,6 +133,7 @@
         /index/**=anon
         /resource/**=anon
         /images/**=anon
+        /error/**=anon
         /admin/**=kickout,roles[admin]
         /user/security=kickout,CaptchaValidate,authc
         /**=kickout,authc

@@ -57,18 +57,18 @@ public class SystemExceptionHandler implements HandlerExceptionResolver {
 		msg=ServerUtil.i18n(request,msg);
 		if(request.getHeader("accept").indexOf("application/json")>=0){
 			logger.debug("ajax");
-			return new ModelAndView("forward:/errorajax?status="+status+"&info="+msg);
+			return new ModelAndView("forward:/error/errorajax?status="+status+"&info="+msg);
 		}
-		return new ModelAndView("forward:/error?code="+status+"&msg="+msg);
+		return new ModelAndView("forward:/error/error?code="+status+"&msg="+msg);
 	}
 	
-	@RequestMapping("error")
+	@RequestMapping(value={URIConstants.ERROR_INDEX,URIConstants.ERROR_DEFAULT})
 	public String error(){
 		return "error/error";
 	}
 
 	@ResponseBody
-	@RequestMapping("errorajax")
+	@RequestMapping(URIConstants.ERROR_AJAX)
 	public Map<String,Object> errorAjax(@RequestParam(required = false,defaultValue=ErrorCode.MSG_UNKNOWN_ERROR)String info
 			,@RequestParam(required = false,defaultValue=ErrorCode.CODE_UNKNOWN_ERROR) String status){
 		Map<String, Object> map = new HashMap<String, Object>();
