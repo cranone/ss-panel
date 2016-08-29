@@ -3,6 +3,8 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
+<meta HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
+<meta HTTP-EQUIV="Expires" CONTENT="0"> 
 <%@include file="/WEB-INF/views/include/headlib.jsp"%>
 <script src="${globalURL }/resource/project/js/captcha.js"></script>
 <style>
@@ -12,6 +14,12 @@
 </style>
 </head>
 <body>
+<shiro:authenticated>
+<script>
+location="${globalURL}/user/";
+</script>
+</shiro:authenticated>
+<shiro:guest>
   <%@include file="/WEB-INF/views/include/header.jsp"%>
   <div class="container">
     <form class="form-horizontal" action="" method="post">
@@ -45,10 +53,6 @@
 
     </form>
   </div>
+</shiro:guest>
 </body>
-<script>
-	$(function($) {
-		
-  });
-</script>
 </html>
