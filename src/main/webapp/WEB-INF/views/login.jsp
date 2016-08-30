@@ -11,6 +11,11 @@
 .form-inline label {
   width: 100px;
 }
+.formErrorContent{
+  background-color: white !important;
+  color: red !important;
+  font-size: 12px !important;
+}
 </style>
 </head>
 <body>
@@ -26,20 +31,20 @@
         <div class="form-group">
           <label class="col-sm-2 control-label" for="username"><spring:message code="username" />:</label>
           <div class="col-sm-3">
-            <input class="form-control" type="text" id="username" name="username" value="${username }" placeholder="<spring:message code="username.placeholder" />">
+            <input class="form-control validate[required,minSize[4],maxSize[20]]" type="text" id="username" name="username" value="${username }" placeholder="<spring:message code="username.placeholder" />">
           </div>
         </div>
         <div class="form-group">
           <label class="col-sm-2 control-label" for="password"><spring:message code="password" />:</label>
           <div class="col-sm-3">
-            <input class="form-control" type="password" id="password" name="password">
+            <input class="form-control validate[required,minSize[6],maxSize[20]]" type="password" id="password" name="password">
           </div>
         </div>
         <c:if test="${captchaEbabled}">
           <div class="form-group">
             <label class="col-sm-2 control-label" for="captchaCode"><spring:message code="captcha" />:</label>
             <div class="col-sm-2">
-              <input class="form-control" type="text" id="captchaCode" name="captchaCode">
+              <input class="form-control validate[required,minSize[4],maxSize[4]]" type="text" id="captchaCode" name="captchaCode">
             </div>
             <img class="col-sm-1" id="captchaimg" src="${globalURL }/images/captcha.jpg" style="height: 30px; min-width: 100px;" title="<spring:message code="captcha.change" />">
 
@@ -63,6 +68,11 @@
   </shiro:guest>
 </body>
 <script>
-	
+$(function($) {
+	$('.form-horizontal').validationEngine("attach",{
+		promptPosition: "centerRight",
+		maxErrorsPerField:1
+	});
+});
 </script>
 </html>
