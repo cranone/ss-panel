@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@include file="/WEB-INF/views/include/taglib.jsp"%>
 <!DOCTYPE html>
-<%@include file="/WEB-INF/views/include/message.jsp"%>
 
 <nav class="navbar navbar-default navbar-fixed-top">
   <div class="container ">
