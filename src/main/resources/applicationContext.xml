@@ -147,6 +147,9 @@
     </property>
   </bean>
 
+  <!-- 切面日志记录 -->
+  <aop:aspectj-autoproxy proxy-target-class="true" />
+
   <import resource="classpath:spring-config-cache.xml" />
   <import resource="classpath:spring-config-shiro.xml" />
 

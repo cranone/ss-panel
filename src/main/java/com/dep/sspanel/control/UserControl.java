@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.dep.sspanel.annotation.SystemControllerLog;
 import com.dep.sspanel.entity.User;
 import com.dep.sspanel.service.UserService;
 import com.dep.sspanel.shiro.SecurityUtil;
@@ -35,6 +36,7 @@ public class UserControl {
 	@Resource
 	private UserService userService;
 	
+	@SystemControllerLog(description="login")
 	@RequestMapping(value = URIConstants.GET_LOGIN)
 	public String login(HttpServletRequest req, Model model) {
 		String exceptionClassName = (String) req.getAttribute("shiroLoginFailure");
