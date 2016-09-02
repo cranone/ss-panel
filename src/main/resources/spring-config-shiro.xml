@@ -13,9 +13,6 @@
     <property name="cacheManager" ref="springCacheManager" />
   </bean>
 
-<!--   <bean id="cacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
-    <property name="cacheManager" ref="ehcacheManager" />
-  </bean> -->
   <!-- 凭证匹配器 -->
   <bean id="credentialsMatcher"
     class="com.dep.sspanel.shiro.RetryLimitHashedCredentialsMatcher">
@@ -34,7 +31,7 @@
     <property name="authorizationCachingEnabled" value="true" />
     <property name="authorizationCacheName" value="authorizationCache" />
   </bean>
-
+  
   <!-- 会话ID生成器 -->
   <bean id="sessionIdGenerator"
     class="org.apache.shiro.session.mgt.eis.JavaUuidSessionIdGenerator" />

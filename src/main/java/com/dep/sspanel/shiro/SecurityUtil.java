@@ -2,7 +2,7 @@ package com.dep.sspanel.shiro;
 
 import org.apache.shiro.crypto.hash.SimpleHash;
 
-import com.dep.sspanel.util.ServerUtil;
+import com.dep.sspanel.util.GlobalConst;
 
 /**
  * 加密安全类
@@ -11,7 +11,7 @@ import com.dep.sspanel.util.ServerUtil;
  */
 public class SecurityUtil {
 	private static String algorithmName="md5";
-	private static String salt1=ServerUtil.salt;
+	private static String salt1=GlobalConst.salt;
 	private static int hashIterations = 2;  
 
 	/**

@@ -10,21 +10,18 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.ExcessiveAttemptsException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
-import org.apache.shiro.subject.Subject;
+import org.apache.shiro.cache.CacheManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.dep.sspanel.annotation.SystemControllerLog;
 import com.dep.sspanel.entity.User;
 import com.dep.sspanel.service.UserService;
-import com.dep.sspanel.shiro.SecurityUtil;
-import com.dep.sspanel.util.ErrorCode;
+import com.dep.sspanel.util.GlobalConst;
 import com.dep.sspanel.util.KaptchaUtil;
 import com.dep.sspanel.util.ServerUtil;
 import com.dep.sspanel.util.type.ErrorCodeType;
@@ -36,7 +33,9 @@ public class UserControl {
 	@Resource
 	private UserService userService;
 	
-	@SystemControllerLog(description="login")
+	@Resource
+	private CacheManager cacheManager;
+	
 	@RequestMapping(value = URIConstants.GET_LOGIN)
 	public String login(HttpServletRequest req, Model model) {
 		String exceptionClassName = (String) req.getAttribute("shiroLoginFailure");
@@ -52,6 +51,10 @@ public class UserControl {
 		} else if (exceptionClassName != null) {
 			error = ServerUtil.i18n(req, "errorcode.unknown.error");
 			logger.error(exceptionClassName);
+		}
+		if(error!=null&"user.login.error".equals(error)&&req.getParameter("username")!=null){
+			Integer remaining=GlobalConst.retryTime-Integer.parseInt(cacheManager.getCache("passwordRetryCache").get(req.getParameter("username").toString()).toString());
+			error+= ","+ServerUtil.i18n(req, "user.login.remaining",new Object[]{remaining});
 		}
 		model.addAttribute("error", error);
 		model.addAttribute("username", req.getParameter("username"));

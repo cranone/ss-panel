@@ -23,7 +23,7 @@
       <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
     </context:component-scan>
     
-    <!-- 切面日志记录 -->
+    <!-- 切面日志记录 (controller)-->
     <aop:aspectj-autoproxy proxy-target-class="true" />
     
     <!-- 配置静态资源文件 -->

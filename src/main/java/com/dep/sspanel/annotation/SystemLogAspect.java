@@ -18,9 +18,10 @@ import com.dep.sspanel.service.SystemLogService;
 @Aspect
 @Component
 public class SystemLogAspect {
+	private static final Logger logger = LoggerFactory.getLogger(SystemLogAspect.class);
+	
 	@Resource
 	private SystemLogService systemLogService;
-	private static final Logger logger = LoggerFactory.getLogger(SystemLogAspect.class);
 	
 	// Service层切点
 	@Pointcut("@annotation(com.dep.sspanel.annotation.SystemServiceLog)")

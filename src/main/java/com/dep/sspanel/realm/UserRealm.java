@@ -15,6 +15,7 @@ import org.apache.shiro.util.ByteSource;
 
 import com.dep.sspanel.entity.User;
 import com.dep.sspanel.service.UserService;
+import com.dep.sspanel.util.GlobalConst;
 import com.dep.sspanel.util.ServerUtil;
 
 public class UserRealm extends AuthorizingRealm {
@@ -38,7 +39,7 @@ public class UserRealm extends AuthorizingRealm {
 			throw new UnknownAccountException();// 没找到帐号
 		}
 		// 交给AuthenticatingRealm使用CredentialsMatcher进行密码匹配，如果觉得人家的不好可以自定义实现
-		SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(user.getUsername(), user.getPass(), ByteSource.Util.bytes(user.getUsername() + ServerUtil.salt),
+		SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(user.getUsername(), user.getPass(), ByteSource.Util.bytes(user.getUsername() + GlobalConst.salt),
 				getName());
 		return authenticationInfo;
 	}
