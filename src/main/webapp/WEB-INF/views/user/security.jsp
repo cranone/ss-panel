@@ -46,7 +46,7 @@
           <div class="form-group">
             <label class="col-sm-2 control-label" for="captchaCode"><spring:message code="captcha" />:</label>
             <div class="col-sm-2">
-              <input class="form-control validate[required,minSize[4],maxSize[4]]" type="text" id="captchaCode" name="captchaCode">
+              <input class="form-control validate[required,minSize[4],maxSize[4]]" type="text" id="captchaCode" name="captchaCode" data-prompt-position="centerRight:100,0">
             </div>
             <img class="col-sm-1" id="captchaimg" src="${globalURL }/images/captcha.jpg" style="height: 30px; min-width: 100px;" title="<spring:message code="captcha.change" />">
 
