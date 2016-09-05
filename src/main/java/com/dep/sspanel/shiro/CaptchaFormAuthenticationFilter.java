@@ -1,17 +1,23 @@
 package com.dep.sspanel.shiro;
 
+import java.text.MessageFormat;
+
 import javax.annotation.Resource;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.dep.sspanel.entity.SystemLog;
 import com.dep.sspanel.service.SystemLogService;
+import com.dep.sspanel.util.GlobalConst;
 
 /**
  * 自定义表单过滤器,附带验证码
@@ -23,6 +29,8 @@ public class CaptchaFormAuthenticationFilter extends FormAuthenticationFilter {
 	
 	@Resource
 	private SystemLogService systemLogService;
+	@Resource
+	private CacheManager cacheManager;
 	
 	//表示当访问拒绝时是否已经处理了；如果返回true表示需要继续处理；如果返回false表示该拦截器实例已经处理了，将直接返回即可。
 	@Override
@@ -46,12 +54,15 @@ public class CaptchaFormAuthenticationFilter extends FormAuthenticationFilter {
 	@Override
 	protected boolean onLoginSuccess(AuthenticationToken token, Subject subject, ServletRequest request, ServletResponse response) throws Exception {
 		logger.debug("{}登录成功",token.getPrincipal());
+		systemLogService.save(new SystemLog((HttpServletRequest)request,"login",token.getPrincipal().toString(),"登录成功"));
 		return super.onLoginSuccess(token, subject, request, response);
 	}
 	
 	@Override
 	protected boolean onLoginFailure(AuthenticationToken token, AuthenticationException e, ServletRequest request, ServletResponse response) {
-		logger.debug("{}登录失败:{}",token.getPrincipal(),e.getMessage());
+		Integer remaining=Integer.parseInt(cacheManager.getCache("passwordRetryCache").get(token.getPrincipal().toString()).toString());
+		logger.debug("登录失败:{};次数:{}",token.getPrincipal(),e.getMessage(),remaining);
+		systemLogService.save(new SystemLog((HttpServletRequest)request,"login",token.getPrincipal().toString(),MessageFormat.format("登录失败:{0};次数:{1}",e.getMessage(),remaining)));
 		return super.onLoginFailure(token, e, request, response);
 	}
 	

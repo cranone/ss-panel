@@ -38,7 +38,7 @@ public class RetryLimitHashedCredentialsMatcher extends HashedCredentialsMatcher
             //clear retry count
             passwordRetryCache.remove(username);
         }else{
-        	logger.info("{}登录失败,尝试次数:{}",username,retryCount.get()+1);
+        	//logger.info("{}登录失败,尝试次数:{}",username,retryCount.get()+1);
             if(retryCount.incrementAndGet() >= 5) {
                 //if retry count > 5 throw
                 throw new ExcessiveAttemptsException("try too many times");

@@ -40,10 +40,9 @@ public class UserControl {
 	public String login(HttpServletRequest req, Model model) {
 		String exceptionClassName = (String) req.getAttribute("shiroLoginFailure");
 		String error = null;
-		if (UnknownAccountException.class.getName().equals(exceptionClassName)) {
-			error = ServerUtil.i18n(req, "user.login.error");
-		} else if (IncorrectCredentialsException.class.getName().equals(exceptionClassName)) {
-			error = ServerUtil.i18n(req, "user.login.error");
+		if (UnknownAccountException.class.getName().equals(exceptionClassName)||IncorrectCredentialsException.class.getName().equals(exceptionClassName)) {
+			Integer remaining=GlobalConst.retryTime-Integer.parseInt(cacheManager.getCache("passwordRetryCache").get(req.getParameter("username").toString()).toString());
+			error = ServerUtil.i18n(req, "user.login.error")+","+ServerUtil.i18n(req, "user.login.remaining",new Object[]{remaining});
 		}else if(ExcessiveAttemptsException.class.getName().equals(exceptionClassName)){
 			error = ServerUtil.i18n(req, "user.login.frequently");
 		} else if ("captcha.error".equals(exceptionClassName)) {
@@ -51,10 +50,6 @@ public class UserControl {
 		} else if (exceptionClassName != null) {
 			error = ServerUtil.i18n(req, "errorcode.unknown.error");
 			logger.error(exceptionClassName);
-		}
-		if(error!=null&"user.login.error".equals(error)&&req.getParameter("username")!=null){
-			Integer remaining=GlobalConst.retryTime-Integer.parseInt(cacheManager.getCache("passwordRetryCache").get(req.getParameter("username").toString()).toString());
-			error+= ","+ServerUtil.i18n(req, "user.login.remaining",new Object[]{remaining});
 		}
 		model.addAttribute("error", error);
 		model.addAttribute("username", req.getParameter("username"));

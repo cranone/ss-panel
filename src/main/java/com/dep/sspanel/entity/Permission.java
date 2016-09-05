@@ -6,11 +6,11 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.GenericGenerator;
 
 /**
  * 权限
@@ -20,13 +20,15 @@ import org.hibernate.annotations.DynamicUpdate;
 @Entity(name="permission")
 @DynamicUpdate
 public class Permission implements Serializable {
-	private Integer id;
+	private String id;
 	private String name;
 	private List<Role> roleList;
 	
 	@Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-	public Integer getId() {
+	@GenericGenerator(name = "system-uuid", strategy = "uuid2")
+	@GeneratedValue(generator = "system-uuid")
+	@Column(length = 36,nullable=false)
+	public String getId() {
 		return id;
 	}
 	
@@ -40,7 +42,7 @@ public class Permission implements Serializable {
 		return roleList;
 	}
 	
-	public void setId(Integer id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	public void setName(String name) {
