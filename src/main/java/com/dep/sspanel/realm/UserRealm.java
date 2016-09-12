@@ -16,7 +16,6 @@ import org.apache.shiro.util.ByteSource;
 import com.dep.sspanel.entity.User;
 import com.dep.sspanel.service.UserService;
 import com.dep.sspanel.util.GlobalConst;
-import com.dep.sspanel.util.ServerUtil;
 
 public class UserRealm extends AuthorizingRealm {
 	@Resource
