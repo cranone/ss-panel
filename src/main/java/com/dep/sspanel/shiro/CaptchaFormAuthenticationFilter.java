@@ -17,7 +17,6 @@ import org.slf4j.LoggerFactory;
 
 import com.dep.sspanel.entity.SystemLog;
 import com.dep.sspanel.service.SystemLogService;
-import com.dep.sspanel.util.GlobalConst;
 
 /**
  * 自定义表单过滤器,附带验证码

@@ -1,5 +1,7 @@
 package com.dep.sspanel.entity;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,12 +22,16 @@ public class SystemLog {
 	private String operate;
 	private String ip;
 	private String mark;
+	private Date date;
+	private String stackTrace;
 	
 	public SystemLog() {
+		this.date=new Date();
 	}
 	
 	public SystemLog(HttpServletRequest request) {
 		this.ip=ServerUtil.getIpAddr(request);
+		this.date=new Date();
 	}
 	
 	/**
@@ -36,6 +42,7 @@ public class SystemLog {
 	public SystemLog(HttpServletRequest request,String description) {
 		this.description=description;
 		this.ip=ServerUtil.getIpAddr(request);
+		this.date=new Date();
 	}
 	
 	/**
@@ -50,6 +57,24 @@ public class SystemLog {
 		this.description=description;
 		this.operate=operate;
 		this.ip=ServerUtil.getIpAddr(request);
+		this.date=new Date();
+	}
+	
+	/**
+	 * 
+	 * @param request
+	 * @param description 描述
+	 * @param operator 操作人
+	 * @param operate 操作内容
+	 * @param stackTrace 触发层级
+	 */
+	public SystemLog(HttpServletRequest request,String description,String operator,String operate,String stackTrace) {
+		this.operator=operator;
+		this.description=description;
+		this.operate=operate;
+		this.ip=ServerUtil.getIpAddr(request);
+		this.stackTrace=stackTrace;
+		this.date=new Date();
 	}
 	
 	/**
@@ -84,7 +109,7 @@ public class SystemLog {
 	 * 操作内容
 	 * @return
 	 */
-	@Column
+	@Column(length=5000)
 	public String getOperate() {
 		return operate;
 	}
@@ -106,6 +131,26 @@ public class SystemLog {
 	public String getMark() {
 		return mark;
 	}
+	
+	/**
+	 * 创建日期
+	 * @return
+	 */
+	@Column(name="create_date")
+	public Date getDate() {
+		return date;
+	}
+	
+	/**
+	 * 触发层级
+	 * @return
+	 */
+	@Column(length=5000)
+	public String getStackTrace() {
+		return stackTrace;
+	}
+	
+	
 	public void setId(String id) {
 		this.id = id;
 	}
@@ -123,6 +168,12 @@ public class SystemLog {
 	}
 	public void setMark(String mark) {
 		this.mark = mark;
+	}
+	public void setDate(Date date) {
+		this.date = date;
+	}
+	public void setStackTrace(String stackTrace) {
+		this.stackTrace = stackTrace;
 	}
 	
 	

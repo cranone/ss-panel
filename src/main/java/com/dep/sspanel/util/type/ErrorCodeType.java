@@ -7,6 +7,8 @@ package com.dep.sspanel.util.type;
  */
 public enum ErrorCodeType {
 	success("0","SUCCESS","success"),
+	/** 404 */
+	no_handler_found("404","NO_HANDLER_FOUND","errorcode.not.found"),
 	/** 4001:GenericDao ID为NULL */
 	id_null("4001","GDI_ID_NULL","errorcode.id.empty"),
 	/** 参数为NULL */
