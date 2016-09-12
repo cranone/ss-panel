@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 
+import com.dep.sspanel.util.ErrorCode;
 import com.dep.sspanel.util.ServerUtil;
 
 /**
@@ -74,5 +75,25 @@ public class SystemControl {
 	public String index() {
 		return "index";
 	}
+	
+	@RequestMapping(value={URIConstants.ERROR_INDEX,URIConstants.ERROR_DEFAULT})
+	public String error(){
+		return "error/error";
+	}
 
+	@ResponseBody
+	@RequestMapping(URIConstants.ERROR_AJAX)
+	public Map<String,Object> errorAjax(@RequestParam(required = false,defaultValue=ErrorCode.MSG_UNKNOWN_ERROR)String info
+			,@RequestParam(required = false,defaultValue=ErrorCode.CODE_UNKNOWN_ERROR) String status){
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("status", status);
+		map.put("info", info);
+		return map;
+	}
+	
+	@RequestMapping("/index/test")
+	public String test(){
+		System.out.println(1/0);
+		return "index";
+	}
 }
