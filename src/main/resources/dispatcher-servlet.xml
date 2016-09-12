@@ -17,21 +17,27 @@
     <mvc:annotation-driven />
 
     <!-- 设置使用注解的类所在的jar包 -->
-    <context:component-scan base-package="com.dep.sspanel" >
+    <context:component-scan base-package="com.dep.sspanel.control" use-default-filters="false">
       <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
-      <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service"/>
-      <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
+      <context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
+      <!-- <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service"/> -->
+      <!-- <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Repository"/> -->
     </context:component-scan>
     
     <!-- 切面日志记录 (controller)-->
     <aop:aspectj-autoproxy proxy-target-class="true" />
     
     <!-- 配置静态资源文件 -->
-    <mvc:default-servlet-handler/> 
+    <!-- <mvc:default-servlet-handler/>  -->
+    
+    <mvc:resources mapping="/images/**" location="/images/" />
+    <mvc:resources mapping="/resource/**" location="/resource/" />
+    
     
     <bean id="jspViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-    <property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
-    <property name="prefix" value="/WEB-INF/views/" />
-    <property name="suffix" value=".jsp" />
-  </bean>
+      <property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
+      <property name="prefix" value="/WEB-INF/views/" />
+      <property name="suffix" value=".jsp" />
+    </bean>
+    
 </beans>

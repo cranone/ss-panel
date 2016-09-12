@@ -112,7 +112,7 @@
     <!-- 登录成功后要跳转的连接 -->
     <property name="successUrl" value="/user/"></property>
     <!-- 用户访问未对其授权的资源时，所显示的连接 -->
-    <property name="unauthorizedUrl" value="/index/"></property>
+    <property name="unauthorizedUrl" value="/user/"></property>
     <property name="filters">
       <util:map>
         <entry key="authc" value-ref="formAuthenticationFilter" />
