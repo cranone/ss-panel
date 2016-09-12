@@ -90,10 +90,4 @@ public class SystemControl {
 		map.put("info", info);
 		return map;
 	}
-	
-	@RequestMapping("/index/test")
-	public String test(){
-		System.out.println(1/0);
-		return "index";
-	}
 }
