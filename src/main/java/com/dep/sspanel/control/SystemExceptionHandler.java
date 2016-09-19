@@ -1,6 +1,5 @@
 package com.dep.sspanel.control;
 
-import java.text.MessageFormat;
 import java.util.Arrays;
 
 import javax.annotation.Resource;
@@ -65,9 +64,12 @@ public class SystemExceptionHandler implements HandlerExceptionResolver {
 		}
 		
 		//日志记录
-		Object user =SecurityUtils.getSubject().getPrincipal();
-		systemLogService.save(new SystemLog((HttpServletRequest)request,"error",user==null?"anonymous":user.toString(),ex.getMessage(),Arrays.toString(ex.getStackTrace())));
-		
+		try {
+			Object user =SecurityUtils.getSubject().getPrincipal();
+			systemLogService.save(new SystemLog((HttpServletRequest)request,"error",user==null?"anonymous":user.toString(),ex.getMessage(),Arrays.toString(ex.getStackTrace())));
+		} catch (Exception e) {
+			logger.error(e.toString());
+		}
 		
 		
 		//判断是否为Ajax请求

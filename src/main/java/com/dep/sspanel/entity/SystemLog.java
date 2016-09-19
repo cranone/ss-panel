@@ -2,10 +2,13 @@ package com.dep.sspanel.entity;
 
 import java.util.Date;
 
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.servlet.http.HttpServletRequest;
 
 import org.hibernate.annotations.DynamicUpdate;
@@ -19,7 +22,7 @@ public class SystemLog {
 	private String id;
 	private String operator;
 	private String description;
-	private String operate;
+	private String operateContent;
 	private String ip;
 	private String mark;
 	private Date date;
@@ -49,13 +52,13 @@ public class SystemLog {
 	 * 
 	 * @param request
 	 * @param description 描述
-	 * @param operator 操作人
+	 * @param operateContent 操作人
 	 * @param operate 操作内容
 	 */
-	public SystemLog(HttpServletRequest request,String description,String operator,String operate) {
+	public SystemLog(HttpServletRequest request,String description,String operator,String operateContent) {
 		this.operator=operator;
 		this.description=description;
-		this.operate=operate;
+		this.operateContent=operateContent;
 		this.ip=ServerUtil.getIpAddr(request);
 		this.date=new Date();
 	}
@@ -65,13 +68,13 @@ public class SystemLog {
 	 * @param request
 	 * @param description 描述
 	 * @param operator 操作人
-	 * @param operate 操作内容
+	 * @param operateContent 操作内容
 	 * @param stackTrace 触发层级
 	 */
-	public SystemLog(HttpServletRequest request,String description,String operator,String operate,String stackTrace) {
+	public SystemLog(HttpServletRequest request,String description,String operator,String operateContent,String stackTrace) {
 		this.operator=operator;
 		this.description=description;
-		this.operate=operate;
+		this.operateContent=operateContent;
 		this.ip=ServerUtil.getIpAddr(request);
 		this.stackTrace=stackTrace;
 		this.date=new Date();
@@ -110,8 +113,8 @@ public class SystemLog {
 	 * @return
 	 */
 	@Column(length=5000)
-	public String getOperate() {
-		return operate;
+	public String getOperateContent() {
+		return operateContent;
 	}
 	
 	/**
@@ -145,7 +148,9 @@ public class SystemLog {
 	 * 触发层级
 	 * @return
 	 */
-	@Column(length=5000)
+	@Lob
+	@Basic(fetch = FetchType.LAZY)
+	@Column
 	public String getStackTrace() {
 		return stackTrace;
 	}
@@ -160,8 +165,8 @@ public class SystemLog {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public void setOperate(String operate) {
-		this.operate = operate;
+	public void setOperateContent(String operateContent) {
+		this.operateContent = operateContent;
 	}
 	public void setIp(String ip) {
 		this.ip = ip;

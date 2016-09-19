@@ -2,6 +2,8 @@ package com.dep.sspanel.dao;
 
 import java.io.Serializable;
 
+import com.dep.sspanel.util.vo.Page;
+
 public interface GenericDao<T> {
 	/**
 	 * 按照ID查询
@@ -42,4 +44,28 @@ public interface GenericDao<T> {
 	 * @param ids 需要删除的ID
 	 */
 	public void delete(Serializable...ids);
+	
+	/**
+	 * 分页查找
+	 * @param page
+	 * @return
+	 */
+	public Page<T> findByPage(Page<T> page);
+	
+	/**
+	 * 按条件分页查找
+	 * @param page
+	 * @param condition
+	 * @return
+	 */
+	public Page<T> findByPage(Page<T> page,String condition);
+	
+	/**
+	 * 按条件分页查找
+	 * @param page
+	 * @param condition
+	 * @param values
+	 * @return
+	 */
+	public Page<T> findByPage(Page<T> page,String condition,Object values[]);
 }

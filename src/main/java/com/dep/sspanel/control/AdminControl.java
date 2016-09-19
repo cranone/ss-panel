@@ -5,10 +5,13 @@ import javax.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.dep.sspanel.entity.SystemLog;
 import com.dep.sspanel.service.SystemLogService;
 import com.dep.sspanel.service.UserService;
+import com.dep.sspanel.util.vo.Page;
 
 @Controller
 public class AdminControl {
@@ -25,7 +28,9 @@ public class AdminControl {
 	}
 	
 	@RequestMapping(value = URIConstants.ADMIN_LOG)
-	public String log(){
+	public String log(Page<SystemLog> page,Model model){
+		page = systemLogService.findByPage(page);
+		model.addAttribute("page", page);
 		return "admin/log";
 	}
 }

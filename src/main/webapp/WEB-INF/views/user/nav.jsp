@@ -7,6 +7,7 @@
  --%>
   <li id="left_security" role="presentation"><a href="${globalURL}/user/security"><spring:message code="security" /></a></li>
   <shiro:hasRole name="admin">
+    <li><hr></li>
     <li id="left_log" role="presentation"><a href="${globalURL}/admin/log"><spring:message code="log" /></a></li>
   </shiro:hasRole>
 </ul>

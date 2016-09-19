@@ -15,5 +15,5 @@ public interface UserDao extends GenericDao<User>{
 	 * @param condition
 	 * @return
 	 */
-	public User findUserByNameOrEmail(String condition);
+	public User findUserByNameOrEmail(String value);
 }

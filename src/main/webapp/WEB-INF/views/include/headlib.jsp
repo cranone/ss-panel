@@ -15,6 +15,7 @@
 <script src="${resourceURL }/jQuery-Validation-Engine/2.6.4/languages/jquery.validationEngine-${cookie.locale.value==null?'zh_CN':cookie.locale.value}.min.js"></script>
 <script src="${resourceURL }/jquery-cookie/1.4.1/jquery.cookie.js"></script>
 <script src="${resourceURL }/limonte-sweetalert2/4.1.9/sweetalert2.min.js"></script>
+<script src="${resourceURL }/twbs-pagination/1.3.1/jquery.twbsPagination.js"></script>
 
 <link rel="stylesheet" href="${globalURL }/resource/project/css/global.css">
 <link rel="stylesheet" href="${globalURL }/resource/project/css/header.css">
