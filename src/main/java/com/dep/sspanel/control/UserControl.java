@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.dep.sspanel.annotation.SystemControllerLog;
 import com.dep.sspanel.entity.User;
 import com.dep.sspanel.service.UserService;
 import com.dep.sspanel.util.GlobalConst;
@@ -82,6 +83,7 @@ public class UserControl {
 		return "user/security";
 	}
 	
+	@SystemControllerLog(description="change password")
 	@RequestMapping(value = URIConstants.USER_CHANGEPASSWORD,method=RequestMethod.POST)
 	@ResponseBody
 	public Map<String,Object> changePassword(HttpServletRequest request,String oldpassword,String password,String captchaCode){

@@ -19,6 +19,7 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 import com.dep.sspanel.entity.SystemLog;
 import com.dep.sspanel.exception.SystemException;
 import com.dep.sspanel.service.SystemLogService;
+import com.dep.sspanel.shiro.ShiroUtil;
 import com.dep.sspanel.util.ServerUtil;
 import com.dep.sspanel.util.type.ErrorCodeType;
 
@@ -65,8 +66,8 @@ public class SystemExceptionHandler implements HandlerExceptionResolver {
 		
 		//日志记录
 		try {
-			Object user =SecurityUtils.getSubject().getPrincipal();
-			systemLogService.save(new SystemLog((HttpServletRequest)request,"error",user==null?"anonymous":user.toString(),ex.getMessage(),Arrays.toString(ex.getStackTrace())));
+			//Object user =SecurityUtils.getSubject().getPrincipal();user==null?"anonymous":user.toString()
+			systemLogService.save(new SystemLog((HttpServletRequest)request,"error",ShiroUtil.getUserName(),ex.getMessage(),Arrays.toString(ex.getStackTrace())));
 		} catch (Exception e) {
 			logger.error(e.toString());
 		}

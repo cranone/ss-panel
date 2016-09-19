@@ -22,7 +22,7 @@
     </div>
     
     <div class="col-sm-8 col-sm-offset-1">
-      <h3>修改密码</h3>
+      <h3><spring:message code="security.changepassword" /></h3>
       <form class="form-horizontal changepassword" action="" method="post">
         <div class="form-group">
           <label class="col-sm-2 control-label" for="oldpassword"><spring:message code="password.old" />:</label>

@@ -16,11 +16,11 @@
     <div class="col-sm-8 col-sm-offset-1">
       <table class="table">
         <tr>
-          <td>操作描述</td>
-          <td>操作内容</td>
-          <td>操作人</td>
-          <td>IP</td>
-          <td>日期</td>
+          <td><spring:message code="log.description" /></td>
+          <td><spring:message code="log.operate.content" /></td>
+          <td><spring:message code="log.operator" /></td>
+          <td><spring:message code="log.ip" /></td>
+          <td><spring:message code="log.date" /></td>
         </tr>
         <c:forEach items="${page.list }" var="item">
           <tr>
@@ -43,8 +43,8 @@
 	    totalPages : "${page.totalPage}",
 	    startPage : startPage,
 	    visiblePages : 10,
-	    first : "首页",
-	    last : "尾页",
+	    first : '<spring:message code="page.first" />',
+	    last : '<spring:message code="page.last" />',
 	    prev : null,
 	    next : null,
 	    href : "${globalURL }/admin/log?currentPage={{number}}",

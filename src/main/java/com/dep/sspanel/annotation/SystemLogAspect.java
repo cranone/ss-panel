@@ -3,6 +3,7 @@ package com.dep.sspanel.annotation;
 import java.lang.reflect.Method;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterThrowing;
@@ -12,8 +13,12 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import com.dep.sspanel.entity.SystemLog;
 import com.dep.sspanel.service.SystemLogService;
+import com.dep.sspanel.shiro.ShiroUtil;
 
 @Aspect
 @Component
@@ -39,19 +44,18 @@ public class SystemLogAspect {
 	@Before("controllerAspect()")
 	public void doBefore(JoinPoint joinPoint) {
 		try {
-			String str = getControllerMethodDescription(joinPoint);
-			Object[] args = joinPoint.getArgs();
-			System.out.println(args.toString());
-			logger.debug(str);
+			HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+			String description = getControllerMethodDescription(joinPoint);
+			SystemLog systemLog=new SystemLog(request, description, ShiroUtil.getUserName(), description);
+			systemLogService.save(systemLog);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e.toString());
 		}
-		
 	}
 	
 	/**
-	 * 异常通知 用于拦截service层记录异常日志
+	 * 异常通知 用于拦截service层记录异常日志.
+	 * 目前异常由最上层全局捕获,此处保留
 	 * 
 	 * @param joinPoint
 	 * @param e
@@ -62,10 +66,8 @@ public class SystemLogAspect {
 			String str = getServiceMthodDescription(joinPoint);
 			logger.debug(str);
 		} catch (Exception ex) {
-			// TODO Auto-generated catch block
-			ex.printStackTrace();
+			logger.error(e.toString());
 		}
-		logger.debug("============={}",e.getMessage());
 	}
 
 	/**
