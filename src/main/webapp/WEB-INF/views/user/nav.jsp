@@ -9,5 +9,6 @@
   <shiro:hasRole name="admin">
     <li><hr></li>
     <li id="left_log" role="presentation"><a href="${globalURL}/admin/log"><spring:message code="log" /></a></li>
+    <li id="left_userlist" role="presentation"><a href="${globalURL}/admin/userlist"><spring:message code="user.list" /></a></li>
   </shiro:hasRole>
 </ul>

@@ -9,6 +9,7 @@ import org.apache.shiro.cache.CacheManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.dep.sspanel.exception.PasswordException;
 import com.dep.sspanel.util.GlobalConst;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -26,23 +27,17 @@ public class RetryLimitHashedCredentialsMatcher extends HashedCredentialsMatcher
     @Override
     public boolean doCredentialsMatch(AuthenticationToken token, AuthenticationInfo info) {
         String username = (String)token.getPrincipal();
-        //retry count + 1
-        AtomicInteger retryCount = passwordRetryCache.get(username);
-        if(retryCount == null) {
-            retryCount = new AtomicInteger(0);
-            passwordRetryCache.put(username, retryCount);
-        }
         
+        if(SecurityUtil.retryLimit(username)){
+        	throw new ExcessiveAttemptsException("try too many times");
+        }
+        if(token.getCredentials()==null){
+        	throw new NullPointerException();
+        }
         boolean matches = super.doCredentialsMatch(token, info);
         if(matches) {
             //clear retry count
             passwordRetryCache.remove(username);
-        }else{
-        	//logger.info("{}登录失败,尝试次数:{}",username,retryCount.get()+1);
-            if(retryCount.incrementAndGet() >= 5) {
-                //if retry count > 5 throw
-                throw new ExcessiveAttemptsException("try too many times");
-            }
         }
         return matches;
     }
