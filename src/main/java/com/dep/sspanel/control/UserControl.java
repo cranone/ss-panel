@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.dep.sspanel.annotation.SystemControllerLog;
 import com.dep.sspanel.entity.User;
 import com.dep.sspanel.service.UserService;
+import com.dep.sspanel.shiro.SecurityUtil;
 import com.dep.sspanel.util.GlobalConst;
 import com.dep.sspanel.util.KaptchaUtil;
 import com.dep.sspanel.util.ServerUtil;
@@ -41,14 +42,18 @@ public class UserControl {
 	public String login(HttpServletRequest req, Model model) {
 		String exceptionClassName = (String) req.getAttribute("shiroLoginFailure");
 		String error = null;
-		if (UnknownAccountException.class.getName().equals(exceptionClassName)||IncorrectCredentialsException.class.getName().equals(exceptionClassName)) {
-			Integer remaining=GlobalConst.retryTime-Integer.parseInt(cacheManager.getCache("passwordRetryCache").get(req.getParameter("username").toString()).toString());
-			error = ServerUtil.i18n(req, "user.login.error")+","+ServerUtil.i18n(req, "user.login.remaining",new Object[]{remaining});
+		if (UnknownAccountException.class.getName().equals(exceptionClassName)||IncorrectCredentialsException.class.getName().equals(exceptionClassName)||NullPointerException.class.getName().equals(exceptionClassName)) {
+			Integer remaining=SecurityUtil.getRetyLimitRest(req.getParameter("username").toString());
+			if(remaining==GlobalConst.retryTime){
+				error = ServerUtil.i18n(req, "user.login.error");
+			}else{
+				error = ServerUtil.i18n(req, "user.login.error")+","+ServerUtil.i18n(req, "user.login.remaining",new Object[]{remaining});
+			}
 		}else if(ExcessiveAttemptsException.class.getName().equals(exceptionClassName)){
 			error = ServerUtil.i18n(req, "user.login.frequently");
 		} else if ("captcha.error".equals(exceptionClassName)) {
 			error = ServerUtil.i18n(req, "captcha.error");
-		} else if (exceptionClassName != null) {
+		}else if (exceptionClassName != null) {
 			error = ServerUtil.i18n(req, "errorcode.unknown.error");
 			logger.error(exceptionClassName);
 		}

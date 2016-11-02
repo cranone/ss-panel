@@ -290,7 +290,7 @@
   </dependencies>
 
   <build>
-    <finalName>vine</finalName>
+    <finalName>sspanel</finalName>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
