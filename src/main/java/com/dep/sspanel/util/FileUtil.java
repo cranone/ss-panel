@@ -26,7 +26,7 @@ public class FileUtil {
 			file.createNewFile();
 		}
 		FileOutputStream out = new FileOutputStream(file);
-		out.write(sb.toString().getBytes(ServerUtil.encoding));
+		out.write(sb.toString().getBytes(GlobalConst.encoding));
 		out.close();
 	}
 

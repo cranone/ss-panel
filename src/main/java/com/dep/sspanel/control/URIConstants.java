@@ -18,6 +18,13 @@ public class URIConstants {
 	/** 转换语言 */
 	public static final String LANGUAGE=INDEX+"/language";
 	
+	/** 错误页面 */
+	public static final String ERROR_INDEX="/error";
+	/** 错误页面 */
+	public static final String ERROR_DEFAULT=ERROR_INDEX+"/error";
+	/** 错误页面(ajax */
+	public static final String ERROR_AJAX=ERROR_INDEX+"/errorajax";
+	
 	/** 验证码 */
 	public static final String CAPTCHA="images/captcha.jpg";
 	
@@ -26,6 +33,10 @@ public class URIConstants {
 	public static final String ADMIN_INDEX="/admin";
 	/** 管理员首页 */
 	public static final String ADMIN_DEFAULT=ADMIN_INDEX+"/index";
+	/** 管理员日志 */
+	public static final String ADMIN_LOG=ADMIN_INDEX+"/log";
+	/** 管理员查看所有用户信息 */
+	public static final String ADMIN_USER_LIST=ADMIN_INDEX+"/userlist";
 	
 	/** 用户首页 */
 	public static final String USER_INDEX="/user";
@@ -39,6 +50,5 @@ public class URIConstants {
 	public static final String USER_SECURITY=USER_INDEX+"/security";
 	/** 修改密码 */
 	public static final String USER_CHANGEPASSWORD=USER_INDEX+"/changepassword";
-	
 	
 }

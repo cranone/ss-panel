@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@include file="/WEB-INF/views/include/taglib.jsp"%>
 <!DOCTYPE html>
-<%@include file="/WEB-INF/views/include/message.jsp"%>
 
 <nav class="navbar navbar-default navbar-fixed-top">
   <div class="container ">
@@ -22,7 +21,7 @@
         <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><spring:message
               code="language" /> <span class="caret"></span></a>
           <ul class="dropdown-menu">
-            <li><a class="i18n" data-lan="${globalURL}/index/language/zh" href="#">简体中文</a></li>
+            <li><a class="i18n" data-lan="${globalURL}/index/language/zh_CN" href="#">简体中文</a></li>
             <li><a class="i18n" data-lan="${globalURL}/index/language/en" href="#">English</a></li>
             <li><a class="i18n" data-lan="${globalURL}/index/language/ja" href="#">日本語</a></li>
           </ul></li>

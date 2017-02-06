@@ -19,8 +19,6 @@ import org.springframework.web.servlet.support.RequestContext;
 public abstract class ServerUtil {
 	private static final Logger logger = LoggerFactory.getLogger(ServerUtil.class);
 	private static Properties property;
-	public static String encoding = loadProperty("encoding");
-	public static String salt=loadProperty("salt");
 
 	/**
 	 * 读取global.property文件
@@ -127,6 +125,18 @@ public abstract class ServerUtil {
 	public static String i18n(HttpServletRequest request, String key) {
 		RequestContext requestContext = new RequestContext(request);
 		return requestContext.getMessage(key);
+	}
+	
+	/**
+	 * 获取国际化信息注入参数
+	 * @param request
+	 * @param key
+	 * @param objects
+	 * @return
+	 */
+	public static String i18n(HttpServletRequest request, String key,Object[] objects) {
+		RequestContext requestContext = new RequestContext(request);
+		return requestContext.getMessage(key,objects);
 	}
 
 	/**

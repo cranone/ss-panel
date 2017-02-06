@@ -1,5 +1,9 @@
 function captchaRefresh(captcha){
-	captcha.attr("src",globalURL+"/images/captcha.jpg?"+new Date().getTime());
+	var src=captcha.attr("src").substring(0,captcha.attr("src").indexOf('?'));
+	if(!src){
+		src=captcha.attr("src");
+	}
+	captcha.attr("src",src+"?"+new Date().getTime());
 }
 
 $(function($) {

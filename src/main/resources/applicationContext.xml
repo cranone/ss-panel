@@ -24,7 +24,7 @@
       <value>classpath:application.properties</value>
     </property>
   </bean>
-
+  
   <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
     destroy-method="close">
     <property name="driverClass" value="${jdbc.driver}" />
@@ -69,17 +69,31 @@
       </props>
     </property>
   </bean>
-
+  
   <!-- 配置声明式事务管理（采用注解的方式） -->
   <bean id="txManager"
     class="org.springframework.orm.hibernate4.HibernateTransactionManager">
     <property name="sessionFactory" ref="sessionFactory"></property>
   </bean>
-  <tx:annotation-driven transaction-manager="txManager" /><!-- 
-    proxy-target-class="true" -->
 
+  <tx:advice id="txAdvice" transaction-manager="txManager">
+        <tx:attributes>
+            <tx:method name="*" propagation="REQUIRED"/>
+        </tx:attributes>
+    </tx:advice>
+    
+    <aop:config expose-proxy="true" proxy-target-class="true">
+        <!-- 只对业务逻辑层实施事务 -->
+        <aop:pointcut id="txPointcut" expression="execution(* com.dep.sspanel..service..*+.*(..))"/>
+        <aop:advisor id="txAdvisor" advice-ref="txAdvice" pointcut-ref="txPointcut"/>
+    </aop:config>
+
+  <!-- 见鬼的事情,用注解无法开启事物,只有切面才有效,已尝试各类方法,均无效 -->
+  <!-- <tx:annotation-driven transaction-manager="txManager" proxy-target-class="true"/> --><!-- 
+    proxy-target-class="true" -->
+    
   <!-- 配置事务，使用代理的方式 -->
-  <bean id="transactionProxy"
+<!--   <bean id="transactionProxy"
     class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean"
     abstract="true">
     <property name="txManager" ref="txManager"></property>
@@ -95,15 +109,13 @@
         <prop key="*">PROPAGATION_REQUIRED</prop>
       </props>
     </property>
-  </bean>
+  </bean> -->
 
   <!-- 使用 annotation -->
-  <!-- <context:annotation-config /> -->
-  <mvc:annotation-driven />
+  <!-- <mvc:annotation-driven /> -->
   <!-- 自动扫描与装配bean -->
-  <context:component-scan base-package="com.dep.sspanel.*">
-    <context:exclude-filter type="annotation"
-      expression="org.springframework.stereotype.Controller" />
+  <context:component-scan base-package="com.dep.sspanel" >
+    <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" ></context:exclude-filter>
   </context:component-scan>
 
   <!-- 国际化支持 -->
@@ -146,6 +158,9 @@
       </list>
     </property>
   </bean>
+
+  <!-- 切面日志记录 -->
+  <aop:aspectj-autoproxy expose-proxy="true" /><!-- proxy-target-class -->
 
   <import resource="classpath:spring-config-cache.xml" />
   <import resource="classpath:spring-config-shiro.xml" />

@@ -45,6 +45,10 @@
       <param-name>contextConfigLocation</param-name>
       <param-value>classpath:dispatcher-servlet.xml</param-value>
     </init-param>
+    <init-param>
+      <param-name>throwExceptionIfNoHandlerFound</param-name>
+      <param-value>true</param-value>
+    </init-param>
     <load-on-startup>1</load-on-startup>
   </servlet>
 
@@ -63,11 +67,11 @@
   <!-- error-page -->
   <error-page>
     <error-code>404</error-code>
-    <location>/error?code=404</location>
+    <location>/error/error?code=404</location>
   </error-page>
   <error-page>
     <error-code>500</error-code>
-    <location>/error?code=500</location>
+    <location>/error/error?code=500</location>
   </error-page>
 
   <!-- jsp-config -->

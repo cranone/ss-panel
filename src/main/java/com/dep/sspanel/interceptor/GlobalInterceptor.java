@@ -8,22 +8,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.dep.sspanel.util.GlobalConst;
 import com.dep.sspanel.util.ServerUtil;
 
 public class GlobalInterceptor implements HandlerInterceptor {
 	private static final Logger logger = LoggerFactory.getLogger(GlobalInterceptor.class);
-	private static String encoding = null;
-	private static String resourceURL=null;
-
-	static {
-		if (ServerUtil.loadProperty("encoding") == null) {
-			logger.error(encoding);
-			encoding = "UTF-8";
-		}
-		encoding = ServerUtil.loadProperty("encoding");
-		logger.info("encoding:{}", encoding);
-		resourceURL=ServerUtil.loadProperty("resourceURL");
-	}
 
 	/**
 	 * preHandle方法是进行处理器拦截用的，顾名思义，该方法将在Controller处理之前进行调用，
@@ -35,13 +24,13 @@ public class GlobalInterceptor implements HandlerInterceptor {
 	 */
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-		request.setCharacterEncoding(encoding);
-		response.setCharacterEncoding(encoding);
+		request.setCharacterEncoding(GlobalConst.encoding);
+		response.setCharacterEncoding(GlobalConst.encoding);
 		request.setAttribute("globalURL", ServerUtil.getServerPath(request));
-		if(resourceURL==null){
+		if(GlobalConst.resourceURL==null){
 			request.setAttribute("resourceURL", ServerUtil.getServerPath(request)+"/resource");
 		}else{
-			request.setAttribute("resourceURL", resourceURL);
+			request.setAttribute("resourceURL", GlobalConst.resourceURL);
 		}
 		return true;
 	}

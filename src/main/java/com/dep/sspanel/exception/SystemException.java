@@ -15,9 +15,6 @@ public class SystemException extends RuntimeException {
 	
 	private ErrorCodeType errorCodeType=ErrorCodeType.unknown_error;
 	
-	public SystemException(String message){
-		super(message);
-	}
 	
 	public SystemException(ErrorCodeType errorCodeType){
 		super(errorCodeType.getMsg());
@@ -31,5 +28,10 @@ public class SystemException extends RuntimeException {
 
 	public void setErrorCodeType(ErrorCodeType errorCodeType) {
 		this.errorCodeType = errorCodeType;
+	}
+	
+	@Override
+	public String getMessage() {
+		return errorCodeType.getMsg();
 	}
 }

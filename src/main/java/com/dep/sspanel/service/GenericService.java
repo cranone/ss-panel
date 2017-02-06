@@ -2,6 +2,8 @@ package com.dep.sspanel.service;
 
 import java.io.Serializable;
 
+import com.dep.sspanel.util.vo.Page;
+
 public interface GenericService<T> {
 
 	/**
@@ -45,4 +47,27 @@ public interface GenericService<T> {
 	 * @param ids
 	 */
 	public void delete(Serializable... ids);
+	
+	/**
+	 * 分页查询
+	 * @return
+	 */
+	public Page<T> findByPage(Page<T> page);
+	
+	/**
+	 * 分页查询
+	 * @param page
+	 * @param condition 条件语句
+	 * @return
+	 */
+	public Page<T> findByPage(Page<T> page, String condition);
+	
+	/**
+	 * 分页查询
+	 * @param page
+	 * @param condition 条件语句
+	 * @param values 值
+	 * @return
+	 */
+	public Page<T> findByPage(Page<T> page, String condition, Object[] values);
 }
