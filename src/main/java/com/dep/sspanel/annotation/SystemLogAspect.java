@@ -77,6 +77,7 @@ public class SystemLogAspect {
 	 * @return 方法描述
 	 * @throws Exception
 	 */
+	@SuppressWarnings("rawtypes")
 	public static String getControllerMethodDescription(JoinPoint joinPoint) throws Exception {
 		String targetName = joinPoint.getTarget().getClass().getName();
 		String methodName = joinPoint.getSignature().getName();
@@ -103,6 +104,7 @@ public class SystemLogAspect {
 	 * @return 方法描述
 	 * @throws Exception
 	 */
+	@SuppressWarnings("rawtypes")
 	public static String getServiceMthodDescription(JoinPoint joinPoint) throws Exception {
 		String targetName = joinPoint.getTarget().getClass().getName();
 		String methodName = joinPoint.getSignature().getName();

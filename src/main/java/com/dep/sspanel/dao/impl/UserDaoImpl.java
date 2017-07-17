@@ -1,7 +1,9 @@
 package com.dep.sspanel.dao.impl;
 
+import java.util.Calendar;
 import java.util.List;
 
+import org.hibernate.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -14,6 +16,7 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao{
 	private static final Logger logger = LoggerFactory.getLogger(UserDaoImpl.class);
 	
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public User findUserByName(String name) {
 		String hql="from user where username=?";
@@ -30,6 +33,7 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao{
 	}
 
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public User findUserByNameOrEmail(String value) {
 		String hql="from user where username=? or email=?";
@@ -42,6 +46,16 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao{
 			}
 			return list.get(0);
 		}
+	}
+
+
+	@Override
+	public Integer updateAllOutDate() {
+		String hql="update user set enable=:enable,updateDate=:expiresDate where expiresDate<=:expiresDate and enable=true";
+		Query query = getSessionFactory().getCurrentSession().createQuery(hql);
+		query.setParameter("enable", false);
+		query.setParameter("expiresDate", Calendar.getInstance().getTime());
+		return query.executeUpdate();
 	}
 
 }

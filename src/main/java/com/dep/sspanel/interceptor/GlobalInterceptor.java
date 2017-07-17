@@ -24,6 +24,7 @@ public class GlobalInterceptor implements HandlerInterceptor {
 	 */
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+		logger.debug("GlobalInterceptor");
 		request.setCharacterEncoding(GlobalConst.encoding);
 		response.setCharacterEncoding(GlobalConst.encoding);
 		request.setAttribute("globalURL", ServerUtil.getServerPath(request));

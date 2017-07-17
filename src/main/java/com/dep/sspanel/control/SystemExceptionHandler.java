@@ -6,7 +6,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
@@ -43,6 +42,7 @@ public class SystemExceptionHandler implements HandlerExceptionResolver {
 			HttpServletResponse response, Object handler, Exception ex) {
 		logger.error("GlobalException has catched:{}",ex.getMessage());
 		logger.debug("Catch Error:{}",request.getHeader("accept"));
+		ex.printStackTrace();
 		String status=null,msg=null;
 		//TODO: 异常信息国际化,尚未测试
 		if(ex instanceof DataAccessException){//GenericDao
@@ -59,7 +59,6 @@ public class SystemExceptionHandler implements HandlerExceptionResolver {
 			status=((SystemException) ex).getErrorCodeType().getCode();
 		}else{
 			logger.error("Exception:{}",ErrorCodeType.unknown_error.toString(),ex.getMessage());
-			ex.printStackTrace();
 			msg=ErrorCodeType.unknown_error.getMsg();
 			status=ErrorCodeType.unknown_error.getCode();
 		}

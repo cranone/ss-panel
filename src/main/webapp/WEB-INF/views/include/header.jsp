@@ -17,7 +17,14 @@
           <li><a href="${globalURL}/user/index"><shiro:principal/></a></li>
           <li><a href="${globalURL}/index/logout"><spring:message code="logout" /></a></li>
         </shiro:authenticated>
-        <li><a class="login" href="https://github.com/shadowsocks/shadowsocks-windows/releases" target="blank"><spring:message code="download" /></a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><spring:message
+              code="download" /> <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a class="login" href="https://github.com/shadowsocks/shadowsocks-windows/releases" target="blank"><spring:message code="download.client" /></a></li>
+            <li><a class="login" href="https://github.com/Deathencyclopedia/ss-panel" target="blank"><spring:message code="download.server" /></a></li>
+          </ul>
+        </li>
         <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><spring:message
               code="language" /> <span class="caret"></span></a>
           <ul class="dropdown-menu">

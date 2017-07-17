@@ -1,5 +1,6 @@
 package com.dep.sspanel.dao;
 
+
 import com.dep.sspanel.entity.User;
 
 public interface UserDao extends GenericDao<User>{
@@ -16,4 +17,10 @@ public interface UserDao extends GenericDao<User>{
 	 * @return
 	 */
 	public User findUserByNameOrEmail(String value);
+	
+	/**
+	 * 禁用所有过期用户
+	 * @return
+	 */
+	public Integer updateAllOutDate();
 }

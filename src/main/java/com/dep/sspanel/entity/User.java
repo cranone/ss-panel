@@ -24,6 +24,7 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
 
 import com.dep.sspanel.util.type.UserType;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * 用户
@@ -32,6 +33,7 @@ import com.dep.sspanel.util.type.UserType;
  */
 @Entity(name="user")
 @DynamicUpdate
+@JsonIgnoreProperties(value={"pass","roleList","rolePermissionSet","roleNameSet"})   
 public class User implements Serializable{
 	private static final long serialVersionUID = 1228256212143751728L;
 	
@@ -51,8 +53,9 @@ public class User implements Serializable{
 	//private int lastGetGiftTime=0;//保留字段
 	//private int lastRestPassTime=0;//保留字段
 	private Date updateDate=Calendar.getInstance().getTime();//修改日期
-	private Integer cycleType=2;//周期类型:6=日,2=月,1=年
-	private Integer expires=0;//有效时间
+	//private Integer cycleType=2;//周期类型:6=日,2=月,1=年
+	//private Integer expires=0;//有效时间
+	private Date expiresDate;//到期时间
 	private Integer status=UserType.unactive.getId();//用户状态
 	private List<Role> roleList;
 	
@@ -143,18 +146,18 @@ public class User implements Serializable{
 	 * 周期类型:6=日,2=月,1=年
 	 * @return
 	 */
-	@Column(nullable=false)
+/*	@Column(nullable=false)
 	public Integer getCycleType() {
 		return cycleType;
-	}
+	}*/
 	/**
 	 * 有效期
 	 * @return
 	 */
-	@Column
+/*	@Column
 	public Integer getExpires() {
 		return expires;
-	}
+	}*/
 	/**
 	 * 用户状态
 	 * @return
@@ -172,14 +175,25 @@ public class User implements Serializable{
 	}
 	
 	/**
-	 * 是否过期
+	 * 过期时间
 	 * @return
+	 */
+	@Column
+	public Date getExpiresDate() {
+		return expiresDate;
+	}
+	
+	/**
+	 * 是否过期
+	 * @return true:过期;false:未过期
 	 */
 	@Transient
 	public boolean isTimeout(){
+		if(expiresDate==null){
+			return true;
+		}
 		Calendar cal=Calendar.getInstance();
-		cal.setTime(updateDate);
-		cal.add(cycleType, expires);
+		cal.setTime(expiresDate);
 		if(cal.getTimeInMillis()<Calendar.getInstance().getTimeInMillis()){
 			return true;
 		}
@@ -274,12 +288,12 @@ public class User implements Serializable{
 	public void setUpdateDate(Date updateDate) {
 		this.updateDate = updateDate;
 	}
-	public void setCycleType(Integer cycleType) {
+/*	public void setCycleType(Integer cycleType) {
 		this.cycleType = cycleType;
-	}
-	public void setExpires(Integer expires) {
+	}*/
+/*	public void setExpires(Integer expires) {
 		this.expires = expires;
-	}
+	}*/
 	public void setStatus(Integer status) {
 		this.status = status;
 	}
@@ -288,6 +302,9 @@ public class User implements Serializable{
 	}
 	public void setUsername(String username) {
 		this.username = username;
+	}
+	public void setExpiresDate(Date expiresDate) {
+		this.expiresDate = expiresDate;
 	}
 	
 	

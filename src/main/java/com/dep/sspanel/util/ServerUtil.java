@@ -50,6 +50,12 @@ public abstract class ServerUtil {
 	 */
 	public static String getServerPath(HttpServletRequest request) {
 		String path = request.getContextPath();
+		/*String scheme=request.getHeader("x-forwarded-proto");
+		if(StringUtils.isEmpty(scheme)){
+			scheme=request.getScheme();
+		}*/
+		//针对nginx无法正确读取Scheme,使用浏览器自识别方式
+		//String basePath = scheme+"://" + request.getServerName() + ":" + request.getServerPort() + path;
 		String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path;
 		return basePath;
 	}

@@ -26,6 +26,7 @@ public class RetryLimitHashedCredentialsMatcher extends HashedCredentialsMatcher
         String username = (String)token.getPrincipal();
         
         if(SecurityUtil.retryLimit(username)){
+        	logger.warn("{}:try too many times",username);
         	throw new ExcessiveAttemptsException("try too many times");
         }
         if(token.getCredentials()==null){

@@ -67,6 +67,21 @@ public class SystemLog {
 	 * 
 	 * @param request
 	 * @param description 描述
+	 * @param operateContent 操作人
+	 * @param operate 操作内容
+	 */
+	public SystemLog(String ip,String description,String operator,String operateContent) {
+		this.operator=operator;
+		this.description=description;
+		this.operateContent=operateContent;
+		this.ip=ip;
+		this.date=new Date();
+	}
+	
+	/**
+	 * 
+	 * @param request
+	 * @param description 描述
 	 * @param operator 操作人
 	 * @param operateContent 操作内容
 	 * @param stackTrace 触发层级
@@ -79,6 +94,7 @@ public class SystemLog {
 		this.stackTrace=stackTrace;
 		this.date=new Date();
 	}
+	
 	
 	/**
 	 * ID

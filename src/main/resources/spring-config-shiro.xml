@@ -52,7 +52,7 @@
 
   <!-- 会话验证调度器 -->
   <bean id="sessionValidationScheduler"
-    class="org.apache.shiro.session.mgt.quartz.QuartzSessionValidationScheduler">
+    class="com.dep.sspanel.shiro.QuartzSessionValidationScheduler">
     <property name="sessionValidationInterval" value="1800000" />
     <property name="sessionManager" ref="sessionManager" />
   </bean>

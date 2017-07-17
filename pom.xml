@@ -20,9 +20,10 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>3.8.1</version>
+      <version>4.12</version>
       <scope>test</scope>
     </dependency>
+
 
     <!-- C3P0 0.9.1.2PreparedStatement.setCharacterStream()会出现异常 -->
     <dependency>
@@ -31,14 +32,6 @@
       <version>0.9.5.2</version>
     </dependency>
 
-    <!-- ms-sql -->
-    <!-- jtds-1.2.8-JDK6 -->
-    <!-- jtds-1.3.1-JDK7 -->
-    <dependency>
-      <groupId>net.sourceforge.jtds</groupId>
-      <artifactId>jtds</artifactId>
-      <version>1.2.8</version>
-    </dependency>
     <!-- my-sql -->
     <dependency>
       <groupId>mysql</groupId>
@@ -48,34 +41,22 @@
     </dependency>
 
     <!-- slf4j -->
-    <dependency>
+    <!-- <dependency>
       <groupId>commons-logging</groupId>
       <artifactId>commons-logging</artifactId>
       <version>1.1.1</version>
       <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-      <version>${slf4j-version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>jcl-over-slf4j</artifactId>
-      <version>${slf4j-version}</version>
-      <scope>runtime</scope>
-    </dependency>
+    </dependency> -->
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-log4j12</artifactId>
       <version>${slf4j-version}</version>
-      <scope>provided</scope>
-      <!-- <exclusions> <exclusion> <artifactId>log4j</artifactId> <groupId>log4j</groupId> 
-        </exclusion> </exclusions> -->
+      <!-- <scope>provided</scope> -->
     </dependency>
+    
 
     <!-- jstl tomcat7 -->
-    <dependency>
+    <!-- <dependency>
       <groupId>org.apache.taglibs</groupId>
       <artifactId>taglibs-standard-impl</artifactId>
       <version>1.2.5</version>
@@ -87,12 +68,12 @@
     </dependency>
     <dependency>
       <groupId>org.apache.taglibs</groupId>
-      <artifactId>taglibs-standard-jstlel</artifactId>
+      <artifactId>taglibs-standard-compat</artifactId>
       <version>1.2.5</version>
-    </dependency>
+    </dependency> -->
     <dependency>
       <groupId>org.apache.taglibs</groupId>
-      <artifactId>taglibs-standard-compat</artifactId>
+      <artifactId>taglibs-standard-jstlel</artifactId>
       <version>1.2.5</version>
     </dependency>
 
@@ -118,51 +99,26 @@
     <!-- spring -->
     <dependency>
       <groupId>org.springframework</groupId>
-      <artifactId>spring-aop</artifactId>
-      <version>${spring.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
       <artifactId>spring-aspects</artifactId>
       <version>${spring.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-beans</artifactId>
-      <version>${spring.version}</version>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-orm</artifactId>
+    <version>${spring.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-core</artifactId>
-      <version>${spring.version}</version>
-      <exclusions>
-        <exclusion>
-          <artifactId>commons-logging</artifactId>
-          <groupId>commons-logging</groupId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-context</artifactId>
-      <version>${spring.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-context-support</artifactId>
-      <version>${spring.version}</version>
-    </dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-context-support</artifactId>
+    <version>${spring.version}</version>
+</dependency>
+<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-aop</artifactId>
+    <version>${spring.version}</version>
+</dependency>
 
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-orm</artifactId>
-      <version>${spring.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-web</artifactId>
-      <version>${spring.version}</version>
-    </dependency>
+    
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-webmvc</artifactId>
@@ -172,10 +128,26 @@
       <groupId>org.springframework</groupId>
       <artifactId>spring-test</artifactId>
       <version>${spring.version}</version>
+      <scope>test</scope>
     </dependency>
+    
+    <!-- Hibernate -->
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-core</artifactId>
+      <version>${hibernate.version}</version>
+    </dependency>
+    
 
     <!-- jackson -->
     <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>2.8.9</version>
+    </dependency>
+
+    
+    <!-- <dependency>
       <groupId>org.codehaus.jackson</groupId>
       <artifactId>jackson-core-asl</artifactId>
       <version>1.9.13</version>
@@ -184,14 +156,15 @@
       <groupId>org.codehaus.jackson</groupId>
       <artifactId>jackson-mapper-asl</artifactId>
       <version>1.9.13</version>
-    </dependency>
-    <!-- json -->
+    </dependency> -->
     <dependency>
       <groupId>net.sf.json-lib</groupId>
       <artifactId>json-lib</artifactId>
       <version>2.4</version>
       <classifier>jdk15</classifier>
     </dependency>
+    <!-- json -->
+<!--     
     <dependency>
       <groupId>net.sf.json-lib</groupId>
       <artifactId>json-lib-ext-spring</artifactId>
@@ -211,17 +184,9 @@
       <groupId>net.sf.ezmorph</groupId>
       <artifactId>ezmorph</artifactId>
       <version>1.0.6</version>
-    </dependency>
+    </dependency> -->
 
-    <!-- Hibernate -->
-    <dependency>
-      <groupId>org.hibernate</groupId>
-      <artifactId>hibernate-core</artifactId>
-      <version>${hibernate.version}</version>
-      <!-- <exclusions> <exclusion> <artifactId>slf4j-api</artifactId> <groupId>org.slf4j</groupId> 
-        </exclusion> </exclusions> -->
-    </dependency>
-
+    
     <!-- 加密/解密 -->
     <dependency>
       <groupId>commons-codec</groupId>
@@ -257,11 +222,6 @@
     <!-- shiro -->
     <dependency>
       <groupId>org.apache.shiro</groupId>
-      <artifactId>shiro-core</artifactId>
-      <version>${shiro}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.shiro</groupId>
       <artifactId>shiro-ehcache</artifactId>
       <version>${shiro}</version>
     </dependency>
@@ -274,6 +234,12 @@
       <groupId>org.apache.shiro</groupId>
       <artifactId>shiro-quartz</artifactId>
       <version>${shiro}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.opensymphony.quartz</groupId>
+          <artifactId>quartz</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.apache.shiro</groupId>

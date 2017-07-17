@@ -37,6 +37,8 @@ public class URIConstants {
 	public static final String ADMIN_LOG=ADMIN_INDEX+"/log";
 	/** 管理员查看所有用户信息 */
 	public static final String ADMIN_USER_LIST=ADMIN_INDEX+"/userlist";
+	/** 管理员修改用户信息 */
+	public static final String ADMIN_USER_EDIT=ADMIN_INDEX+"/useredit";
 	
 	/** 用户首页 */
 	public static final String USER_INDEX="/user";

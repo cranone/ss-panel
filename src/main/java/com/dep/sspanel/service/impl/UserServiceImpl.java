@@ -79,4 +79,9 @@ public class UserServiceImpl extends GenericServiceImpl<User> implements UserSer
 		return super.findByPage(page,sb.toString(),list.toArray());
 	}
 
+	@Override
+	public Integer checkExpires() {
+		return userDao.updateAllOutDate();
+	}
+
 }

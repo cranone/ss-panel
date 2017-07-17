@@ -94,6 +94,7 @@ public abstract class GenericDaoImpl<T> extends HibernateDaoSupport implements G
 		String hql = sb.toString();
 		// 获取分页数据
 		List<T> list = getHibernateTemplate().executeWithNativeSession(new HibernateCallback<List<T>>() {
+			@SuppressWarnings("unchecked")
 			@Override
 			public List<T> doInHibernate(Session session) throws HibernateException {
 				Query queryObject = session.createQuery(hql);

@@ -47,4 +47,10 @@ public interface UserService extends GenericService<User>{
 	 * @return
 	 */
 	public Page<User> findByPage(Page<User> page,User condition);
+	
+	/**
+	 * 检查到期时间
+	 * @return
+	 */
+	public Integer checkExpires();
 }
