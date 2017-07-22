@@ -52,7 +52,7 @@ $(function($) {
         sizePage:params.limit
       };
     },
-    url: "${globalURL }/user/nodeListAjax",
+    url: "${globalURL }/user/nodelistajax",
     columns: [{
     	field: "name",
       title: "<spring:message code='node.position' />"

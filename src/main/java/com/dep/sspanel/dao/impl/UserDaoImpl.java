@@ -22,7 +22,7 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao{
 	@SuppressWarnings("unchecked")
 	@Override
 	public User findUserByName(String name) {
-		String hql="from user where username=?";
+		String hql="from User where username=?";
 		List<User> list=(List<User>) getHibernateTemplate().find(hql, name);
 		if(list.size()==0){
 			return null;
@@ -39,7 +39,7 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao{
 	@SuppressWarnings("unchecked")
 	@Override
 	public User findUserByNameOrEmail(String value) {
-		String hql="from user where username=? or email=?";
+		String hql="from User where username=? or email=?";
 		List<User> list=(List<User>) getHibernateTemplate().find(hql, value,value);
 		if(list.size()==0){
 			return null;
@@ -54,7 +54,7 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao{
 
 	@Override
 	public Integer updateAllOutDate() {
-		String hql="update user set enable=:enable,updateDate=:expiresDate where expiresDate<=:expiresDate and enable=true";
+		String hql="update User set enable=:enable,updateDate=:expiresDate where expiresDate<=:expiresDate and enable=true";
 		Query query = getSessionFactory().getCurrentSession().createQuery(hql);
 		query.setParameter("enable", false);
 		query.setParameter("expiresDate", Calendar.getInstance().getTime());

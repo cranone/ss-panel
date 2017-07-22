@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -33,7 +34,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  * @author Maclaine
  *
  */
-@Entity(name="user")
+@Entity
+@Table(name="user")
 @DynamicUpdate
 @JsonIgnoreProperties(value={"pass","roleList","rolePermissionSet","roleNameSet"})   
 public class User implements Serializable{

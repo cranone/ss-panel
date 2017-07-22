@@ -10,6 +10,6 @@
     <li><hr></li>
     <li id="left_log" role="presentation"><a href="${globalURL}/admin/log"><spring:message code="log" /></a></li>
     <li id="left_userlist" role="presentation"><a href="${globalURL}/admin/userlist"><spring:message code="user.list" /></a></li>
-    <li id="left_codelist" role="presentation"><a href="${globalURL}/admin/codelist"><spring:message code="user.list" /></a></li>
+    <li id="left_codelist" role="presentation"><a href="${globalURL}/admin/codelist"><spring:message code="code.list" /></a></li>
   </shiro:hasRole>
 </ul>

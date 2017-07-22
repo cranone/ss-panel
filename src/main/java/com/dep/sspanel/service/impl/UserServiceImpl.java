@@ -1,6 +1,8 @@
 package com.dep.sspanel.service.impl;
 
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.Set;
 
 import javax.annotation.Resource;
@@ -9,7 +11,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.dep.sspanel.dao.UserDao;
+import com.dep.sspanel.entity.Code;
 import com.dep.sspanel.entity.User;
+import com.dep.sspanel.service.CodeService;
 import com.dep.sspanel.service.UserService;
 import com.dep.sspanel.shiro.SecurityUtil;
 import com.dep.sspanel.util.vo.Page;
@@ -18,6 +22,10 @@ import com.dep.sspanel.util.vo.Page;
 @Transactional
 public class UserServiceImpl extends GenericServiceImpl<User> implements UserService{
 	private UserDao userDao;
+	
+	@Resource
+	private CodeService codeService;
+	
 	@Resource
 	public void setUserDao(UserDao userDao) {
 		this.userDao = userDao;
@@ -72,4 +80,32 @@ public class UserServiceImpl extends GenericServiceImpl<User> implements UserSer
 		return userDao.updateAllOutDate();
 	}
 
+	@Override
+	public boolean recharge(String code, String userName) {
+		Code eCode = codeService.findByCodeActive(code);
+		User user=userDao.findUserByName(userName);
+		if(eCode==null){
+			return false;
+		}
+		switch (eCode.getCodeType()) {
+		case bandwidth:
+			user.setTransferEnable(user.getTransferEnable()+eCode.getAmount()*1024*1024*1024);//GB转换成B
+			break;
+		case time:
+			Calendar cal = Calendar.getInstance();
+			if(!user.isTimeout()){//如果没有过期
+				cal.setTime(user.getExpiresDate());
+			}
+			cal.add(Calendar.MONTH, eCode.getAmount());
+			user.setExpiresDate(cal.getTime());
+			break;
+		default:
+			return false;
+		}
+		userDao.update(user);
+		eCode.setConsumer(user);
+		eCode.setConsumeDate(new Date());
+		codeService.update(eCode);
+		return true;
+	}
 }

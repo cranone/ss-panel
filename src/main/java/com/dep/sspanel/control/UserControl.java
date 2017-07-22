@@ -84,7 +84,7 @@ public class UserControl {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/user/nodeListAjax")
+	@RequestMapping(value = URIConstants.USER_NODE_LIST_AJAX)
 	public Map<String,Object> nodeListAjax(Page<Node> page){
 		Map<String,Object> map=new HashMap<String, Object>();
 		page=nodeService.findByPage(page);
@@ -119,6 +119,22 @@ public class UserControl {
 			return map;
 		}
 		map.put("status", ErrorCodeType.success.getCode());
+		return map;
+	}
+	
+	@SystemControllerLog(description="recharge")
+	@RequestMapping(value = URIConstants.USER_RECHARGE,method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String,Object> recharge(String code){
+		Map<String,Object> map=new HashMap<String, Object>();
+		String userName =SecurityUtils.getSubject().getPrincipal().toString();
+		boolean recharge = userService.recharge(code, userName);
+		if(recharge){
+			map.put("status", ErrorCodeType.success.getCode());
+		}else{
+			map.put("status", ErrorCodeType.data_error.getCode());
+			map.put("status", ErrorCodeType.data_error.getMsg());
+		}
 		return map;
 	}
 }

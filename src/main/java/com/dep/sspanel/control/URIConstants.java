@@ -37,7 +37,7 @@ public class URIConstants {
 	public static final String ADMIN_LOG=ADMIN_INDEX+"/log";
 	/** 管理员查看所有用户信息 */
 	public static final String ADMIN_USER_LIST=ADMIN_INDEX+"/userlist";
-	/** 管理员修改用户信息 */
+	/** 管理员查看所有用户信息 */
 	public static final String ADMIN_USER_LIST_AJAX=ADMIN_INDEX+"/userlistajax";
 	/** 管理员修改用户信息 */
 	public static final String ADMIN_USER_EDIT=ADMIN_INDEX+"/useredit";
@@ -52,11 +52,17 @@ public class URIConstants {
 	public static final String USER_DEFAULT=USER_INDEX+"/index";
 	/** 用户节点 */
 	public static final String USER_NODE=USER_INDEX+"/node";
+	/** 用户节点 */
+	public static final String USER_NODE_LIST=USER_INDEX+"/nodelist";
+	/** 用户节点 */
+	public static final String USER_NODE_LIST_AJAX=USER_INDEX+"/nodelistajax";
 	/** 用户消息 */
 	public static final String USER_MESSAGE=USER_INDEX+"/message";
 	/** 用户消息 */
 	public static final String USER_SECURITY=USER_INDEX+"/security";
 	/** 修改密码 */
 	public static final String USER_CHANGEPASSWORD=USER_INDEX+"/changepassword";
+	/** 充值 */
+	public static final String USER_RECHARGE=USER_INDEX+"/recharge";
 	
 }

@@ -27,6 +27,10 @@
           <td><fmt:formatNumber minIntegerDigits="1" value="${(user.upload+user.download)/1024/1024/1024 }" pattern="#.00"/>&nbsp;/&nbsp;<fmt:formatNumber minIntegerDigits="1" value="${user.transferEnable/1024/1024/1024 }" pattern="#.00"/></td>
         </tr>
       </table>
+      
+      <div>
+        <input class="btn btn-default" id="recharge" type="button" value="<spring:message code="user.recharge" />" >
+      </div>
     </div>
     <div class="col-sm-4 col-sm-offset-1">
     <h5><spring:message code="message" /></h5>
@@ -39,6 +43,48 @@
 </body>
 <script>
 	$(function($) {
+		$("#recharge").click(function(){
+			swal({
+			  title: '<spring:message code="user.recharge.input" />',
+			  input: 'text',
+			  showCancelButton: true,
+			  cancelButtonText:'<spring:message code="message.cancel" />',
+			  confirmButtonText:'<spring:message code="message.ok" />',
+			  inputValidator: function(value) {
+			    return new Promise(function(resolve, reject) {
+			      if (value) {
+			        resolve();
+			      } else {
+			        reject('<spring:message code="user.recharge.input" />');
+			      }
+			    });
+			  }
+			}).then(function(result) {
+			  if (result) {
+			  	$.ajax({
+            url:"${globalURL }/user/recharge",
+            dataType : "json",
+            type : "post",
+            data:{
+            	code:result
+            },
+            success:function(data){
+            	if(data.status==200){
+            		swal({
+                  type: 'success',
+                  text: '<spring:message code="user.recharge.success" />'
+                });
+            	}else{
+            		swal({
+                  type: 'error',
+                  text: '<spring:message code="user.recharge.fail" />'
+                });
+            	}
+            }
+          });
+			  }
+			}).catch(swal.noop);
+		});
   });
 </script>
 </html>

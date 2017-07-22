@@ -53,4 +53,12 @@ public interface UserService extends GenericService<User>{
 	 * @return
 	 */
 	public Integer checkExpires();
+	
+	/**
+	 * 充值
+	 * @param code 激活码
+	 * @param user 用户
+	 * @return
+	 */
+	public boolean recharge(String code,String userName);
 }
