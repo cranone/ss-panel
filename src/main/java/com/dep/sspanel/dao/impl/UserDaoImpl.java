@@ -1,5 +1,6 @@
 package com.dep.sspanel.dao.impl;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -7,9 +8,11 @@ import org.hibernate.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 
 import com.dep.sspanel.dao.UserDao;
 import com.dep.sspanel.entity.User;
+import com.dep.sspanel.util.vo.Page;
 
 @Repository
 public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao{
@@ -56,6 +59,20 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao{
 		query.setParameter("enable", false);
 		query.setParameter("expiresDate", Calendar.getInstance().getTime());
 		return query.executeUpdate();
+	}
+
+
+	@Override
+	public Page<User> findByPage(Page<User> page, User condition) {
+		StringBuffer sb=new StringBuffer();
+		sb.append(" where 1=1 ");
+		List<Object> list=new ArrayList<Object>();
+		
+		if(!StringUtils.isEmpty(condition.getUsername())){
+			sb.append(" and username=? ");
+			list.add(condition.getUsername());
+		}
+		return super.findByPage(page,sb.toString(),list.toArray());
 	}
 
 }

@@ -14,4 +14,5 @@ $(function($) {
 	$(".i18n").each(function(){
 		$(this).attr("href",$(this).attr("data-lan")+"?url="+localURL);
 	});
+	
 });

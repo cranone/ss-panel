@@ -20,13 +20,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dep.sspanel.annotation.SystemControllerLog;
+import com.dep.sspanel.entity.Node;
 import com.dep.sspanel.entity.User;
+import com.dep.sspanel.service.NodeService;
 import com.dep.sspanel.service.UserService;
 import com.dep.sspanel.shiro.SecurityUtil;
 import com.dep.sspanel.util.GlobalConst;
 import com.dep.sspanel.util.KaptchaUtil;
 import com.dep.sspanel.util.ServerUtil;
 import com.dep.sspanel.util.type.ErrorCodeType;
+import com.dep.sspanel.util.vo.Page;
 
 @Controller
 public class UserControl {
@@ -34,6 +37,8 @@ public class UserControl {
 
 	@Resource
 	private UserService userService;
+	@Resource
+	private NodeService nodeService;
 	
 	@Resource
 	private CacheManager cacheManager;
@@ -77,6 +82,16 @@ public class UserControl {
 		model.addAttribute("user", user);
 		return "user/node";
 	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/user/nodeListAjax")
+	public Map<String,Object> nodeListAjax(Page<Node> page){
+		Map<String,Object> map=new HashMap<String, Object>();
+		page=nodeService.findByPage(page);
+		map.put("rows", page.getList());
+		map.put("total",page.getTotalPage());
+		return map;
+	}
 
 	@RequestMapping(value = URIConstants.USER_MESSAGE)
 	public String message() {
@@ -93,7 +108,7 @@ public class UserControl {
 	@ResponseBody
 	public Map<String,Object> changePassword(HttpServletRequest request,String oldpassword,String password,String captchaCode){
 		Map<String,Object> map=new HashMap<String, Object>();
-		map.put("status", "1");
+		map.put("status", "50001");
 		if(!KaptchaUtil.validate(request, captchaCode)){
 			map.put("info", "验证码错误");
 			return map;
@@ -104,7 +119,6 @@ public class UserControl {
 			return map;
 		}
 		map.put("status", ErrorCodeType.success.getCode());
-		map.put("info", "修改成功");
 		return map;
 	}
 }

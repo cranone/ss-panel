@@ -40,7 +40,7 @@
           sizePage:params.limit
         };
       },
-      url: "${globalURL }/admin/userlistajax",
+      url: "${globalURL }/admin/userListAjax",
       onEditableSave:function(field, row, oldValue, $el){
       	row.field=field;
       	$.ajax({

@@ -74,13 +74,19 @@
 		    type : "post",
 		    data : $(".changepassword").serialize(),
 		    success : function(data) {
-		    	if(data.status=="0"){
+		    	if(data.status=="200"){
 		    		$(".changepassword")[0].reset();
+		    		swal({
+	            text:'<spring:message code="message.success" />',
+	            confirmButtonText:'<spring:message code="message.ok" />'
+	          });
+		    	}else{
+		    		swal({
+	            text:data.info,
+	            confirmButtonText:'<spring:message code="message.ok" />'
+	          });
 		    	}
-		    	swal({
-		    		text:data.info,
-		    		confirmButtonText:'<spring:message code="message.ok" />'
-		    	});
+		    	
 		    },
 		    error : function(data) {
 		    	location.reload();

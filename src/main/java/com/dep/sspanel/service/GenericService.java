@@ -53,21 +53,4 @@ public interface GenericService<T> {
 	 * @return
 	 */
 	public Page<T> findByPage(Page<T> page);
-	
-	/**
-	 * 分页查询
-	 * @param page
-	 * @param condition 条件语句
-	 * @return
-	 */
-	public Page<T> findByPage(Page<T> page, String condition);
-	
-	/**
-	 * 分页查询
-	 * @param page
-	 * @param condition 条件语句
-	 * @param values 值
-	 * @return
-	 */
-	public Page<T> findByPage(Page<T> page, String condition, Object[] values);
 }

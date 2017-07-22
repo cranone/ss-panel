@@ -23,7 +23,7 @@ public class SystemLogServiceImpl extends GenericServiceImpl<SystemLog> implemen
 	@Override
 	public Page<SystemLog> findByPage(Page<SystemLog> page) {
 		String hql=" order by date desc";
-		return super.findByPage(page, hql);
+		return systemLogDao.findByPage(page, hql);
 	}
 	
 }

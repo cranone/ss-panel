@@ -38,14 +38,14 @@ public class AdminControl {
 	@Resource
 	private SystemLogService systemLogService;
 	
-	@InitBinder
+	/*@InitBinder
 	public void initBinder(WebDataBinder binder) throws Exception {
 		// 注册自定义的属性编辑器
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 		CustomDateEditor dateEditor = new CustomDateEditor(df, true);
 		// 表示如果命令对象有Date类型的属性，将使用该属性编辑器进行类型转换
 		binder.registerCustomEditor(Date.class, dateEditor);
-	}
+	}*/
 	
 	@RequestMapping(value = {URIConstants.ADMIN_INDEX,URIConstants.ADMIN_DEFAULT})
 	public String index(){
@@ -60,15 +60,28 @@ public class AdminControl {
 	}
 	
 	@RequestMapping(value = URIConstants.ADMIN_USER_LIST)
-	public String userList(Page<User> page,Model model,User condition){
-		page =userService.findByPage(page,condition);
-		model.addAttribute("page", page);
+	public String userList(Model model){
 		return "admin/userlist";
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/admin/userListAjax")
-	public Map<String,Object> userListAjax(User condition,Integer limit,Integer offset,Page<User> page){
+	@RequestMapping(value = URIConstants.ADMIN_USER_LIST_AJAX)
+	public Map<String,Object> userListAjax(User condition,Page<User> page){
+		Map<String,Object> map=new HashMap<String, Object>();
+		page =userService.findByPage(page,condition);
+		map.put("rows", page.getList());
+		map.put("total",page.getTotalPage());
+		return map;
+	}
+	
+	@RequestMapping(value = URIConstants.ADMIN_CODE_LIST)
+	public String codeList(Model model){
+		return "admin/userlist";
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = URIConstants.ADMIN_CODE_LIST_AJAX)
+	public Map<String,Object> codeListAjax(User condition,Page<User> page){
 		Map<String,Object> map=new HashMap<String, Object>();
 		page =userService.findByPage(page,condition);
 		map.put("rows", page.getList());
@@ -79,17 +92,30 @@ public class AdminControl {
 	@SystemControllerLog(description="admin_useredit")
 	@RequestMapping(value = URIConstants.ADMIN_USER_EDIT,method=RequestMethod.POST)
 	@ResponseBody
-	public Map<String,Object> edit(User user,Double transfer){
+	public Map<String,Object> edit(String field,User user,Double transfer){
 		Map<String,Object> map=new HashMap<String, Object>();
 		User oldUser=userService.get(user.getId());
-		if(!StringUtils.isEmpty(user.getPasswd())){
-			oldUser.setPasswd(SecurityUtil.encrypt(oldUser.getUsername(), user.getPasswd()));
+		switch (field) {
+		case "transferEnable":
+			oldUser.setTransferEnable(user.getTransferEnable()*1024*1024*1024);
+			break;
+		case "upload":
+			oldUser.setUpload(user.getUpload()*1024*1024*1024);
+			break;
+		case "download":
+			oldUser.setDownload(user.getDownload()*1024*1024*1024);
+			break;
+		case "pass":
+			
+			break;
+		case "expiresDate":
+			oldUser.setExpiresDate(user.getExpiresDate());
+			break;
+		default:
+			break;
 		}
-		oldUser.setTransferEnable(Math.round(transfer*1024*1024*1024));
-		oldUser.setExpiresDate(user.getExpiresDate());
 		userService.update(oldUser);
 		map.put("status", ErrorCodeType.success.getCode());
-		map.put("info", "修改成功");
 		return map;
 	}
 }

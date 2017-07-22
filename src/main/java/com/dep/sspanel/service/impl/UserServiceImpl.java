@@ -1,15 +1,12 @@
 package com.dep.sspanel.service.impl;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.Set;
 
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 import com.dep.sspanel.dao.UserDao;
 import com.dep.sspanel.entity.User;
@@ -67,16 +64,7 @@ public class UserServiceImpl extends GenericServiceImpl<User> implements UserSer
 
 	@Override
 	public Page<User> findByPage(Page<User> page,User condition) {
-		StringBuffer sb=new StringBuffer();
-		sb.append(" where 1=1 ");
-		List<Object> list=new ArrayList<Object>();
-		
-		if(!StringUtils.isEmpty(condition.getUsername())){
-			sb.append(" and username=? ");
-			list.add(condition.getUsername());
-		}
-		
-		return super.findByPage(page,sb.toString(),list.toArray());
+		return userDao.findByPage(page,condition);
 	}
 
 	@Override

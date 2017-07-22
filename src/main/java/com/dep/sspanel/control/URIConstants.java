@@ -38,7 +38,13 @@ public class URIConstants {
 	/** 管理员查看所有用户信息 */
 	public static final String ADMIN_USER_LIST=ADMIN_INDEX+"/userlist";
 	/** 管理员修改用户信息 */
+	public static final String ADMIN_USER_LIST_AJAX=ADMIN_INDEX+"/userlistajax";
+	/** 管理员修改用户信息 */
 	public static final String ADMIN_USER_EDIT=ADMIN_INDEX+"/useredit";
+	/** 管理员查看所有激活码信息 */
+	public static final String ADMIN_CODE_LIST=ADMIN_INDEX+"/codelist";
+	/** 管理员修改激活码信息 */
+	public static final String ADMIN_CODE_LIST_AJAX=ADMIN_INDEX+"/codelistajax";
 	
 	/** 用户首页 */
 	public static final String USER_INDEX="/user";

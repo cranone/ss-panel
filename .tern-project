@@ -12,6 +12,13 @@
     },
     "es_modules": {
       
+    },
+    "bootstrap": {
+      
     }
-  }
+  },
+  "libs": [
+    "browser",
+    "jquery"
+  ]
 }

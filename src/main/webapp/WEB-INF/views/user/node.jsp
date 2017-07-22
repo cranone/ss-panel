@@ -13,28 +13,60 @@
       <%@include file="/WEB-INF/views/user/nav.jsp"%>
     </div>
 
-    <div class="col-sm-8 col-sm-offset-1">
+    <div class="col-sm-9 col-sm-offset-1 row">
       <h3><spring:message code="node.info" /></h3>
       <div>
-        <span class="col-sm-3"><label><spring:message code="node.port" />:</label>${user.port }</span>
-        <span class="col-sm-3"><label><spring:message code="node.pwd" />:</label>${user.passwd }</span>
-        <span class="col-sm-3"><label><spring:message code="node.transfer" />(GB):</label><fmt:formatNumber minIntegerDigits="1" value="${(user.upload+user.download)/1024/1024/1024 }" pattern="#.00"/>&nbsp;/&nbsp;<fmt:formatNumber minIntegerDigits="1" value="${user.transferEnable/1024/1024/1024 }" pattern="#.00"/></span>
+        <span class="col-sm-4"><label><spring:message code="node.port" />:</label>${user.port }</span>
+        <span class="col-sm-4"><label><spring:message code="node.pwd" />:</label>${user.passwd }</span>
+        <span class="col-sm-4"><label><spring:message code="node.transfer" />(GB):</label><fmt:formatNumber minIntegerDigits="1" value="${(user.upload+user.download)/1024/1024/1024 }" pattern="#.00"/>&nbsp;/&nbsp;<fmt:formatNumber minIntegerDigits="1" value="${user.transferEnable/1024/1024/1024 }" pattern="#.00"/></span>
+      </div>
+      <div>
+        <span class="col-sm-4"><label><spring:message code="node.method" />:</label>aes-256-cfb</span>
+        <span class="col-sm-4"><label><spring:message code="node.protocol" />:</label>auth_sha1_v4_compatible</span>
+        <span class="col-sm-4"><label><spring:message code="node.obfs" />:</label>tls1.2_ticket_auth_compatible</span>
       </div>
       <br>
       <h3><spring:message code="node.list" /></h3>
-      <table class="table">
-        <tr>
-          <td><spring:message code="node.position" /></td>
-          <td><spring:message code="node.ip" /></td>
-          <td><spring:message code="node.status" /></td>
-        </tr>
-        <tr>
-          <td>香港</td>
-          <td>47.89.43.227</td>
-          <td>正常</td>
-        </tr>
-      </table>
+      <table id="list"></table>
     </div>
   </div>
 </body>
+<script>
+$(function($) {
+	$.extend($.fn.bootstrapTable.defaults, $.fn.bootstrapTable.locales["${cookie.locale.value==null?'zh_CN':cookie.locale.value}".replace("_","-")]);
+	$("#list").bootstrapTable({
+    idField: "id",
+    pagination: true,
+    sidePagination: "server",
+    search: false,
+    clickToSelect: false,
+    method: "post",
+    contentType:"application/x-www-form-urlencoded",
+    pageNumber:1,
+    pageSize: 10,
+    smartDisplay:false,
+    pageList: [10, 25, 50, 100],
+    queryParams:function(params){
+      return {
+        currentPage:params.offset+1,
+        sizePage:params.limit
+      };
+    },
+    url: "${globalURL }/user/nodeListAjax",
+    columns: [{
+    	field: "name",
+      title: "<spring:message code='node.position' />"
+    },{
+      field: "addr",
+      title: "<spring:message code='node.ip' />"
+    },{
+      field: "info",
+      title: "<spring:message code='node.status' />"
+    },{
+      field: "trafficRate",
+      title: "<spring:message code='node.rate' />"
+    }]
+	});
+});
+</script>
 </html>
