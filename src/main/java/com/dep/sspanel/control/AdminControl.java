@@ -43,11 +43,21 @@ public class AdminControl {
 		return "admin/index";
 	}
 	
-	@RequestMapping(value = URIConstants.ADMIN_LOG)
+	@RequestMapping(value = URIConstants.ADMIN_LOG_LIST)
 	public String log(Page<SystemLog> page,Model model){
-		page = systemLogService.findByPage(page);
-		model.addAttribute("page", page);
+//		page = systemLogService.findByPage(page);
+//		model.addAttribute("page", page);
 		return "admin/log";
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = URIConstants.ADMIN_LOG_LIST_AJAX)
+	public Map<String,Object> logListAjax(Page<SystemLog> page){
+		Map<String,Object> map=new HashMap<String, Object>();
+		page = systemLogService.findByPage(page);
+		map.put("rows", page.getList());
+		map.put("total",page.getTotal());
+		return map;
 	}
 	
 	@RequestMapping(value = URIConstants.ADMIN_USER_LIST)
@@ -61,43 +71,35 @@ public class AdminControl {
 		Map<String,Object> map=new HashMap<String, Object>();
 		page =userService.findByPage(page);
 		map.put("rows", page.getList());
-		map.put("total",page.getTotalPage());
+		map.put("total",page.getTotal());
 		return map;
 	}
 	
 	@RequestMapping(value = URIConstants.ADMIN_CODE_LIST)
 	public String codeList(Model model){
+		model.addAttribute("codeType", CodeType.values());
 		return "admin/codelist";
 	}
 	
 	@ResponseBody
 	@RequestMapping(value = URIConstants.ADMIN_CODE_LIST_AJAX)
-	public Map<String,Object> codeListAjax(Code condition,Page<Code> page){
+	public Map<String,Object> codeListAjax(Page<Code> page,CodeType codeType,String codeUse){
 		Map<String,Object> map=new HashMap<String, Object>();
 		page =codeService.findByPage(page);
+		page.getList().forEach(item->{
+			item.setCreater(null);
+		});
 		map.put("rows", page.getList());
-		map.put("total",page.getTotalPage());
+		map.put("total",page.getTotal());
 		return map;
 	}
 	
 	@ResponseBody
 	@RequestMapping(value = "/admin/createCode")
-	public Map<String,Object> createCode(Integer num,Integer type,Integer amount){
+	public Map<String,Object> createCode(CodeType codeType,Integer num,Integer amount){
 		Map<String,Object> map=new HashMap<String, Object>();
 		String userName =SecurityUtils.getSubject().getPrincipal().toString();
 		User user=userService.findUserByName(userName);
-		CodeType codeType=CodeType.time;
-		switch (type) {
-		case 1:
-			codeType=CodeType.bandwidth;
-			break;
-		case 2:
-			codeType=CodeType.time;
-			break;
-		default:
-			codeType=CodeType.time;
-			break;
-		}
 		List<Code> list=codeService.createCode(codeType, num, amount, user);
 		map.put("status", ErrorCodeType.success.getCode());
 		map.put("info", list);
@@ -107,18 +109,18 @@ public class AdminControl {
 	@SystemControllerLog(description="admin_useredit")
 	@RequestMapping(value = URIConstants.ADMIN_USER_EDIT,method=RequestMethod.POST)
 	@ResponseBody
-	public Map<String,Object> edit(String field,User user,Double transfer){
+	public Map<String,Object> edit(String field,User user){
 		Map<String,Object> map=new HashMap<String, Object>();
 		User oldUser=userService.get(user.getId());
 		switch (field) {
 		case "transferEnable":
-			oldUser.setTransferEnable(user.getTransferEnable()*1024*1024*1024);
+			oldUser.setTransferEnable(user.getTransferEnable());
 			break;
 		case "upload":
-			oldUser.setUpload(user.getUpload()*1024*1024*1024);
+			oldUser.setUpload(user.getUpload());
 			break;
 		case "download":
-			oldUser.setDownload(user.getDownload()*1024*1024*1024);
+			oldUser.setDownload(user.getDownload());
 			break;
 		case "pass":
 			oldUser.setPass(SecurityUtil.encrypt(oldUser.getUsername(), user.getPass()));

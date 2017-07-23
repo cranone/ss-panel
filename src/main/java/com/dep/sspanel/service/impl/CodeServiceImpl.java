@@ -7,6 +7,7 @@ import java.util.UUID;
 
 import javax.annotation.Resource;
 
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +16,7 @@ import com.dep.sspanel.entity.Code;
 import com.dep.sspanel.entity.User;
 import com.dep.sspanel.service.CodeService;
 import com.dep.sspanel.util.type.CodeType;
+import com.dep.sspanel.util.vo.Page;
 
 @Service
 @Transactional
@@ -48,4 +50,18 @@ public class CodeServiceImpl extends GenericServiceImpl<Code> implements CodeSer
 	public Code findByCodeActive(String code) {
 		return codeDao.findByCodeNoConsumer(code);
 	}
+	
+	@Override
+	public Page<Code> findByPage(Page<Code> page) {
+		page=super.findByPage(page);
+		page.getList().forEach(item->Hibernate.initialize(item.getConsumer()));
+		return page;
+	}
+	@Override
+	public Page<Code> findByPage(Page<Code> page, CodeType codeType, String codeUse) {
+		//TODO:重新优化
+		return null;
+	}
+	
+	
 }

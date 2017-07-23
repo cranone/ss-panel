@@ -48,14 +48,14 @@ $(function($) {
     pageList: [10, 25, 50, 100],
     queryParams:function(params){
       return {
-        currentPage:params.offset+1,
+        currentPage:params.offset,
         sizePage:params.limit
       };
     },
     url: "${globalURL }/user/nodelistajax",
     columns: [{
     	field: "name",
-      title: "<spring:message code='node.position' />"
+      title: "<spring:message code='node.name' />"
     },{
       field: "addr",
       title: "<spring:message code='node.ip' />"

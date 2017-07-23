@@ -20,7 +20,7 @@
         </tr>
         <tr>
           <td><spring:message code="user.expires" />:</td>
-          <td>/</td>
+          <td><fmt:formatDate value="${user.expiresDate }" pattern="yyyy-MM-dd"/></td>
         </tr>
         <tr>
           <td><spring:message code="user.transfer" />(GB):</td>

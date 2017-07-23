@@ -1,11 +1,14 @@
 package com.dep.sspanel.entity;
 
 import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,8 +17,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import com.dep.sspanel.util.type.CodeType;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 /**
  * 
@@ -26,11 +34,17 @@ import com.dep.sspanel.util.type.CodeType;
 @Entity
 @Table(name="code")
 @DynamicUpdate
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@JsonInclude(Include.NON_NULL)
 public class Code {
 
 	private Integer id;
 	private String code;
+	@DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
+	@JsonFormat(pattern="yyyy-MM-dd hh:mm:ss",timezone="GMT+8")  
 	private Date createDate;//创建时间
+	@DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
+	@JsonFormat(pattern="yyyy-MM-dd hh:mm:ss",timezone="GMT+8")  
 	private Date consumeDate;//使用时间
 	private CodeType codeType;//激活码类型
 	private Integer amount;//量,流量为G,时间为月
@@ -54,7 +68,7 @@ public class Code {
 	public Date getConsumeDate() {
 		return consumeDate;
 	}
-	@Column  
+	@Column
     @Enumerated(EnumType.STRING)
 	public CodeType getCodeType() {
 		return codeType;
@@ -63,12 +77,12 @@ public class Code {
 	public Integer getAmount() {
 		return amount;
 	}
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="consumer_id")
 	public User getConsumer() {
 		return consumer;
 	}
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="creater_id")
 	public User getCreater() {
 		return creater;

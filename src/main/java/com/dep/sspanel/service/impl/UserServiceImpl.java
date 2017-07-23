@@ -3,6 +3,8 @@ package com.dep.sspanel.service.impl;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.Resource;
@@ -16,7 +18,6 @@ import com.dep.sspanel.entity.User;
 import com.dep.sspanel.service.CodeService;
 import com.dep.sspanel.service.UserService;
 import com.dep.sspanel.shiro.SecurityUtil;
-import com.dep.sspanel.util.vo.Page;
 
 @Service
 @Transactional
@@ -34,7 +35,9 @@ public class UserServiceImpl extends GenericServiceImpl<User> implements UserSer
 
 	@Override
 	public User findUserByName(String name) {
-		return userDao.findUserByName(name);
+		Map<String,Object> map=new HashMap<>();
+		map.put("username", name);
+		return this.findOne(map);
 	}
 	
 	@Override
@@ -71,11 +74,6 @@ public class UserServiceImpl extends GenericServiceImpl<User> implements UserSer
 	}
 
 	@Override
-	public Page<User> findByPage(Page<User> page,User condition) {
-		return userDao.findByPage(page,condition);
-	}
-
-	@Override
 	public Integer checkExpires() {
 		return userDao.updateAllOutDate();
 	}
@@ -83,13 +81,15 @@ public class UserServiceImpl extends GenericServiceImpl<User> implements UserSer
 	@Override
 	public boolean recharge(String code, String userName) {
 		Code eCode = codeService.findByCodeActive(code);
-		User user=userDao.findUserByName(userName);
+		User user=findUserByName(userName);
 		if(eCode==null){
 			return false;
 		}
 		switch (eCode.getCodeType()) {
 		case bandwidth:
-			user.setTransferEnable(user.getTransferEnable()+eCode.getAmount()*1024*1024*1024);//GB转换成B
+			long temp=eCode.getAmount();
+			temp=temp*1024*1024*1024;
+			user.setTransferEnable(user.getTransferEnable()+temp);//GB转换成B
 			break;
 		case time:
 			Calendar cal = Calendar.getInstance();

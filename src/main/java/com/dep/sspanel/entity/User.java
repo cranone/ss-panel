@@ -37,7 +37,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @Entity
 @Table(name="user")
 @DynamicUpdate
-@JsonIgnoreProperties(value={"pass","roleList","rolePermissionSet","roleNameSet"})   
+@JsonIgnoreProperties(value={"hibernateLazyInitializer", "handler","pass","roleList","rolePermissionSet","roleNameSet"})   
 public class User implements Serializable{
 	private static final long serialVersionUID = 1228256212143751728L;
 	
@@ -53,10 +53,10 @@ public class User implements Serializable{
 	private Integer port=50000;//ss端口*
 	private Boolean enable=true;//启用或禁用ss帐号（1启用，0禁用）*
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	@JsonFormat(pattern="yyyy-MM-dd") 
+	@JsonFormat(pattern="yyyy-MM-dd",timezone="GMT+8") 
 	private Date updateDate=Calendar.getInstance().getTime();//修改日期
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	@JsonFormat(pattern="yyyy-MM-dd")  
+	@JsonFormat(pattern="yyyy-MM-dd",timezone="GMT+8")
 	private Date expiresDate;//到期时间
 	private String method;//="aes-256-cfb"加密*
 	private String obfs;//="tls1.2_ticket_auth_compatible"混淆*

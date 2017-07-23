@@ -27,4 +27,14 @@ public enum CodeType {
 		this.id=id;
 		this.name=name;
 	}
+	
+/*	
+	public class CodeTypeJsonSerializer extends JsonSerializer<CodeType>{
+		public CodeTypeJsonSerializer(){}
+		@Override
+		public void serialize(CodeType value, JsonGenerator gen, SerializerProvider serializers) throws IOException, JsonProcessingException {
+			gen.writeString(value.getName());
+		}
+
+	}*/
 }

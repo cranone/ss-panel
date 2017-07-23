@@ -89,7 +89,7 @@ public class UserControl {
 		Map<String,Object> map=new HashMap<String, Object>();
 		page=nodeService.findByPage(page);
 		map.put("rows", page.getList());
-		map.put("total",page.getTotalPage());
+		map.put("total",page.getTotal());
 		return map;
 	}
 

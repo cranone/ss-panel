@@ -13,8 +13,10 @@
     <div class="col-sm-2">
       <%@include file="/WEB-INF/views/user/nav.jsp"%>
     </div>
-    <div class="col-sm-9"><table id="list"></table></div>
-    
+    <div class="col-sm-9">
+      <table id="list"></table>
+    </div>
+
   </div>
 </body>
 <script>
@@ -36,17 +38,23 @@
       pageList: [10, 25, 50, 100],
       queryParams:function(params){
         return {
-          currentPage:params.offset+1,
+          currentPage:params.offset,
           sizePage:params.limit
         };
       },
       url: "${globalURL }/admin/userlistajax",
       onEditableSave:function(field, row, oldValue, $el){
-      	row.field=field;
+      	var data={};
+      	data.field=field;
+      	data[field]=row[field];
+      	data.id=row.id;
+      	if(field=="upload"||field=="download"||field=="transferEnable"){
+      		data[field]=parseInt(data[field]*1024*1024*1024);
+      	}
       	$.ajax({
       		type:"post",
       		url:"${globalURL }/admin/useredit",
-      		data: row,
+      		data: data,
       		dataType: 'JSON',
       		success: function (data) {
             if(data.status==200){
@@ -118,7 +126,8 @@
         field: "expiresDate",
         title: "<spring:message code='user.expires' />",
         editable: {
-            type: 'date'
+            type: 'date',
+            placement:'bottom'
         }
       }]
       

@@ -9,14 +9,18 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.persistence.Table;
 import javax.servlet.http.HttpServletRequest;
 
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import com.dep.sspanel.util.ServerUtil;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
+@Table(name="system_log")
 @DynamicUpdate
 public class SystemLog {
 	private String id;
@@ -25,6 +29,8 @@ public class SystemLog {
 	private String operateContent;
 	private String ip;
 	private String mark;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern="yyyy-MM-dd",timezone="GMT+8") 
 	private Date date;
 	private String stackTrace;
 	

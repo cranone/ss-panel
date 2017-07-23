@@ -14,7 +14,7 @@
        http://www.springframework.org/schema/aop
        http://www.springframework.org/schema/aop/spring-aop-4.0.xsd ">
 
-    <mvc:annotation-driven />
+    <mvc:annotation-driven conversion-service="conversionService"/>
 
     <!-- 设置使用注解的类所在的jar包 -->
     <context:component-scan base-package="com.dep.sspanel.control" use-default-filters="false">

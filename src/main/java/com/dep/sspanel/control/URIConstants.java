@@ -34,7 +34,9 @@ public class URIConstants {
 	/** 管理员首页 */
 	public static final String ADMIN_DEFAULT=ADMIN_INDEX+"/index";
 	/** 管理员日志 */
-	public static final String ADMIN_LOG=ADMIN_INDEX+"/log";
+	public static final String ADMIN_LOG_LIST=ADMIN_INDEX+"/loglist";
+	/** 管理员日志 */
+	public static final String ADMIN_LOG_LIST_AJAX=ADMIN_INDEX+"/loglistajax";
 	/** 管理员查看所有用户信息 */
 	public static final String ADMIN_USER_LIST=ADMIN_INDEX+"/userlist";
 	/** 管理员查看所有用户信息 */

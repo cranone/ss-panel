@@ -5,6 +5,16 @@
 <head>
 <%@include file="/WEB-INF/views/include/headlib.jsp"%>
 <script src="${globalURL }/resource/project/js/usernav.js"></script>
+<style type="text/css">
+.table{
+    table-layout: fixed;
+}
+td{  
+   
+    overflow:hidden;/* 内容超出宽度时隐藏超出部分的内容 */  
+    text-overflow:ellipsis;/* 当对象内文本溢出时显示省略标记(...) ；需与overflow:hidden;一起使用*/  
+}  
+</style>
 </head>
 <body>
   <%@include file="/WEB-INF/views/include/header.jsp"%>
@@ -14,44 +24,52 @@
     </div>
 
     <div class="col-sm-8 col-sm-offset-1">
-      <table class="table">
-        <tr>
-          <td><spring:message code="log.description" /></td>
-          <td><spring:message code="log.operate.content" /></td>
-          <td><spring:message code="log.operator" /></td>
-          <td><spring:message code="log.ip" /></td>
-          <td><spring:message code="log.date" /></td>
-        </tr>
-        <c:forEach items="${page.list }" var="item">
-          <tr>
-            <td class="col-sm-2">${item.description }</td>
-            <td>${item.operateContent }</td>
-            <td class="col-sm-1">${item.operator }</td>
-            <td class="col-sm-1">${item.ip }</td>
-            <td class="col-sm-1">${item.date}</td>
-          </tr>
-        </c:forEach>
-      </table>
-      <ul id="pagination" class="pagination-sm"></ul>
+      <table id="list"></table>
     </div>
   </div>
 </body>
 <script>
 	$(function($) {
-		var startPage="${page.currentPage}"*1;
-	  $('#pagination').twbsPagination({
-	    totalPages : "${page.totalPage}",
-	    startPage : startPage,
-	    visiblePages : 10,
-	    first : '<spring:message code="page.first" />',
-	    last : '<spring:message code="page.last" />',
-	    prev : null,
-	    next : null,
-	    href : "${globalURL }/admin/log?currentPage={{number}}",
-	    onPageClick : function(event, page) {
-		    $('#page-content').text('Page ' + page);
-	    }
-	  });
+	  $.extend($.fn.bootstrapTable.defaults, $.fn.bootstrapTable.locales["${cookie.locale.value==null?'zh_CN':cookie.locale.value}".replace("_","-")]);
+    $("#list").bootstrapTable({
+      //toolbar: "#toolbar",
+      idField: "id",
+      pagination: true,
+      sidePagination: "server",
+      showRefresh: true,
+      search: false,
+      clickToSelect: false,
+      method: "post",
+      contentType:"application/x-www-form-urlencoded",
+      pageNumber:1,
+      pageSize: 10,
+      smartDisplay:false,
+      pageList: [10, 25, 50, 100],
+      queryParams:function(params){
+        return {
+          currentPage:params.offset,
+          sizePage:params.limit
+        };
+      },
+      url: "${globalURL }/admin/loglistajax",
+      columns: [{
+      	field: "description",
+        title: "<spring:message code='log.description' />"
+      },{
+        field: "operateContent",
+        title: "<spring:message code='log.operate.content' />",
+        width:"50%"
+      },{
+        field: "operator",
+        title: "<spring:message code='log.operator' />"
+      },{
+        field: "ip",
+        title: "<spring:message code='log.ip' />"
+      },{
+        field: "date",
+        title: "<spring:message code='log.date' />"
+      }]
+    });
   });
 </script>
 </html>

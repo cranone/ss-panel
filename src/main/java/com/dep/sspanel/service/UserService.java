@@ -3,7 +3,6 @@ package com.dep.sspanel.service;
 import java.util.Set;
 
 import com.dep.sspanel.entity.User;
-import com.dep.sspanel.util.vo.Page;
 
 public interface UserService extends GenericService<User>{
 	/**
@@ -40,13 +39,6 @@ public interface UserService extends GenericService<User>{
 	 */
 	public boolean changePassword(String username,String oldpassword,String password);
 	
-	/**
-	 * 根据条件分页查询用户信息
-	 * @param page
-	 * @param condition
-	 * @return
-	 */
-	public Page<User> findByPage(Page<User> page,User condition);
 	
 	/**
 	 * 检查到期时间

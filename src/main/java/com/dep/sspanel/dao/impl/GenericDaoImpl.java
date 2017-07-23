@@ -2,6 +2,7 @@ package com.dep.sspanel.dao.impl;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -73,7 +74,7 @@ public abstract class GenericDaoImpl<T> extends HibernateDaoSupport implements G
 			getHibernateTemplate().delete(t);
 		}
 	}
-
+	
 	@Override
 	public Page<T> findByPage(Page<T> page) {
 		return findByPage(page, null, null);
@@ -84,6 +85,7 @@ public abstract class GenericDaoImpl<T> extends HibernateDaoSupport implements G
 		return findByPage(page, condition, null);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Page<T> findByPage(Page<T> page, String condition, Object[] values) {
 		StringBuffer sb = new StringBuffer();
@@ -91,41 +93,109 @@ public abstract class GenericDaoImpl<T> extends HibernateDaoSupport implements G
 		if (!StringUtils.isEmpty(condition)) {
 			sb.append(condition);
 		}
+		addSort(sb,condition);
 		String hql = sb.toString();
 		// 获取分页数据
-		List<T> list = getHibernateTemplate().executeWithNativeSession(new HibernateCallback<List<T>>() {
-			@SuppressWarnings("unchecked")
-			@Override
-			public List<T> doInHibernate(Session session) throws HibernateException {
-				Query queryObject = session.createQuery(hql);
-				if (values != null) {
-					for (int i = 0; i < values.length; i++) {
-						queryObject.setParameter(i, values[i]);
-					}
-				}
-				queryObject.setFirstResult(page.getSizePage() * (page.getCurrentPage() - 1));
-				queryObject.setMaxResults(page.getSizePage());
-				return queryObject.list();
+		Session session = currentSession();
+		Query queryObject =session.createQuery(hql);
+		if (values != null) {
+			for (int i = 0; i < values.length; i++) {
+				queryObject.setParameter(i, values[i]);
 			}
-		});
+		}
+		queryObject.setFirstResult(page.getCurrentPage());
+		queryObject.setMaxResults(page.getSizePage());
+		List<T> list=queryObject.list();
 		page.setList(list);
 
 		// 计算总页数
 		String countHql = " select count(*) " + hql;
-		Integer count = getHibernateTemplate().executeWithNativeSession(new HibernateCallback<Integer>() {
-			@Override
-			public Integer doInHibernate(Session session) throws HibernateException {
-				Query queryObject = session.createQuery(countHql);
-				if (values != null) {
-					for (int i = 0; i < values.length; i++) {
-						queryObject.setParameter(i, values[i]);
-					}
-				}
-				return Integer.valueOf(queryObject.uniqueResult().toString());
+		queryObject =session.createQuery(countHql);
+		if (values != null) {
+			for (int i = 0; i < values.length; i++) {
+				queryObject.setParameter(i, values[i]);
 			}
-		});
-		page.setTotalPage((count - 1) / page.getSizePage() + 1);
-
+		}
+		Integer count=Integer.valueOf(queryObject.uniqueResult().toString());
+//		page.setTotalPage((count - 1) / page.getSizePage() + 1);
+		page.setTotal(count);
 		return page;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public Page<T> findByPage(Page<T> page, Map<String, Object> map) {
+		StringBuffer sb = new StringBuffer();
+		sb.append(" from ").append(this.entityClass.getName()).append(" ");
+		if(map!=null&&!map.isEmpty()){
+			sb.append(" where 1=1 ");
+			for(String key:map.keySet()){
+				sb.append(" and ").append(key).append("=:").append(key.replace(".", ""));
+			}
+		}
+		// 获取分页数据
+		String hql = sb.toString();
+		Session session = currentSession();
+		Query query = session.createQuery(hql);
+		if(map!=null&&!map.isEmpty()){
+			for(String key:map.keySet()){
+				query.setParameter(key.replace(".", ""), map.get(key));
+			}
+		}
+		query.setFirstResult(page.getCurrentPage());
+		query.setMaxResults(page.getSizePage());
+		List<T> list=query.list();
+		page.setList(list);
+		
+		// 计算总页数
+		String countHql = " select count(*) " + hql;
+		query =session.createQuery(countHql);
+		if(map!=null&&map.size()>0){
+			for(String key:map.keySet()){
+				query.setParameter(key.replace(".", ""), map.get(key));
+			}
+		}
+		Integer count=Integer.valueOf(query.uniqueResult().toString());
+//		page.setTotalPage((count - 1) / page.getSizePage() + 1);
+		page.setTotal(count);
+		return page;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<T> find(String queryString, Object... values){
+		return (List<T>) getHibernateTemplate().find(queryString, values);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<T> find(Map<String, Object> map) {
+		StringBuffer sb = new StringBuffer();
+		sb.append(" from ").append(this.entityClass.getName()).append(" ");
+		if(map!=null&&!map.isEmpty()){
+			sb.append(" where 1=1 ");
+			for(String key:map.keySet()){
+				sb.append(" and ").append(key).append("=:").append(key.replace(".", ""));
+			}
+		}
+		Session session = currentSession();
+		Query query = session.createQuery(sb.toString());
+		if(map!=null&&!map.isEmpty()){
+			for(String key:map.keySet()){
+				query.setParameter(key.replace(".", ""), map.get(key));
+			}
+		}
+		return query.list();
+	}
+	
+	private void addSort(StringBuffer sb,String condition){
+		try {
+			if(!StringUtils.isEmpty(condition)&&!condition.contains("order by")&&entityClass.getField("id")!=null){
+				sb.append(" order by id ");
+			}
+		} catch (NoSuchFieldException e) {
+			e.printStackTrace();
+		} catch (SecurityException e) {
+			e.printStackTrace();
+		}
 	}
 }

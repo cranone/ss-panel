@@ -1,7 +1,10 @@
 package com.dep.sspanel.service;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
 
+import com.dep.sspanel.util.type.CodeType;
 import com.dep.sspanel.util.vo.Page;
 
 public interface GenericService<T> {
@@ -53,4 +56,33 @@ public interface GenericService<T> {
 	 * @return
 	 */
 	public Page<T> findByPage(Page<T> page);
+	
+	/**
+	 * 条件分页查询
+	 * @param page
+	 * @param map
+	 * @return
+	 */
+	public Page<T> findByPage(Page<T> page,  Map<String, Object> map);
+	
+	/**
+	 * 查找全部
+	 * @return
+	 */
+	public List<T> findAll();
+	
+	/**
+	 * 按条件查找唯一
+	 * @param map
+	 * @return
+	 */
+	public T findOne(Map<String, Object> map);
+	
+	/**
+	 * 按条件查找
+	 * @param map
+	 * @return
+	 */
+	public List<T> find(Map<String, Object> map);
+	
 }

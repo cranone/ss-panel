@@ -11,7 +11,8 @@ import java.util.List;
 public class Page<T> {
 	private Integer currentPage=1;
 	private Integer sizePage=10;
-	private Integer totalPage=1;
+//	private Integer totalPage=1;
+	private Integer total=1;
 	private List<T> list;
 	
 	public Integer getCurrentPage() {
@@ -23,9 +24,9 @@ public class Page<T> {
 	public List<T> getList() {
 		return list;
 	}
-	public Integer getTotalPage() {
+/*	public Integer getTotalPage() {
 		return totalPage;
-	}
+	}*/
 	public void setCurrentPage(Integer currentPage) {
 		this.currentPage = currentPage;
 	}
@@ -35,8 +36,14 @@ public class Page<T> {
 	public void setList(List<T> list) {
 		this.list = list;
 	}
-	public void setTotalPage(Integer totalPage) {
+/*	public void setTotalPage(Integer totalPage) {
 		this.totalPage = totalPage;
+	}*/
+	public Integer getTotal() {
+		return total;
+	}
+	public void setTotal(Integer total) {
+		this.total = total;
 	}
 	
 	
