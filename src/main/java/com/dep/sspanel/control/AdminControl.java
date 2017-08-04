@@ -127,6 +127,7 @@ public class AdminControl {
 			break;
 		case "expiresDate":
 			oldUser.setExpiresDate(user.getExpiresDate());
+			oldUser.setEnable(!oldUser.isTimeout());
 			break;
 		default:
 			break;

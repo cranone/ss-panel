@@ -98,6 +98,7 @@ public class UserServiceImpl extends GenericServiceImpl<User> implements UserSer
 			}
 			cal.add(Calendar.MONTH, eCode.getAmount());
 			user.setExpiresDate(cal.getTime());
+			user.setEnable(true);
 			break;
 		default:
 			return false;
