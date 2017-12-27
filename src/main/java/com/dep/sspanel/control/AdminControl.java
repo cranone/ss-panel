@@ -136,4 +136,13 @@ public class AdminControl {
 		map.put("status", ErrorCodeType.success.getCode());
 		return map;
 	}
+	
+	@ResponseBody
+	@RequestMapping(value = URIConstants.ADMIN_USER_ADD_AJAX,method=RequestMethod.POST)
+	public Map<String,Object> addUser(User user){
+	    Map<String,Object> map=new HashMap<String, Object>();
+	    userService.addUser(user);
+	    map.put("status", ErrorCodeType.success.getCode());
+	    return map;
+	}
 }

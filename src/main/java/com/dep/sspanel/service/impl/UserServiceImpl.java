@@ -15,9 +15,11 @@ import org.springframework.transaction.annotation.Transactional;
 import com.dep.sspanel.dao.UserDao;
 import com.dep.sspanel.entity.Code;
 import com.dep.sspanel.entity.User;
+import com.dep.sspanel.exception.SystemException;
 import com.dep.sspanel.service.CodeService;
 import com.dep.sspanel.service.UserService;
 import com.dep.sspanel.shiro.SecurityUtil;
+import com.dep.sspanel.util.type.ErrorCodeType;
 
 @Service
 @Transactional
@@ -109,4 +111,27 @@ public class UserServiceImpl extends GenericServiceImpl<User> implements UserSer
 		codeService.update(eCode);
 		return true;
 	}
+	
+    @Override
+    public boolean isExist(User user) {
+        User result=userDao.findUserByNameOrEmail(user.getUsername(), user.getEmail());
+        return result!=null;
+    }
+
+    @Override
+    public String addUser(User user) {
+        if(isExist(user)) {
+            throw new SystemException(ErrorCodeType.data_error);
+        }
+        User last=userDao.findLastUser();
+        String pass=user.getPass();
+        user.setPasswd(pass);
+        user.setPass(SecurityUtil.encrypt(user.getUsername(), pass));
+        user.setPort(last.getPort()+1);
+        user.setEnable(false);
+        user.setExpiresDate(new Date());
+        return (String) save(user);
+    }
+
+
 }

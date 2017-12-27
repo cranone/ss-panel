@@ -53,4 +53,18 @@ public interface UserService extends GenericService<User>{
 	 * @return
 	 */
 	public boolean recharge(String code,String userName);
+	
+	/**
+	 * 用户是否存在
+	 * @param user
+	 * @return
+	 */
+	public boolean isExist(User user);
+	
+	/**
+	 * 添加用户
+	 * @param user
+	 * @return
+	 */
+	public String addUser(User user); 
 }

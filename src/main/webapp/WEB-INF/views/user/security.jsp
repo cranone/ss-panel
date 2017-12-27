@@ -72,29 +72,25 @@
 		    cache : false,
 		    dataType : "json",
 		    type : "post",
-		    data : $(".changepassword").serialize(),
-		    success : function(data) {
-		    	if(data.status=="200"){
-		    		$(".changepassword")[0].reset();
-		    		swal({
-	            text:'<spring:message code="message.success" />',
-	            confirmButtonText:'<spring:message code="message.ok" />'
-	          });
-		    	}else{
-		    		swal({
-	            text:data.info,
-	            confirmButtonText:'<spring:message code="message.ok" />'
-	          });
-		    	}
-		    	
-		    },
-		    error : function(data) {
-		    	location.reload();
-		    },
-		    complete:function(){
-		    	captchaRefresh($("#captchaimg"));
-		    	$("#captchaCode").val("");
-		    }
+		    data : $(".changepassword").serialize()
+		  }).done(function(data){
+			  if(data.status=="200"){
+                  $(".changepassword")[0].reset();
+                        swal({
+                           text:'<spring:message code="message.success" />',
+                           confirmButtonText:'<spring:message code="message.ok" />'
+                	    });
+                  }else{
+                	  swal({
+                		  text:data.info,
+                		  confirmButtonText:'<spring:message code="message.ok" />'
+                	  });
+              }
+		  }).fail(function(){
+			  location.reload();
+		  }).always(function(){
+			  captchaRefresh($("#captchaimg"));
+              $("#captchaCode").val("");
 		  });
 	  });
 	  $(".changepassword").validationEngine("attach",{

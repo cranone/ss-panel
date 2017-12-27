@@ -35,4 +35,21 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao{
 	}
 
 
+    @Override
+    public User findUserByNameOrEmail(String name, String email) {
+        String hql="from User where username=:username or email=:username or username=:email or email=:email";
+        Query query = getSessionFactory().getCurrentSession().createQuery(hql);
+        query.setParameter("username", name);
+        query.setParameter("email", email);
+        return (User) query.uniqueResult();
+    }
+
+    @Override
+	public User findLastUser() {
+	    String hql="from User order by port desc";
+	    Query query = getSessionFactory().getCurrentSession().createQuery(hql);
+	    query.setFirstResult(0);
+	    query.setMaxResults(1);
+	    return (User) query.uniqueResult();
+	}
 }

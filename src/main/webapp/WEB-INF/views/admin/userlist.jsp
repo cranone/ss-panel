@@ -13,6 +13,28 @@
     <div class="col-sm-2">
       <%@include file="/WEB-INF/views/user/nav.jsp"%>
     </div>
+    <div id="copy" class="hidden">
+    <form class="formdata">
+        <div class="form-group">
+          <label class="col-sm-3 control-label" for="username"><spring:message code="username" />:</label>
+          <div class="col-sm-8">
+            <input class="form-control validate[required,minSize[4],maxSize[20]]" type="text" name="username">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-3 control-label" for="password"><spring:message code="password" />:</label>
+          <div class="col-sm-8">
+            <input class="form-control validate[required,minSize[6],maxSize[20]]" type="text" name="pass">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-3 control-label" for="email"><spring:message code="email" />:</label>
+          <div class="col-sm-8">
+            <input class="form-control validate[required,minSize[4],maxSize[20]]" type="text" name="email">
+          </div>
+        </div>
+    </form>
+    </div>
     <div id="toolbar"><input class="btn btn-default" id="adduser" type="button" value="<spring:message code='user.list.add' />" /></div>
     <div class="col-sm-9">
       <table id="list"></table>
@@ -23,10 +45,41 @@
   $(function($) {
 	  $("#adduser").click(function(){
 		  swal({
-              text:'<spring:message code="message.success" />',
+			  title: 'Add User',
+			  html:$("#copy").html(),
               confirmButtonText:'<spring:message code="message.ok" />',
-              cancelButtonText: 'cancel'
-          });
+              showCancelButton: true,
+              cancelButtonText:'<spring:message code="message.cancel" />',
+              preConfirm: () => {
+            	  return $.ajax({
+                      url:"${globalURL }/admin/useraddajax",
+                      dataType : "json",
+                      type : "post",
+                      data:$(".formdata:eq(1)").serialize()
+                  });
+              }
+          }).then(function(data) {
+        	  if(data.dismiss){
+                  return;
+              }else if(data.value.status==200){
+                  swal({
+                      type: 'success',
+                      text: '<spring:message code="message.success" />',
+                      confirmButtonText:'<spring:message code="message.ok" />'
+                  });
+              }else{
+                  swal({
+                      type: 'error',
+                      text: '<spring:message code="message.error" />',
+                      confirmButtonText:'<spring:message code="message.ok" />'
+                  });
+              }
+          },function(){
+              swal({
+                  text:'<spring:message code="message.error" />',
+                  confirmButtonText:'<spring:message code="message.ok" />'
+                });
+          });;
 	  });
 	  
 	  

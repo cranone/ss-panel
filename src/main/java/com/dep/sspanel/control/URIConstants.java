@@ -47,6 +47,9 @@ public class URIConstants {
 	public static final String ADMIN_CODE_LIST=ADMIN_INDEX+"/codelist";
 	/** 管理员修改激活码信息 */
 	public static final String ADMIN_CODE_LIST_AJAX=ADMIN_INDEX+"/codelistajax";
+    /** 管理员添加用户 */
+    public static final String ADMIN_USER_ADD_AJAX=ADMIN_INDEX+"/useraddajax";
+	
 	
 	/** 用户首页 */
 	public static final String USER_INDEX="/user";

@@ -40,51 +40,50 @@
       </ul>
     </div>
   </div>
-</body>
-<script>
-	$(function($) {
-		$("#recharge").click(function(){
-			swal({
-			  title: '<spring:message code="user.recharge.input" />',
-			  input: 'text',
-			  showCancelButton: true,
-			  cancelButtonText:'<spring:message code="message.cancel" />',
-			  confirmButtonText:'<spring:message code="message.ok" />',
-			  inputValidator: function(value) {
-			    return new Promise(function(resolve, reject) {
-			      if (value) {
-			        resolve();
-			      } else {
-			        reject('<spring:message code="user.recharge.input" />');
-			      }
-			    });
-			  }
-			}).then(function(result) {
-			  if (result) {
-			  	$.ajax({
-            url:"${globalURL }/user/recharge",
-            dataType : "json",
-            type : "post",
-            data:{
-            	code:result
-            },
-            success:function(data){
-            	if(data.status==200){
-            		swal({
-                  type: 'success',
-                  text: '<spring:message code="user.recharge.success" />'
-                });
-            	}else{
-            		swal({
-                  type: 'error',
-                  text: '<spring:message code="user.recharge.fail" />'
-                });
-            	}
-            }
-          });
-			  }
-			}).catch(swal.noop);
-		});
+  <script>
+    $(function($) {
+        $("#recharge").click(function(){
+            swal({
+              title: '<spring:message code="user.recharge.input" />',
+              input: 'text',
+              showCancelButton: true,
+              cancelButtonText:'<spring:message code="message.cancel" />',
+              confirmButtonText:'<spring:message code="message.ok" />',
+              inputValidator: (value)=> {
+                    return !value&&'<spring:message code="user.recharge.input" />';
+              },
+              preConfirm:(result)=>{
+                  return $.ajax({
+                        url:"${globalURL }/user/recharge",
+                        dataType : "json",
+                        type : "post",
+                        data:{
+                          code:result
+                        }
+                    });
+              }
+            }).then(function(data) {
+            	if(data.dismiss){
+            		return;
+            	}else if(data.value.status==200){
+                    swal({
+                        type: 'success',
+                        text: '<spring:message code="user.recharge.success" />'
+                    });
+                }else{
+                    swal({
+                        type: 'error',
+                        text: '<spring:message code="user.recharge.fail" />'
+                    });
+                }
+            },function(){
+                swal({
+                    text:'<spring:message code="message.error" />',
+                    confirmButtonText:'<spring:message code="message.ok" />'
+                  });
+            });
+        });
   });
 </script>
+</body>
 </html>
