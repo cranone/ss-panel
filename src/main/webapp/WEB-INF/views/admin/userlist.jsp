@@ -13,17 +13,26 @@
     <div class="col-sm-2">
       <%@include file="/WEB-INF/views/user/nav.jsp"%>
     </div>
+    <div id="toolbar"><input class="btn btn-default" id="adduser" type="button" value="<spring:message code='user.list.add' />" /></div>
     <div class="col-sm-9">
       <table id="list"></table>
     </div>
 
   </div>
-</body>
-<script>
+  <script>
   $(function($) {
-  	$.extend($.fn.bootstrapTable.defaults, $.fn.bootstrapTable.locales["${cookie.locale.value==null?'zh_CN':cookie.locale.value}".replace("_","-")]);
+	  $("#adduser").click(function(){
+		  swal({
+              text:'<spring:message code="message.success" />',
+              confirmButtonText:'<spring:message code="message.ok" />',
+              cancelButtonText: 'cancel'
+          });
+	  });
+	  
+	  
+    $.extend($.fn.bootstrapTable.defaults, $.fn.bootstrapTable.locales["${cookie.locale.value==null?'zh_CN':cookie.locale.value}".replace("_","-")]);
     $("#list").bootstrapTable({
-      //toolbar: "#toolbar",
+      toolbar: "#toolbar",
       idField: "id",
       pagination: true,
       sidePagination: "server",
@@ -44,38 +53,37 @@
       },
       url: "${globalURL }/admin/userlistajax",
       onEditableSave:function(field, row, oldValue, $el){
-      	var data={};
-      	data.field=field;
-      	data[field]=row[field];
-      	data.id=row.id;
-      	if(field=="upload"||field=="download"||field=="transferEnable"){
-      		data[field]=parseInt(data[field]*1024*1024*1024);
-      	}
-      	$.ajax({
-      		type:"post",
-      		url:"${globalURL }/admin/useredit",
-      		data: data,
-      		dataType: 'JSON',
-      		success: function (data) {
-            if(data.status==200){
-            	swal({
+        var data={};
+        data.field=field;
+        data[field]=row[field];
+        data.id=row.id;
+        if(field=="upload"||field=="download"||field=="transferEnable"){
+            data[field]=parseInt(data[field]*1024*1024*1024);
+        }
+        $.ajax({
+            type:"post",
+            url:"${globalURL }/admin/useredit",
+            data: data,
+            dataType: 'JSON'
+        }).done(function(data){
+        	if(data.status==200){
+                swal({
                 text:'<spring:message code="message.success" />',
                 confirmButtonText:'<spring:message code="message.ok" />'
               });
             }else{
-            	swal({
+                swal({
                 text:data.info,
                 confirmButtonText:'<spring:message code="message.ok" />'
               });
             }
-          },
-          error: function () {
-          	swal({
-              text:'<spring:message code="message.error" />',
-              confirmButtonText:'<spring:message code="message.ok" />'
-            });
-          }
-      	});
+        }).fail(function(){
+        	swal({
+                text:'<spring:message code="message.error" />',
+                confirmButtonText:'<spring:message code="message.ok" />'
+              });
+        })
+        ;
       },
       columns: [{
         checkbox: true
@@ -96,7 +104,7 @@
         field: "upload",
         title: "<spring:message code='user.upload' />(GB)",
         formatter: function (value, row, index) {
-        	var num=parseInt(value/1024/1024/1024*100)/100;
+            var num=parseInt(value/1024/1024/1024*100)/100;
           return num.toFixed(2);
         },
         editable: {
@@ -106,7 +114,7 @@
         field: "download",
         title: "<spring:message code='user.download' />(GB)",
         formatter: function (value, row, index) {
-        	var num=parseInt(value/1024/1024/1024*100)/100;
+            var num=parseInt(value/1024/1024/1024*100)/100;
           return num.toFixed(2);
         },
         editable: {
@@ -116,7 +124,7 @@
         field: "transferEnable",
         title: "<spring:message code='user.transfer' />(GB)",
         formatter: function (value, row, index) {
-        	var num=parseInt(value/1024/1024/1024*100)/100;
+            var num=parseInt(value/1024/1024/1024*100)/100;
           return num.toFixed(2);
         },
         editable: {
@@ -135,4 +143,5 @@
     
   });
 </script>
+</body>
 </html>

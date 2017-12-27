@@ -84,20 +84,19 @@
 		    url : "${globalURL }/admin/createCode",
 		    dataType : "json",
 		    type : "post",
-		    data : $("#dataform").serialize(),
-		    success : function(data) {
-			    if (data.status == 200) {
-				    swal({
-				      type : 'success',
-				      text : '<spring:message code="code.create.success" />'
-				    });
-			    } else {
-				    swal({
-				      type : 'error',
-				      text : '<spring:message code="code.create.fail" />'
-				    });
-			    }
-		    }
+		    data : $("#dataform").serialize()
+		  }).done(function(data){
+			  if (data.status == 200) {
+                  swal({
+                    type : 'success',
+                    text : '<spring:message code="code.create.success" />'
+                  });
+              } else {
+                  swal({
+                    type : 'error',
+                    text : '<spring:message code="code.create.fail" />'
+                  });
+              }
 		  });
 	  });
 	  
