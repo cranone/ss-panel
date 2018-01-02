@@ -17,33 +17,33 @@ import org.hibernate.annotations.DynamicUpdate;
  */
 @Entity(name="ss_node")
 @DynamicUpdate
-public class Node  implements Serializable{
+public class Node implements Serializable{
 	private static final long serialVersionUID = -5627245449524084003L;
-	
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;//*
+    @Column
 	private String name;//节点名*
+    @Column(name="address")
 	private String addr;//节点地址
+    @Column(name="info")
 	private String info;//描述
-	private Double trafficRate=1.0;//倍率*
+    @Column(name="traffic_rate")
+	private Double trafficRate;//倍率*
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
 	public Integer getId() {
 		return id;
 	}
-	@Column
 	public String getName() {
 		return name;
 	}
-	@Column(name="address")
 	public String getAddr() {
 		return addr;
 	}
-	@Column(name="info")
 	public String getInfo() {
 		return info;
 	}
-	@Column(name="traffic_rate")
 	public Double getTrafficRate() {
 		return trafficRate;
 	}

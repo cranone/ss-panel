@@ -20,6 +20,7 @@ import com.dep.sspanel.service.CodeService;
 import com.dep.sspanel.service.UserService;
 import com.dep.sspanel.shiro.SecurityUtil;
 import com.dep.sspanel.util.type.ErrorCodeType;
+import com.dep.sspanel.util.type.UserType;
 
 @Service
 @Transactional
@@ -130,6 +131,12 @@ public class UserServiceImpl extends GenericServiceImpl<User> implements UserSer
         user.setPort(last.getPort()+1);
         user.setEnable(false);
         user.setExpiresDate(new Date());
+        user.setTime(0);
+        user.setUpload(0L);
+        user.setDownload(0L);
+        user.setTransferEnable(0L);
+        user.setUpdateDate(Calendar.getInstance().getTime());
+        user.setStatus(UserType.normal.getId());
         return (String) save(user);
     }
 

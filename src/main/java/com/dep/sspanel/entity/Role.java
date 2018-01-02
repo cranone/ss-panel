@@ -24,29 +24,30 @@ import org.hibernate.annotations.GenericGenerator;
  */
 @Entity(name="role")
 @DynamicUpdate
-public class Role implements Serializable {
+public class Role implements Serializable { 
+    private static final long serialVersionUID = 1812381120879135163L;
+    @Id
+    @GenericGenerator(name = "system-uuid", strategy = "uuid2")
+    @GeneratedValue(generator = "system-uuid")
+    @Column(length = 36,nullable=false)
 	private String id;
+    @Column
 	private String name;
+    @ManyToMany
+    @JoinTable(name="auth_permission_role",joinColumns={@JoinColumn(name="rid")},inverseJoinColumns={@JoinColumn(name="pid")})
 	private List<Permission> permissionList;
+    @ManyToMany(mappedBy="roleList") 
 	private List<User> userList;
-	
-	@Id
-	@GenericGenerator(name = "system-uuid", strategy = "uuid2")
-	@GeneratedValue(generator = "system-uuid")
-	@Column(length = 36,nullable=false)
+
 	public String getId() {
 		return id;
 	}
-	@Column
 	public String getName() {
 		return name;
 	}
-	@ManyToMany
-	@JoinTable(name="auth_permission_role",joinColumns={@JoinColumn(name="rid")},inverseJoinColumns={@JoinColumn(name="pid")})
 	public List<Permission> getPermissionList() {
 		return permissionList;
 	}
-	@ManyToMany(mappedBy="roleList") 
 	public List<User> getUserList() {
 		return userList;
 	}

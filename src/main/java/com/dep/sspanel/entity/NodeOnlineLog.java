@@ -21,27 +21,26 @@ import org.hibernate.annotations.DynamicUpdate;
 @DynamicUpdate
 public class NodeOnlineLog  implements Serializable{
 	private static final long serialVersionUID = 2195673864802795212L;
-	
+	@Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;//*
+    @Column(name="online_user")
 	private String onlineUser;//在线人数*
+    @Column(name="log_time")
 	private Long logTime;//记录时间*
+    @ManyToOne
+    @JoinColumn(name="node_id")
 	private Node node;//节点*
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
 	public Integer getId() {
 		return id;
 	}
-	@Column(name="log_time")
 	public Long getLogTime() {
 		return logTime;
 	}
-	@ManyToOne
-	@JoinColumn(name="node_id")
 	public Node getNode() {
 		return node;
 	}
-	@Column(name="online_user")
 	public String getOnlineUser() {
 		return onlineUser;
 	}

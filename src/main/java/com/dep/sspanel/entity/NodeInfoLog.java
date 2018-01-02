@@ -21,33 +21,33 @@ import org.hibernate.annotations.DynamicUpdate;
 @DynamicUpdate
 public class NodeInfoLog  implements Serializable{
 	private static final long serialVersionUID = 2195673864802795212L;
-	
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;//*
+    @Column(name="`load`")
 	private String load;//负载*
+    @Column(name="uptime")
 	private Double upTime;//运行时间*
+    @Column(name="log_time")
 	private Long logTime;//记录时间*
+    @ManyToOne
+    @JoinColumn(name="node_id")
 	private Node node;//节点*
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
 	public Integer getId() {
 		return id;
 	}
 	//load为关键字,加上引号写入
-	@Column(name="`load`")
 	public String getLoad() {
 		return load;
 	}
-	@Column(name="uptime")
 	public Double getUpTime() {
 		return upTime;
 	}
-	@Column(name="log_time")
 	public Long getLogTime() {
 		return logTime;
 	}
-	@ManyToOne
-	@JoinColumn(name="node_id")
 	public Node getNode() {
 		return node;
 	}
