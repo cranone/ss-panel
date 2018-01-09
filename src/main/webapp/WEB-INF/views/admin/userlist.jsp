@@ -154,6 +154,9 @@
             emptytext:"******"
         }
       },{
+          field: "port",
+          title: "<spring:message code='node.port' />"
+      },{
         field: "upload",
         title: "<spring:message code='user.upload' />(GB)",
         formatter: function (value, row, index) {
