@@ -186,6 +186,9 @@
       },{
         field: "expiresDate",
         title: "<spring:message code='user.expires' />",
+        formatter: function (value, row, index) {
+            return value.substring(0,10);
+        },
         editable: {
             type: 'date',
             placement:'bottom'

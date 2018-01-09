@@ -1,5 +1,6 @@
 package com.dep.sspanel.control;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.fastjson.support.spring.annotation.FastJsonFilter;
+import com.alibaba.fastjson.support.spring.annotation.FastJsonView;
 import com.dep.sspanel.annotation.SystemControllerLog;
 import com.dep.sspanel.entity.Code;
 import com.dep.sspanel.entity.SystemLog;
@@ -67,6 +70,7 @@ public class AdminControl {
 	
 	@ResponseBody
 	@RequestMapping(value = URIConstants.ADMIN_USER_LIST_AJAX)
+	@FastJsonView(exclude= {@FastJsonFilter(clazz=User.class,props= {"pass"})})
 	public Map<String,Object> userListAjax(User condition,Page<User> page){
 		Map<String,Object> map=new HashMap<String, Object>();
 		page =userService.findByPage(page);
@@ -126,7 +130,13 @@ public class AdminControl {
 			oldUser.setPass(SecurityUtil.encrypt(oldUser.getUsername(), user.getPass()));
 			break;
 		case "expiresDate":
-			oldUser.setExpiresDate(user.getExpiresDate());
+		    Calendar instance = Calendar.getInstance();
+		    instance.setTime(user.getExpiresDate());
+		    instance.set(Calendar.HOUR, 0);
+		    instance.set(Calendar.MINUTE, 0);
+		    instance.set(Calendar.SECOND, 0);
+		    instance.set(Calendar.MILLISECOND, 0);
+			oldUser.setExpiresDate(instance.getTime());
 			oldUser.setEnable(!oldUser.isTimeout());
 			break;
 		default:

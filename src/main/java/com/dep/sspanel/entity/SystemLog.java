@@ -17,8 +17,8 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.dep.sspanel.util.ServerUtil;
-import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 @Table(name = "system_log")
@@ -41,7 +41,7 @@ public class SystemLog implements Serializable{
     @Column
     private String mark;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    @JSONField(format="yyyy-MM-dd HH:mm:ss")
     @Column(name = "create_date")
     private Date date;
     @Lob

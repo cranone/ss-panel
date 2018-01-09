@@ -19,10 +19,6 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.dep.sspanel.util.type.CodeType;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 /**
  * 
@@ -33,8 +29,6 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 @Entity
 @Table(name="code")
 @DynamicUpdate
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-@JsonInclude(Include.NON_NULL)
 public class Code implements Serializable {
     private static final long serialVersionUID = -1752957614908088903L;
     @Id
@@ -43,11 +37,9 @@ public class Code implements Serializable {
     @Column(nullable=false,unique=true)
 	private String code;
 	@DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
-	@JsonFormat(pattern="yyyy-MM-dd hh:mm:ss",timezone="GMT+8")  
     @Column
 	private Date createDate;//创建时间
 	@DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
-	@JsonFormat(pattern="yyyy-MM-dd hh:mm:ss",timezone="GMT+8")  
     @Column
 	private Date consumeDate;//使用时间
     @Column

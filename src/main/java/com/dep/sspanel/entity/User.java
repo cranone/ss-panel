@@ -18,15 +18,14 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.util.CollectionUtils;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.alibaba.fastjson.annotation.JSONField;
 
 /**
  * 用户
@@ -37,8 +36,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @Entity
 @Table(name = "user")
 @DynamicUpdate
-@JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler", "pass", "roleList", "rolePermissionSet",
-        "roleNameSet" })
+//@JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler", "pass", "roleList", "rolePermissionSet", "roleNameSet" })
 public class User implements Serializable {
     private static final long serialVersionUID = 1228256212143751728L;
 
@@ -68,11 +66,10 @@ public class User implements Serializable {
     @Column(name = "enable", nullable = false)
     private Boolean enable;// 启用或禁用ss帐号（1启用，0禁用）*
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     @Column
     private Date updateDate;// 修改日期
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    @JSONField(format="yyyy-MM-dd")
     @Column
     private Date expiresDate;// 到期时间
     @Column(length = 64)
@@ -83,6 +80,7 @@ public class User implements Serializable {
     private String protocol;// ="auth_sha1_v4_compatible"协议*
     @Column(nullable = false)
     private Integer status;// 用户状态
+    @JSONField(serialize=false)
     @ManyToMany
     @Cascade(value = CascadeType.SAVE_UPDATE)
     @JoinTable(name = "auth_user_role", joinColumns = { @JoinColumn(name = "uid") }, inverseJoinColumns = {@JoinColumn(name = "rid") })
