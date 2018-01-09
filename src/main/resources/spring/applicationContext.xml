@@ -69,19 +69,6 @@
         <property name="sessionFactory" ref="sessionFactory"></property>
     </bean>
 
-    <!-- <tx:advice id="txAdvice" transaction-manager="transactionManager">
-        <tx:attributes>
-            <tx:method name="*" propagation="REQUIRED" />
-        </tx:attributes>
-    </tx:advice>
-
-    <aop:config expose-proxy="true" proxy-target-class="true">
-        只对业务逻辑层实施事务
-        <aop:pointcut id="txPointcut" expression="execution(* com.dep.sspanel..service..*+.*(..))" />
-        <aop:advisor id="txAdvisor" advice-ref="txAdvice" pointcut-ref="txPointcut" />
-    </aop:config> -->
-
-    <!-- 见鬼的事情,用注解无法开启事物,只有切面才有效,已尝试各类方法,均无效 -->
     <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/><!-- proxy-target-class="true" -->
 
 
@@ -116,7 +103,7 @@
         </mvc:interceptor>
     </mvc:interceptors>
 
-    <!-- 切面日志记录 -->
+    <!-- 切面日志记录.不声明也可以启动日志,声明后导致事务注解失效. -->
     <!-- <aop:aspectj-autoproxy expose-proxy="true" proxy-target-class="true" /> -->
 
     <!-- json -->
@@ -139,7 +126,7 @@
                                 <bean class="com.dep.sspanel.filter.HibernatePropertyFilter" />
                             </array>
                         </property>
-                        <property name="dateFormat" value="yyyy-MM-dd HH:mm:ss" />
+                        <property name="dateFormat" value="yyyy-MM-dd H:mm:ss" />
                     </bean>
                 </property>
             </bean>
