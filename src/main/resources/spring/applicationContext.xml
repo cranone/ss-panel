@@ -126,7 +126,7 @@
                                 <bean class="com.dep.sspanel.filter.HibernatePropertyFilter" />
                             </array>
                         </property>
-                        <property name="dateFormat" value="yyyy-MM-dd H:mm:ss" />
+                        <property name="dateFormat" value="yyyy-MM-dd HH:mm:ss" />
                     </bean>
                 </property>
             </bean>
