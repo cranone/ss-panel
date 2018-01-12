@@ -3,17 +3,89 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:aop="http://www.springframework.org/schema/aop"
        xsi:schemaLocation="
        http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/context
        http://www.springframework.org/schema/context/spring-context.xsd
        http://www.springframework.org/schema/mvc 
-       http://www.springframework.org/schema/mvc/spring-mvc.xsd  ">
+       http://www.springframework.org/schema/mvc/spring-mvc.xsd  
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop.xsd">
 
     
     <!-- 配置静态资源文件 -->
     <!-- <mvc:default-servlet-handler/>  -->
+        <!-- 切面日志记录.不声明也可以启动日志,声明后导致事务注解失效. -->
+    <!-- <aop:aspectj-autoproxy expose-proxy="true" proxy-target-class="true" /> -->
+    
+    <context:component-scan base-package="com.dep.sspanel.control,com.alibaba.fastjson.support.spring" use-default-filters="false">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+        <context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
+        <context:exclude-filter type="annotation" expression="java.lang.Deprecated" />
+    </context:component-scan>
+    
+    <!-- json -->
+    <mvc:annotation-driven conversion-service="conversionService">
+        <mvc:message-converters register-defaults="true">
+            <bean class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">
+                <property name="supportedMediaTypes" value="application/json;charset=UTF-8" />
+                <property name="fastJsonConfig">
+                    <bean class="com.alibaba.fastjson.support.config.FastJsonConfig">
+                        <property name="serializerFeatures">
+                            <array>
+                                <value>WriteMapNullValue</value>
+                                <value>WriteDateUseDateFormat</value>
+                                <value>DisableCircularReferenceDetect</value>
+                                <value>IgnoreNonFieldGetter</value>
+                            </array>
+                        </property>
+                        <property name="serializeFilters">
+                            <array>
+                                <bean class="com.dep.sspanel.filter.HibernatePropertyFilter" />
+                            </array>
+                        </property>
+                        <property name="dateFormat" value="yyyy-MM-dd H:mm:ss" />
+                    </bean>
+                </property>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+
+    <bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+        <property name="converters">
+            <set>
+                <bean class="com.dep.sspanel.util.spring.StringToEnumConverterFactory" />
+            </set>
+        </property>
+    </bean>
+    
+    <!-- 国际化支持 -->
+    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="defaultEncoding" value="UTF-8" />
+        <!-- 如果在国际化资源文件中找不到对应代码的信息，就用这个代码作为名称 -->
+        <property name="useCodeAsDefaultMessage" value="true" />
+        <property name="basename">
+            <value>i18n.messages</value><!-- i18n/message? -->
+        </property>
+    </bean>
+    <!-- <bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver" /> -->
+    <bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver" />
+
+
+    <!-- 拦截器 -->
+    <mvc:interceptors>
+        <!-- 国际化操作拦截器 如果采用基于（请求/Session/Cookie）则必需配置 -->
+        <bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor" />
+        <mvc:interceptor>
+            <mvc:mapping path="/**" />
+            <mvc:exclude-mapping path="/resource/**" />
+            <mvc:exclude-mapping path="/images/**" />
+            <bean class="com.dep.sspanel.interceptor.GlobalInterceptor" />
+        </mvc:interceptor>
+    </mvc:interceptors>
+
     
     <mvc:resources mapping="/images/**" location="/images/" />
     <mvc:resources mapping="/resource/**" location="/resource/" />
@@ -25,4 +97,8 @@
       <property name="suffix" value=".jsp" />
     </bean>
     
+    <aop:config proxy-target-class="true"/>
+    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+        <property name="securityManager" ref="securityManager" />
+    </bean>
 </beans>
