@@ -1,3 +1,3 @@
 # ss-panel
-ss-panel with java<br>
-初期版本可使用,tag:version1.0<br>
+SSR项目关闭本项目废弃.
+Spring+Shiro框架整合练手.
